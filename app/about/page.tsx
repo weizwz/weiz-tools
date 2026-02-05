@@ -12,7 +12,7 @@ export default function AboutPage() {
         <div className='max-w-4xl mx-auto'>
           {/* Header */}
           <div className='mb-16 text-center'>
-            <h1 className='text-6xl md:text-7xl font-black text-[#409eff] mb-6'>关于我们</h1>
+            <h1 className='text-6xl md:text-7xl font-black text-main mb-6'>关于我们</h1>
             <p className='text-2xl font-semibold text-gray-600 mt-8'>打造最简洁高效的在线工具集</p>
           </div>
 
@@ -64,7 +64,7 @@ export default function AboutPage() {
             <h2 className='text-4xl font-black text-gray-900 mb-6'>🛠️ 技术栈</h2>
             <div className='flex flex-wrap gap-3'>
               {['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4', 'shadcn/ui', 'pnpm'].map((tech) => (
-                <Badge key={tech} className='bg-[#409eff] text-white px-4 py-2 text-base font-semibold rounded-full border-0 shadow-md shadow-slate-200'>
+                <Badge key={tech} className='bg-main text-white px-4 py-2 text-base font-semibold rounded-full border-0 shadow-md shadow-slate-200'>
                   {tech}
                 </Badge>
               ))}

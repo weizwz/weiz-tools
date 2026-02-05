@@ -18,7 +18,7 @@ export function ToolCard({ tool }: ToolCardProps) {
             <div className={`w-2 h-2 rounded-full bg-${tool.color}-400 opacity-0 group-hover:opacity-100 transition-opacity`} />
           </div>
           <div>
-            <CardTitle className='text-gray-900 text-lg font-bold mb-2 group-hover:text-[#409eff] transition-colors'>{tool.name}</CardTitle>
+            <CardTitle className='text-gray-900 text-lg font-bold mb-2 group-hover:text-main transition-colors'>{tool.name}</CardTitle>
             <CardDescription className='text-gray-500 text-sm leading-relaxed'>{tool.description}</CardDescription>
           </div>
         </CardHeader>

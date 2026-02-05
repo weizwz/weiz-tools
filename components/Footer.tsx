@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Zap, Wind, Layers, Cloud } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -12,10 +12,10 @@ export function Footer() {
             </p>
           </div>
           <div className='flex flex-wrap justify-center gap-4'>
-            <TechBadge icon='bolt' label='NEXT.JS' />
-            <TechBadge icon='style' label='TAILWIND' />
-            <TechBadge icon='palette' label='SHADCN' />
-            <TechBadge icon='cloud_done' label='VERCEL' />
+            <TechBadge icon={<Zap size={14} />} label='NEXT.JS' />
+            <TechBadge icon={<Wind size={14} />} label='TAILWIND' />
+            <TechBadge icon={<Layers size={14} />} label='SHADCN' />
+            <TechBadge icon={<Cloud size={14} />} label='VERCEL' />
           </div>
         </div>
       </div>
@@ -23,10 +23,10 @@ export function Footer() {
   )
 }
 
-function TechBadge({ icon, label }: { icon: string; label: string }) {
+function TechBadge({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <div className='flex items-center gap-1.5 px-3 py-1 bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 text-[11px] font-bold text-slate-600 dark:text-slate-300'>
-      <span className='material-symbols-outlined text-[14px]'>{icon}</span> {label}
+      <span className='text-slate-500'>{icon}</span> {label}
     </div>
   )
 }
