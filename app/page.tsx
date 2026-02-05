@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import Link from 'next/link'
-import { Search, ChevronLeft, ChevronRight, Blocks, Palette, DraftingCompass, ArrowRight, Code } from 'lucide-react'
+import { Search, ArrowRight, Code } from 'lucide-react'
+import { tools } from '@/data/tools'
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -53,51 +54,32 @@ export default function Home() {
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-            {/* Card 1: Smart Formatter */}
-            <div className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <div className='flex justify-between items-center gap-4 mb-4'>
-                <h4 className='text-xl font-bold'>Smart Formatter</h4>
-                <Link
-                  href='/tools/json-formatter'
-                  className='text-main font-semibold text-sm flex justify-center items-center gap-1 group-hover:gap-2 transition-all'>
-                  Try it now <ArrowRight className='w-4 h-4' />
-                </Link>
-              </div>
-              <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed'>
-                Instant code beautifier supporting 20+ languages with custom rules and real-time preview.
-              </p>
-              <div className='h-32 bg-slate-100 rounded-lg w-full flex items-center justify-center text-slate-300 text-xs'>IMG PREVIEW</div>
-            </div>
+            {tools.map((tool) => {
+              return (
+                <div
+                  key={tool.id}
+                  className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
+                  <div className='flex justify-between items-center gap-4 mb-4'>
+                    <h4 className='text-xl font-bold'>{tool.name}</h4>
+                    <Link href={tool.href} className='text-main font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all'>
+                      Try it now <ArrowRight className='w-4 h-4' />
+                    </Link>
+                  </div>
+                  <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed line-clamp-2'>{tool.description}</p>
 
-            {/* Card 2: Color Studio */}
-            <div className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <div className='flex justify-between items-center gap-4 mb-4'>
-                <h4 className='text-xl font-bold'>Color Studio</h4>
-                <Link
-                  href='/tools/color-picker'
-                  className='text-main font-semibold text-sm flex justify-center items-center gap-1 group-hover:gap-2 transition-all'>
-                  Try it now <ArrowRight className='w-4 h-4' />
-                </Link>
-              </div>
-              <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed'>
-                Generate accessible color palettes, contrast checking, and export to Tailwind, CSS, or Figma.
-              </p>
-              <div className='h-32 bg-slate-100 rounded-lg w-full flex items-center justify-center text-slate-300 text-xs'>IMG PREVIEW</div>
-            </div>
-
-            {/* Card 3: Unit Converter */}
-            <div className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <div className='flex justify-between items-center gap-4 mb-4'>
-                <h4 className='text-xl font-bold'>Unit Converter</h4>
-                <Link href='/tools/base64' className='text-main font-semibold text-sm flex justify-center items-center gap-1 group-hover:gap-2 transition-all'>
-                  Try it now <ArrowRight className='w-4 h-4' />
-                </Link>
-              </div>
-              <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed'>
-                Seamlessly convert between PX, REM, EM, and Viewport units for responsive layout precision.
-              </p>
-              <div className='h-32 bg-slate-100 rounded-lg w-full flex items-center justify-center text-slate-300 text-xs'>IMG PREVIEW</div>
-            </div>
+                  <div className='h-32 bg-slate-100 rounded-lg w-full flex items-center justify-center text-slate-300 text-xs overflow-hidden'>
+                    {tool.previewImage ? (
+                      <div className='w-full h-full flex items-center justify-center text-slate-400'>
+                        {/* Use next/image if real image, for now text placeholder or maybe valid image tag if user provides src later */}
+                        IMG PREVIEW
+                      </div>
+                    ) : (
+                      'IMG PREVIEW'
+                    )}
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
