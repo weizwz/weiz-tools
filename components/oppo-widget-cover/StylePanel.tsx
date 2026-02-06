@@ -108,85 +108,93 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       {/* 分隔线 */}
       <div className='border-t border-gray-200 my-6' />
 
-      {/* 卡片容器背景 */}
-      <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片容器背景</h3>
+      {/* 布局拼图专属配置（仅在 regular 布局时显示） */}
+      {style.layout.type === 'regular' && (
+        <>
+          {/* 卡片容器 */}
+          <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片容器</h3>
 
-      {/* 容器背景颜色 */}
-      <div className='mb-4'>
-        <label className='text-xs text-gray-500 block mb-2'>背景颜色</label>
-        <div className='flex gap-2 items-center'>
-          <input
-            type='color'
-            value={style.base.cardContainer.color}
-            onChange={(e) =>
-              onStyleChange({
-                ...style,
-                base: {
-                  ...style.base,
-                  cardContainer: { ...style.base.cardContainer, color: e.target.value }
+          {/* 容器背景颜色 */}
+          <div className='mb-4'>
+            <label className='text-xs text-gray-500 block mb-2'>背景颜色</label>
+            <div className='flex gap-2 items-center'>
+              <input
+                type='color'
+                value={style.base.cardContainer.color}
+                onChange={(e) =>
+                  onStyleChange({
+                    ...style,
+                    base: {
+                      ...style.base,
+                      cardContainer: { ...style.base.cardContainer, color: e.target.value }
+                    }
+                  })
                 }
-              })
-            }
-            className='w-10 h-8 rounded border border-gray-200 cursor-pointer'
-          />
-          <Input
-            type='text'
-            value={style.base.cardContainer.color}
-            onChange={(e) =>
-              onStyleChange({
-                ...style,
-                base: {
-                  ...style.base,
-                  cardContainer: { ...style.base.cardContainer, color: e.target.value }
+                className='w-10 h-8 rounded border border-gray-200 cursor-pointer'
+              />
+              <Input
+                type='text'
+                value={style.base.cardContainer.color}
+                onChange={(e) =>
+                  onStyleChange({
+                    ...style,
+                    base: {
+                      ...style.base,
+                      cardContainer: { ...style.base.cardContainer, color: e.target.value }
+                    }
+                  })
                 }
-              })
-            }
-            className='flex-1 text-sm h-8'
-          />
-        </div>
-      </div>
+                className='flex-1 text-sm h-8'
+              />
+            </div>
+          </div>
 
-      {/* 容器透明度 */}
-      <div className='mb-4'>
-        <label className='text-xs text-gray-500 block mb-2'>透明度: {style.base.cardContainer.opacity}%</label>
-        <input
-          type='range'
-          min={0}
-          max={100}
-          value={style.base.cardContainer.opacity}
-          onChange={(e) =>
-            onStyleChange({
-              ...style,
-              base: {
-                ...style.base,
-                cardContainer: { ...style.base.cardContainer, opacity: Number(e.target.value) }
+          {/* 容器透明度 */}
+          <div className='mb-4'>
+            <label className='text-xs text-gray-500 block mb-2'>透明度: {style.base.cardContainer.opacity}%</label>
+            <input
+              type='range'
+              min={0}
+              max={100}
+              value={style.base.cardContainer.opacity}
+              onChange={(e) =>
+                onStyleChange({
+                  ...style,
+                  base: {
+                    ...style.base,
+                    cardContainer: { ...style.base.cardContainer, opacity: Number(e.target.value) }
+                  }
+                })
               }
-            })
-          }
-          className='w-full accent-main'
-        />
-      </div>
+              className='w-full accent-main'
+            />
+          </div>
 
-      {/* 容器圆角 */}
-      <div className='mb-4'>
-        <label className='text-xs text-gray-500 block mb-2'>圆角: {style.base.cardContainer.cornerRadius}px</label>
-        <input
-          type='range'
-          min={0}
-          max={100}
-          value={style.base.cardContainer.cornerRadius}
-          onChange={(e) =>
-            onStyleChange({
-              ...style,
-              base: {
-                ...style.base,
-                cardContainer: { ...style.base.cardContainer, cornerRadius: Number(e.target.value) }
+          {/* 容器圆角 */}
+          <div className='mb-4'>
+            <label className='text-xs text-gray-500 block mb-2'>圆角: {style.base.cardContainer.cornerRadius}px</label>
+            <input
+              type='range'
+              min={0}
+              max={100}
+              value={style.base.cardContainer.cornerRadius}
+              onChange={(e) =>
+                onStyleChange({
+                  ...style,
+                  base: {
+                    ...style.base,
+                    cardContainer: { ...style.base.cardContainer, cornerRadius: Number(e.target.value) }
+                  }
+                })
               }
-            })
-          }
-          className='w-full accent-main'
-        />
-      </div>
+              className='w-full accent-main'
+            />
+          </div>
+
+          {/* 分隔线 */}
+          <div className='border-t border-gray-200 my-6' />
+        </>
+      )}
 
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片样式</h3>
 
