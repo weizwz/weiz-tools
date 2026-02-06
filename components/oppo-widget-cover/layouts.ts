@@ -124,25 +124,7 @@ export const regularLayouts: LayoutTemplate[] = [
       [{ id: genId(), size: 'medium' }]
     ]
   },
-  // 排版10: 小卡+小卡 + 中卡 + 小卡+小卡（5张图片）
-  // {
-  //   id: 'regular-10',
-  //   name: '排版10',
-  //   type: 'regular',
-  //   cardCount: 5,
-  //   rows: [
-  //     [
-  //       { id: genId(), size: 'small' },
-  //       { id: genId(), size: 'small' }
-  //     ],
-  //     [{ id: genId(), size: 'medium' }],
-  //     [
-  //       { id: genId(), size: 'small' },
-  //       { id: genId(), size: 'small' }
-  //     ]
-  //   ]
-  // },
-  // 排版11: 中卡 + 小卡+小卡 + 小卡+小卡（5张图片）
+  // 排版10: 中卡 + 小卡+小卡 + 小卡+小卡（5张图片）
   {
     id: 'regular-11',
     name: '排版11',
@@ -154,6 +136,24 @@ export const regularLayouts: LayoutTemplate[] = [
         { id: genId(), size: 'small' },
         { id: genId(), size: 'small' }
       ],
+      [
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' }
+      ]
+    ]
+  },
+  // 排版11: 小卡+小卡 + 中卡 + 小卡+小卡（5张图片）
+  {
+    id: 'regular-10',
+    name: '排版10',
+    type: 'regular',
+    cardCount: 5,
+    rows: [
+      [
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' }
+      ],
+      [{ id: genId(), size: 'medium' }],
       [
         { id: genId(), size: 'small' },
         { id: genId(), size: 'small' }

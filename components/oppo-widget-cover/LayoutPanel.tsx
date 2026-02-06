@@ -70,14 +70,14 @@ function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTempla
       )}
       onClick={onClick}
       title={layout.name}>
-      <div className={cn('w-full h-full flex flex-col gap-0.5 justify-center', layout.type === 'tilt' && '-rotate-27 scale-75')}>
+      <div className={cn('w-full h-full flex flex-col gap-1 justify-center', layout.type === 'tilt' && '-rotate-27 scale-75')}>
         {layout.rows.map((row, rowIndex) => (
-          <div key={rowIndex} className='flex gap-0.5 justify-center'>
+          <div key={rowIndex} className='flex gap-1 justify-center'>
             {row.map((slot) => (
               <div
                 key={slot.id}
                 className={cn(
-                  'bg-gray-300 rounded-sm',
+                  'bg-gray-300 rounded-xs',
                   slot.size === 'small' && 'w-4 h-4',
                   slot.size === 'medium' && 'w-9 h-4',
                   slot.size === 'large' && 'w-9 h-9'
