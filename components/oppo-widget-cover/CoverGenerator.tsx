@@ -36,7 +36,8 @@ export function CoverGenerator() {
   // 处理布局类型切换
   const handleLayoutTypeChange = (type: LayoutType) => {
     setLayoutType(type)
-    setSelectedLayout(null)
+    // 切换到 regular 时自动选中第一个布局
+    setSelectedLayout(type === 'regular' ? regularLayouts[0] : null)
     setCards(new Map())
     setTiltCards([])
     // 同步更新样式配置中的布局类型
