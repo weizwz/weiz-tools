@@ -35,6 +35,67 @@ export interface LayoutTemplate {
   cardCount: number // 需要的图片数量
 }
 
+// ============ 侧向排版专用类型 ============
+
+// 网格尺寸常量
+export const TILT_GRID_SIZE = { rows: 6, cols: 6 } as const
+export const TILT_CANVAS_SIZE = 3216 // 网格画布尺寸（正方形）
+export const TILT_CELL_SIZE = TILT_CANVAS_SIZE / TILT_GRID_SIZE.rows // 每个网格单元 536px
+export const TILT_EXPORT_WIDTH = 1440 // 导出区域宽度
+export const TILT_EXPORT_HEIGHT = 3216 // 导出区域高度
+
+// 卡片占用的网格尺寸
+export const CARD_GRID_SIZE = {
+  small: { cols: 1, rows: 1 },
+  medium: { cols: 2, rows: 1 },
+  large: { cols: 2, rows: 2 }
+} as const
+
+// 网格坐标
+export interface GridPosition {
+  row: number // 0-5
+  col: number // 0-5
+}
+
+// 侧向排版卡片
+export interface TiltCard {
+  id: string
+  position: GridPosition
+  size: CardSize
+  image?: string
+}
+
+// 检查卡片是否在边界内
+export function isCardInBounds(position: GridPosition, size: CardSize): boolean {
+  const gridSize = CARD_GRID_SIZE[size]
+  return position.row >= 0 && position.col >= 0 && position.row + gridSize.rows <= TILT_GRID_SIZE.rows && position.col + gridSize.cols <= TILT_GRID_SIZE.cols
+}
+
+// 获取卡片占用的所有网格坐标
+export function getCardOccupiedCells(position: GridPosition, size: CardSize): GridPosition[] {
+  const gridSize = CARD_GRID_SIZE[size]
+  const cells: GridPosition[] = []
+  for (let r = 0; r < gridSize.rows; r++) {
+    for (let c = 0; c < gridSize.cols; c++) {
+      cells.push({ row: position.row + r, col: position.col + c })
+    }
+  }
+  return cells
+}
+
+// 检查两个卡片是否重叠
+export function doCardsOverlap(card1: TiltCard, card2: TiltCard): boolean {
+  const cells1 = getCardOccupiedCells(card1.position, card1.size)
+  const cells2 = getCardOccupiedCells(card2.position, card2.size)
+  return cells1.some((c1) => cells2.some((c2) => c1.row === c2.row && c1.col === c2.col))
+}
+
+// 生成唯一 ID
+let tiltCardIdCounter = 0
+export function generateTiltCardId(): string {
+  return `tilt-card-${++tiltCardIdCounter}`
+}
+
 // ============ 样式配置类型（重构后） ============
 
 // 通用背景配置

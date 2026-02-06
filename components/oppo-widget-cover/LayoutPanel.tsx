@@ -65,22 +65,22 @@ function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTempla
   return (
     <button
       className={cn(
-        'w-full aspect-9/16 rounded-lg border-2 p-2 transition-all hover:border-main/50',
+        'w-full aspect-9/16 rounded-lg border-2 p-2 transition-all hover:border-main/50 overflow-hidden',
         isSelected ? 'border-main bg-main/10' : 'border-gray-200 bg-gray-50'
       )}
       onClick={onClick}
       title={layout.name}>
-      <div className={cn('w-full h-full flex flex-col gap-1 justify-center', layout.type === 'tilt' && '-rotate-27 scale-75')}>
+      <div className={cn('w-full h-full flex flex-col gap-1 justify-center', layout.type === 'tilt' && '-rotate-27 gap-3')}>
         {layout.rows.map((row, rowIndex) => (
-          <div key={rowIndex} className='flex gap-1 justify-center'>
+          <div key={rowIndex} className={cn('flex gap-1 justify-center', layout.type === 'tilt' && 'gap-3')}>
             {row.map((slot) => (
               <div
                 key={slot.id}
                 className={cn(
-                  'bg-gray-300 rounded-xs',
-                  slot.size === 'small' && 'w-4 h-4',
-                  slot.size === 'medium' && 'w-9 h-4',
-                  slot.size === 'large' && 'w-9 h-9'
+                  'bg-gray-300 shrink-0 grow-0 basis-auto',
+                  slot.size === 'small' && (layout.type === 'tilt' ? 'w-16 h-16 rounded-md' : 'w-4 h-4 rounded-xs'),
+                  slot.size === 'medium' && (layout.type === 'tilt' ? 'w-36 h-16 rounded-md' : 'w-9 h-4 rounded-xs'),
+                  slot.size === 'large' && (layout.type === 'tilt' ? 'w-36 h-36 rounded-md' : 'w-9 h-9 rounded-xs')
                 )}
               />
             ))}

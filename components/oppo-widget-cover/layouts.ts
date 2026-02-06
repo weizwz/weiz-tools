@@ -193,19 +193,44 @@ export const tiltLayouts: LayoutTemplate[] = [
     rows: [
       [
         { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' }
-      ],
-      [{ id: genId(), size: 'medium' }],
-      [
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
         { id: genId(), size: 'small' },
         { id: genId(), size: 'small' }
       ],
-      [{ id: genId(), size: 'medium' }],
       [
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'small' }
+      ],
+      [
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'medium' }
+      ],
+      [
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'small' }
+      ],
+      [
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
         { id: genId(), size: 'small' },
         { id: genId(), size: 'small' }
       ],
-      [{ id: genId(), size: 'medium' }]
+      [
+        { id: genId(), size: 'medium' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'small' },
+        { id: genId(), size: 'medium' }
+      ]
     ]
   }
 ]
