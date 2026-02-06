@@ -106,7 +106,7 @@ export function TiltCanvasPreview({ cards, style, onCardsChange }: TiltCanvasPre
         }}>
         {/* 导出区域虚线框 1440×3216（全高，水平居中） */}
         <div
-          className='absolute border-2 border-dashed border-blue-500 pointer-events-none z-20'
+          className='absolute border-2 border-dashed border-main pointer-events-none z-20'
           style={{
             left: exportOffsetX,
             top: 0,
@@ -117,7 +117,7 @@ export function TiltCanvasPreview({ cards, style, onCardsChange }: TiltCanvasPre
 
         {/* 导出区域标签 */}
         <div
-          className='absolute text-xs text-blue-500 bg-white/80 px-1 rounded z-20'
+          className='absolute text-xs text-main bg-white/80 px-1 rounded z-20'
           style={{
             left: exportOffsetX + 2,
             top: 2
@@ -262,7 +262,7 @@ function CardCell({
         </>
       ) : (
         <div
-          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-[#409eff] transition-colors'
+          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-main transition-colors'
           style={{ borderRadius: style.base.card.cornerRadius * previewScale }}>
           <Plus className='w-4 h-4' />
         </div>
@@ -319,7 +319,7 @@ function EmptyCell({
     <div
       className={cn(
         'flex items-center justify-center border border-dashed transition-colors',
-        canAdd ? 'border-gray-300 hover:border-[#409eff] cursor-pointer' : 'border-gray-200 cursor-not-allowed opacity-50'
+        canAdd ? 'border-gray-300 hover:border-main cursor-pointer' : 'border-gray-200 cursor-not-allowed opacity-50'
       )}
       style={{
         width: TILT_CELL_SIZE * previewScale,

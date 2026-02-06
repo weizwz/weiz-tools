@@ -97,7 +97,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
             </Button>
           </div>
         ) : (
-          <label className='flex items-center justify-center gap-2 w-full h-16 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-[#409eff]/50 transition-colors'>
+          <label className='flex items-center justify-center gap-2 w-full h-16 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-main/50 transition-colors'>
             <Upload className='w-4 h-4 text-gray-400' />
             <span className='text-sm text-gray-400'>上传图片</span>
             <input type='file' accept='image/*' className='hidden' onChange={handleBackgroundImageUpload} />
@@ -215,7 +215,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
               }
             })
           }
-          className='w-full accent-[#409eff]'
+          className='w-full accent-main'
         />
       </div>
 
@@ -236,7 +236,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
               }
             })
           }
-          className='w-full accent-[#409eff]'
+          className='w-full accent-main'
         />
       </div>
 
@@ -268,7 +268,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
                       }
                     })
                   }
-                  className='w-full accent-[#409eff]'
+                  className='w-full accent-main'
                 />
               </div>
 

@@ -123,7 +123,7 @@ function CardSlotItem({ slot, image, style, onUpload }: { slot: CardSlot; image?
         </>
       ) : (
         <div
-          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-[#409eff] transition-colors'
+          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-main transition-colors'
           style={{ borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE }}>
           <Plus className='w-6 h-6 mb-1' />
           <span className='text-xs'>{slot.size === 'small' ? '小卡' : slot.size === 'medium' ? '中卡' : '大卡'}</span>
