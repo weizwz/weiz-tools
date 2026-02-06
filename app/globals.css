@@ -90,6 +90,7 @@
 
 @theme {
   --color-main: var(--main-color);
+  --color-hover: var(--color-primary-hover);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -137,7 +138,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background-color: var(--color-bg-page);
+    background-color: var(--background);
     color: var(--color-text-primary);
   }
 }

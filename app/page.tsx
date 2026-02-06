@@ -15,7 +15,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className='relative pt-32 pb-20 overflow-hidden'>
+      <section className='relative pt-32 pb-20 overflow-hidden bg-[radial-gradient(var(--pattern-fg)_1px,transparent_0)] bg-size-[10px_10px] bg-fixed [--pattern-fg:var(--color-gray-950)]/5 dark:[--pattern-fg:var(--color-white)]/10'>
         <div className='absolute inset-0 hero-pattern opacity-10 dark:opacity-5'></div>
         <div className='container mx-auto px-6 text-center relative z-10'>
           <h1 className='text-6xl md:text-8xl font-extrabold tracking-tighter mb-4 text-slate-900 dark:text-white'>ULTIMATE TOOLBOX</h1>
@@ -25,7 +25,7 @@ export default function Home() {
           </p>
           <div className='flex flex-col sm:flex-row items-center justify-center gap-4'>
             <button
-              className='bg-main text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-blue-500/20 hover:scale-105 transition-transform'
+              className='bg-main cursor-pointer text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-blue-500/20 hover:scale-105 transition-transform'
               onClick={() => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' })}>
               Explore All Tools
             </button>
@@ -53,21 +53,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-8'>
             {tools.map((tool) => {
               return (
                 <div
                   key={tool.id}
-                  className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
+                  className='group bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-md shadow-slate-200 dark:shadow-slate-600 hover:shadow-xl transition-all duration-300'>
                   <div className='flex justify-between items-center gap-4 mb-4'>
                     <h4 className='text-xl font-bold'>{tool.name}</h4>
-                    <Link href={tool.href} className='text-main font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all'>
-                      Try it now <ArrowRight className='w-4 h-4' />
+                    <Link href={tool.href} className='text-main font-semibold text-sm flex items-center gap-1 transition-all duration-300 hover:text-hover'>
+                      进入 <ArrowRight className='w-4 h-4' />
                     </Link>
                   </div>
-                  <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed line-clamp-2'>{tool.description}</p>
+                  <p className='text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed w-full whitespace-nowrap overflow-hidden text-ellipsis'>
+                    {tool.description}
+                  </p>
 
-                  <div className='h-32 bg-slate-100 rounded-lg w-full flex items-center justify-center text-slate-300 text-xs overflow-hidden'>
+                  <div className='h-32 bg-slate-100 dark:bg-slate-800 rounded-lg w-full flex items-center justify-center text-slate-300 dark:text-slate-600 text-xs overflow-hidden'>
                     {tool.previewImage ? (
                       <div className='w-full h-full flex items-center justify-center text-slate-400'>
                         {/* Use next/image if real image, for now text placeholder or maybe valid image tag if user provides src later */}
@@ -85,7 +87,7 @@ export default function Home() {
       </section>
 
       {/* New Feature Section (Snippet Manager) */}
-      <section className='py-24 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-[#0f172a]'>
+      <section className='py-24 border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-gray-900'>
         <div className='container mx-auto px-6'>
           <div className='flex flex-col lg:flex-row items-center gap-16'>
             <div className='w-full lg:w-1/2'>

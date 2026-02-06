@@ -47,7 +47,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
   }
 
   return (
-    <div className='w-72 bg-white border-l border-gray-200 p-4 overflow-y-auto'>
+    <div className='w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto'>
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>全局背景</h3>
 
       {/* 背景颜色 */}

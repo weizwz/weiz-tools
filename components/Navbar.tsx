@@ -13,15 +13,17 @@ export function Navbar() {
     <header className='fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300'>
       <nav className='container mx-auto px-6 h-16 flex items-center justify-between'>
         {/* Logo */}
-        <div className='flex items-center gap-2'>
-          <div className='w-8 h-8 bg-main rounded-full flex items-center justify-center text-white font-bold text-sm'>W</div>
-          <span className='font-bold text-xl tracking-tight text-slate-800 dark:text-white'>Weiz Tools</span>
-        </div>
+        <Link href='/'>
+          <div className='flex items-center gap-2'>
+            <div className='w-8 h-8 bg-main rounded-full flex items-center justify-center text-white font-bold text-sm'>WT</div>
+            <span className='font-bold text-xl tracking-tight uppercase text-slate-800 dark:text-white'>weiz-tools</span>
+          </div>
+        </Link>
 
         {/* Desktop Links */}
         <div className='hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300'>
-          <Link href='/#tools' className='hover:text-main transition-colors'>
-            Tools
+          <Link href='/' className='hover:text-main transition-colors'>
+            Home
           </Link>
           <Link href='#' className='hover:text-main transition-colors'>
             Resources
@@ -44,9 +46,11 @@ export function Navbar() {
             <Sun className='w-5 h-5 hidden dark:block' />
           </button>
 
-          <Link href='#tools' className='bg-main text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity hidden sm:block'>
+          <button
+            className='bg-main cursor-pointer text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity hidden sm:block'
+            onClick={() => document.getElementById('featured')?.scrollIntoView({ behavior: 'smooth' })}>
             Get Started
-          </Link>
+          </button>
 
           {/* Mobile Menu Toggle */}
           <button className='md:hidden p-2 text-slate-600 dark:text-slate-300' onClick={() => setIsMenuOpen(!isMenuOpen)}>

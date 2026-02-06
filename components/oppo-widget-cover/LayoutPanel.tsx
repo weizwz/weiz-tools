@@ -13,7 +13,7 @@ interface LayoutPanelProps {
 
 export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, onLayoutSelect }: LayoutPanelProps) {
   return (
-    <div className='w-64 bg-white border-r border-gray-200 p-4 overflow-y-auto'>
+    <div className='w-80 bg-white border-r border-gray-200 p-4 overflow-y-auto'>
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>布局选择</h3>
 
       {/* 布局类型切换 */}

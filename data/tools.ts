@@ -15,8 +15,8 @@ export const categories = ['全部', '编码工具', '格式化', '转换器', '
 export const tools: Tool[] = [
   {
     id: 'oppo-widget-cover',
-    name: 'OPPO 组件封面生成器',
-    description: 'OPPO 组件封面生成器',
+    name: 'OPPO 组件封面',
+    description: 'OPPO 手机桌面小组件封面图生成器',
     category: '图像处理',
     color: 'yellow',
     href: '/tools/oppo-widget-cover',

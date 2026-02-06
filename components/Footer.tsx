@@ -15,7 +15,7 @@ export function Footer() {
             <TechBadge icon={<Zap size={14} />} label='NEXT.JS' />
             <TechBadge icon={<Wind size={14} />} label='TAILWIND' />
             <TechBadge icon={<Layers size={14} />} label='SHADCN' />
-            <TechBadge icon={<Cloud size={14} />} label='VERCEL' />
+            <TechBadge icon={<Cloud size={14} />} label='CLOUDFLARE' />
           </div>
         </div>
       </div>
