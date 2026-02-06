@@ -132,9 +132,6 @@ export interface RegularLayoutConfig {
 // 侧向排版专属配置（tilt）
 export interface TiltLayoutConfig {
   angle: number // 倾斜角度，默认 27°
-  offsetX: number // X 轴偏移
-  offsetY: number // Y 轴偏移
-  overflow: 'clip' | 'visible' // 溢出处理
 }
 
 // 布局专属样式 - 联合类型
@@ -153,10 +150,7 @@ export const DEFAULT_REGULAR_CONFIG: RegularLayoutConfig = {
 }
 
 export const DEFAULT_TILT_CONFIG: TiltLayoutConfig = {
-  angle: 27,
-  offsetX: 0,
-  offsetY: 0,
-  overflow: 'clip'
+  angle: 27
 }
 
 export const DEFAULT_STYLE: StyleConfig = {

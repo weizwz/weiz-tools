@@ -184,54 +184,16 @@ export const regularLayouts: LayoutTemplate[] = [
 ]
 
 // 侧向排版模板（倾斜27°）
+// 生成 6×6 小卡网格
+const generate6x6Grid = () => Array.from({ length: 6 }, () => Array.from({ length: 6 }, () => ({ id: genId(), size: 'small' as const })))
+
 export const tiltLayouts: LayoutTemplate[] = [
   {
     id: 'tilt-1',
     name: '侧向排版',
     type: 'tilt',
-    cardCount: 6,
-    rows: [
-      [
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' }
-      ],
-      [
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'small' }
-      ],
-      [
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'medium' }
-      ],
-      [
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'small' }
-      ],
-      [
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' }
-      ],
-      [
-        { id: genId(), size: 'medium' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'small' },
-        { id: genId(), size: 'medium' }
-      ]
-    ]
+    cardCount: 36,
+    rows: generate6x6Grid()
   }
 ]
 

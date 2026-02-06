@@ -272,48 +272,6 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
                 />
               </div>
 
-              {/* X 轴偏移 */}
-              <div className='mb-4'>
-                <label className='text-xs text-gray-500 block mb-2'>X 轴偏移: {tiltConfig.offsetX}px</label>
-                <input
-                  type='range'
-                  min={-200}
-                  max={200}
-                  value={tiltConfig.offsetX}
-                  onChange={(e) =>
-                    onStyleChange({
-                      ...style,
-                      layout: {
-                        type: 'tilt',
-                        config: { ...tiltConfig, offsetX: Number(e.target.value) }
-                      }
-                    })
-                  }
-                  className='w-full accent-[#409eff]'
-                />
-              </div>
-
-              {/* Y 轴偏移 */}
-              <div className='mb-4'>
-                <label className='text-xs text-gray-500 block mb-2'>Y 轴偏移: {tiltConfig.offsetY}px</label>
-                <input
-                  type='range'
-                  min={-200}
-                  max={200}
-                  value={tiltConfig.offsetY}
-                  onChange={(e) =>
-                    onStyleChange({
-                      ...style,
-                      layout: {
-                        type: 'tilt',
-                        config: { ...tiltConfig, offsetY: Number(e.target.value) }
-                      }
-                    })
-                  }
-                  className='w-full accent-[#409eff]'
-                />
-              </div>
-
               {/* 分隔线 */}
               <div className='border-t border-gray-200 my-6' />
             </>
