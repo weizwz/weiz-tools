@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { LayoutType, LayoutTemplate, StyleConfig, DEFAULT_STYLE, CANVAS_SIZE, CARD_SIZES } from './types'
+import { LayoutType, LayoutTemplate, StyleConfig, DEFAULT_STYLE, CANVAS_SIZE, CARD_SIZES, createLayoutConfig, isTiltLayout } from './types'
 import { LayoutPanel } from './LayoutPanel'
 import { CanvasPreview } from './CanvasPreview'
 import { StylePanel } from './StylePanel'
@@ -20,6 +20,11 @@ export function CoverGenerator() {
     setLayoutType(type)
     setSelectedLayout(null)
     setCards(new Map())
+    // 同步更新样式配置中的布局类型
+    setStyle((prev) => ({
+      ...prev,
+      layout: createLayoutConfig(type)
+    }))
   }
 
   // 处理布局选择
@@ -51,22 +56,17 @@ export function CoverGenerator() {
       const ctx = canvas.getContext('2d')!
 
       // 绘制背景
-      if (style.backgroundImage) {
-        const bgImg = await loadImage(style.backgroundImage)
+      if (style.base.background.image) {
+        const bgImg = await loadImage(style.base.background.image)
         ctx.drawImage(bgImg, 0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height)
       } else {
-        ctx.fillStyle = style.backgroundColor
+        ctx.fillStyle = style.base.background.color
         ctx.fillRect(0, 0, CANVAS_SIZE.width, CANVAS_SIZE.height)
       }
 
-      // 计算内容区域位置
-      const contentX = style.border.left
-      const contentY = style.border.top
-      const contentWidth = CANVAS_SIZE.width - style.border.left - style.border.right
-      const contentHeight = CANVAS_SIZE.height - style.border.top - style.border.bottom
-
-      // 计算所有行的总高度
+      // 计算所有行的总高度和宽度
       let totalRowHeight = 0
+      let maxRowWidth = 0
       const rowHeights: number[] = []
 
       for (const row of selectedLayout.rows) {
@@ -74,21 +74,44 @@ export function CoverGenerator() {
         const maxHeight = Math.max(...row.map((slot) => CARD_SIZES[slot.size].height))
         rowHeights.push(maxHeight)
         totalRowHeight += maxHeight
+
+        // 计算该行宽度
+        const rowWidth = row.reduce((sum, slot) => sum + CARD_SIZES[slot.size].width, 0) + (row.length - 1) * style.base.card.spacing
+        maxRowWidth = Math.max(maxRowWidth, rowWidth)
       }
 
       // 添加间距
-      totalRowHeight += (selectedLayout.rows.length - 1) * style.spacing
+      totalRowHeight += (selectedLayout.rows.length - 1) * style.base.card.spacing
 
-      // 起始 Y 位置（居中）
-      let currentY = contentY + (contentHeight - totalRowHeight) / 2
+      // 卡片容器背景尺寸（包含内边距）
+      const containerWidth = maxRowWidth + style.base.card.spacing * 2
+      const containerHeight = totalRowHeight + style.base.card.spacing * 2
+      const containerX = (CANVAS_SIZE.width - containerWidth) / 2
+      const containerY = (CANVAS_SIZE.height - containerHeight) / 2
 
       // 如果是侧向排版，应用旋转
       if (selectedLayout.type === 'tilt') {
         ctx.save()
         ctx.translate(CANVAS_SIZE.width / 2, CANVAS_SIZE.height / 2)
-        ctx.rotate((-27 * Math.PI) / 180)
+        // 使用配置中的角度
+        const tiltAngle = isTiltLayout(style.layout) ? style.layout.config.angle : 27
+        ctx.rotate((-tiltAngle * Math.PI) / 180)
         ctx.translate(-CANVAS_SIZE.width / 2, -CANVAS_SIZE.height / 2)
       }
+
+      // 绘制卡片容器背景
+      const containerOpacity = Math.round(style.base.cardContainer.opacity * 2.55)
+      const containerColor = style.base.cardContainer.color
+      // 将 hex 颜色转换为 rgba
+      const r = parseInt(containerColor.slice(1, 3), 16)
+      const g = parseInt(containerColor.slice(3, 5), 16)
+      const b = parseInt(containerColor.slice(5, 7), 16)
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${containerOpacity / 255})`
+      roundRect(ctx, containerX, containerY, containerWidth, containerHeight, style.base.cardContainer.cornerRadius)
+      ctx.fill()
+
+      // 起始 Y 位置（在容器内）
+      let currentY = containerY + style.base.card.spacing
 
       // 绘制每一行
       for (let rowIndex = 0; rowIndex < selectedLayout.rows.length; rowIndex++) {
@@ -97,10 +120,10 @@ export function CoverGenerator() {
 
         // 计算该行总宽度
         let totalRowWidth = row.reduce((sum, slot) => sum + CARD_SIZES[slot.size].width, 0)
-        totalRowWidth += (row.length - 1) * style.spacing
+        totalRowWidth += (row.length - 1) * style.base.card.spacing
 
-        // 起始 X 位置（居中）
-        let currentX = contentX + (contentWidth - totalRowWidth) / 2
+        // 起始 X 位置（在容器内居中）
+        let currentX = containerX + (containerWidth - totalRowWidth) / 2
 
         // 绘制该行的每个卡片
         for (const slot of row) {
@@ -112,7 +135,7 @@ export function CoverGenerator() {
 
             // 设置圆角裁剪
             ctx.save()
-            roundRect(ctx, currentX, currentY, slotSize.width, slotSize.height, style.cornerRadius)
+            roundRect(ctx, currentX, currentY, slotSize.width, slotSize.height, style.base.card.cornerRadius)
             ctx.clip()
 
             // 绘制图片（cover 效果）
@@ -122,14 +145,14 @@ export function CoverGenerator() {
           } else {
             // 绘制空白占位
             ctx.fillStyle = 'rgba(200, 200, 200, 0.5)'
-            roundRect(ctx, currentX, currentY, slotSize.width, slotSize.height, style.cornerRadius)
+            roundRect(ctx, currentX, currentY, slotSize.width, slotSize.height, style.base.card.cornerRadius)
             ctx.fill()
           }
 
-          currentX += slotSize.width + style.spacing
+          currentX += slotSize.width + style.base.card.spacing
         }
 
-        currentY += rowHeight + style.spacing
+        currentY += rowHeight + style.base.card.spacing
       }
 
       // 如果是侧向排版，恢复变换

@@ -19,15 +19,12 @@ export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, on
       {/* 布局类型切换 */}
       <div className='flex rounded-lg border border-gray-200 p-1 mb-6'>
         <button
-          className={cn(
-            'flex-1 py-2 text-sm rounded-md transition-all',
-            layoutType === 'regular' ? 'bg-[#409eff] text-white' : 'text-gray-600 hover:bg-gray-100'
-          )}
+          className={cn('flex-1 py-2 text-sm rounded-md transition-all', layoutType === 'regular' ? 'bg-main text-white' : 'text-gray-600 hover:bg-gray-100')}
           onClick={() => onLayoutTypeChange('regular')}>
           布局拼图
         </button>
         <button
-          className={cn('flex-1 py-2 text-sm rounded-md transition-all', layoutType === 'tilt' ? 'bg-[#409eff] text-white' : 'text-gray-600 hover:bg-gray-100')}
+          className={cn('flex-1 py-2 text-sm rounded-md transition-all', layoutType === 'tilt' ? 'bg-main text-white' : 'text-gray-600 hover:bg-gray-100')}
           onClick={() => onLayoutTypeChange('tilt')}>
           侧向排版
         </button>
@@ -40,8 +37,8 @@ export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, on
             .sort(([a], [b]) => Number(a) - Number(b))
             .map(([count, layouts]) => (
               <div key={count}>
-                <h4 className='text-xs text-gray-500 mb-2'>{count} 张图片</h4>
-                <div className='grid grid-cols-2 gap-2'>
+                <h4 className='text-xs font-medium text-gray-500 mb-2'>{count} 张图片</h4>
+                <div className='grid grid-cols-3 gap-2'>
                   {layouts.map((layout) => (
                     <LayoutThumbnail key={layout.id} layout={layout} isSelected={selectedLayout?.id === layout.id} onClick={() => onLayoutSelect(layout)} />
                   ))}
@@ -68,8 +65,8 @@ function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTempla
   return (
     <button
       className={cn(
-        'w-full aspect-9/16 rounded-lg border-2 p-2 transition-all hover:border-[#409eff]/50',
-        isSelected ? 'border-[#409eff] bg-blue-50' : 'border-gray-200 bg-gray-50'
+        'w-full aspect-9/16 rounded-lg border-2 p-2 transition-all hover:border-main/50',
+        isSelected ? 'border-main bg-main/10' : 'border-gray-200 bg-gray-50'
       )}
       onClick={onClick}
       title={layout.name}>

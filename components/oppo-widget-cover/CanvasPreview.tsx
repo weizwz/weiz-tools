@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { LayoutTemplate, StyleConfig, CARD_SIZES, CardSlot } from './types'
+import { LayoutTemplate, StyleConfig, CARD_SIZES, CardSlot, isTiltLayout } from './types'
 import { cn } from '@/lib/utils'
 import { Plus, Image as ImageIcon } from 'lucide-react'
 
@@ -35,35 +35,49 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
     )
   }
 
+  // 获取 tilt 布局的配置
+  const tiltConfig = isTiltLayout(style.layout) ? style.layout.config : null
+  const rotateAngle = tiltConfig?.angle ?? 27
+
   return (
     <div className='flex-1 flex items-center justify-center bg-gray-100 overflow-auto p-8'>
       {/* 画布容器 */}
       <div
-        className='shadow-2xl'
         style={{
           width: 1440 * PREVIEW_SCALE,
           height: 3216 * PREVIEW_SCALE,
-          backgroundColor: style.backgroundColor,
-          backgroundImage: style.backgroundImage ? `url(${style.backgroundImage})` : undefined,
+          backgroundColor: style.base.background.color,
+          backgroundImage: style.base.background.image ? `url(${style.base.background.image})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          borderRadius: style.cornerRadius * PREVIEW_SCALE,
+          borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE,
           overflow: 'hidden'
         }}>
-        {/* 内容区域（考虑边框） */}
+        {/* 卡片容器背景层 */}
         <div
-          className={cn('h-full flex flex-col items-center justify-center', layout.type === 'tilt' && '-rotate-27 scale-110')}
+          className='h-full flex items-center justify-center'
           style={{
-            padding: `${style.border.top * PREVIEW_SCALE}px ${style.border.right * PREVIEW_SCALE}px ${style.border.bottom * PREVIEW_SCALE}px ${style.border.left * PREVIEW_SCALE}px`,
-            gap: style.spacing * PREVIEW_SCALE
+            padding: `${style.base.card.spacing * PREVIEW_SCALE}px`
           }}>
-          {layout.rows.map((row, rowIndex) => (
-            <div key={rowIndex} className='flex items-center justify-center' style={{ gap: style.spacing * PREVIEW_SCALE }}>
-              {row.map((slot) => (
-                <CardSlotItem key={slot.id} slot={slot} image={cards.get(slot.id)} style={style} onUpload={(file) => handleFileUpload(slot.id, file)} />
-              ))}
-            </div>
-          ))}
+          <div
+            className={cn('flex flex-col items-center justify-center', layout.type === 'tilt' && 'scale-110')}
+            style={{
+              backgroundColor: `${style.base.cardContainer.color}${Math.round(style.base.cardContainer.opacity * 2.55)
+                .toString(16)
+                .padStart(2, '0')}`,
+              borderRadius: style.base.cardContainer.cornerRadius * PREVIEW_SCALE,
+              padding: style.base.card.spacing * PREVIEW_SCALE,
+              gap: style.base.card.spacing * PREVIEW_SCALE,
+              transform: layout.type === 'tilt' ? `rotate(-${rotateAngle}deg)` : undefined
+            }}>
+            {layout.rows.map((row, rowIndex) => (
+              <div key={rowIndex} className='flex items-center justify-center' style={{ gap: style.base.card.spacing * PREVIEW_SCALE }}>
+                {row.map((slot) => (
+                  <CardSlotItem key={slot.id} slot={slot} image={cards.get(slot.id)} style={style} onUpload={(file) => handleFileUpload(slot.id, file)} />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -94,13 +108,14 @@ function CardSlotItem({ slot, image, style, onUpload }: { slot: CardSlot; image?
       style={{
         width: size.width * PREVIEW_SCALE,
         height: size.height * PREVIEW_SCALE,
-        borderRadius: style.cornerRadius * PREVIEW_SCALE,
+        borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE,
         backgroundColor: image ? 'transparent' : 'rgba(255,255,255,0.8)'
       }}
       onClick={handleClick}>
       {image ? (
         <>
-          <img src={image} alt='卡片图片' className='w-full h-full object-cover' style={{ borderRadius: style.cornerRadius * PREVIEW_SCALE }} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={image} alt='卡片图片' className='w-full h-full object-cover' style={{ borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE }} />
           {/* 悬停遮罩 */}
           <div className='absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center'>
             <span className='text-white text-xs'>点击更换</span>
@@ -109,7 +124,7 @@ function CardSlotItem({ slot, image, style, onUpload }: { slot: CardSlot; image?
       ) : (
         <div
           className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-[#409eff] transition-colors'
-          style={{ borderRadius: style.cornerRadius * PREVIEW_SCALE }}>
+          style={{ borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE }}>
           <Plus className='w-6 h-6 mb-1' />
           <span className='text-xs'>{slot.size === 'small' ? '小卡' : slot.size === 'medium' ? '中卡' : '大卡'}</span>
         </div>
