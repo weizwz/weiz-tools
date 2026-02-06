@@ -115,6 +115,7 @@ export interface CardContainerStyle {
 export interface CardStyle {
   spacing: number
   cornerRadius: number
+  overlay: boolean // 卡片叠图遮罩
 }
 
 // 基础样式配置（所有布局通用）
@@ -166,7 +167,8 @@ export const DEFAULT_STYLE: StyleConfig = {
     },
     card: {
       spacing: 50,
-      cornerRadius: 50
+      cornerRadius: 50,
+      overlay: false
     }
   },
   layout: {

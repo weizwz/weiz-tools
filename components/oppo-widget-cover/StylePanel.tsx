@@ -281,14 +281,36 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       {/* 导出设置 */}
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>导出设置</h3>
 
-      <div className='mb-4'>
-        <div className='text-xs text-gray-500 mb-1'>输出格式</div>
-        <div className='text-sm'>PNG (1440 × 3216 px)</div>
+      <div className='flex items-center justify-between mb-4'>
+        <span className='text-sm text-gray-600'>开启叠图</span>
+        <label className='relative inline-flex items-center cursor-pointer'>
+          <input
+            type='checkbox'
+            className='sr-only peer'
+            checked={style.base.card.overlay}
+            onChange={(e) =>
+              onStyleChange({
+                ...style,
+                base: {
+                  ...style.base,
+                  card: { ...style.base.card, overlay: e.target.checked }
+                }
+              })
+            }
+          />
+          <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-main"></div>
+        </label>
       </div>
 
       <Button className='w-full' onClick={onExport} disabled={isExporting}>
         <Download className='w-4 h-4 mr-2' />
-        {isExporting ? '导出中...' : '下载图片'}
+        {isExporting ? (
+          '导出中...'
+        ) : (
+          <>
+            下载图片 <span className='text-xs ml-1'>1440 × 3216 px</span>
+          </>
+        )}
       </Button>
     </div>
   )

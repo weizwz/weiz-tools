@@ -219,6 +219,11 @@ export function CoverGenerator() {
         roundRect(gridCtx, cardX, cardY, cardWidth, cardHeight, style.base.card.cornerRadius)
         gridCtx.clip()
         drawImageCover(gridCtx, img, cardX, cardY, cardWidth, cardHeight)
+        // 绘制叠图遮罩层
+        if (style.base.card.overlay) {
+          gridCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'
+          gridCtx.fillRect(cardX, cardY, cardWidth, cardHeight)
+        }
         gridCtx.restore()
       } else {
         gridCtx.fillStyle = 'rgba(200, 200, 200, 0.5)'

@@ -256,6 +256,16 @@ function CardCell({
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={card.image} alt='卡片图片' className='w-full h-full object-cover' style={{ borderRadius: style.base.card.cornerRadius * previewScale }} />
+          {/* 叠图遮罩层 */}
+          {style.base.card.overlay && (
+            <div
+              className='absolute inset-0 pointer-events-none'
+              style={{
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                borderRadius: style.base.card.cornerRadius * previewScale
+              }}
+            />
+          )}
           <div className='absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center'>
             <span className='text-white text-xs'>点击更换</span>
           </div>
