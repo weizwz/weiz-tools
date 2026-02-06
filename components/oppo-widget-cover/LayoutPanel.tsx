@@ -65,7 +65,7 @@ function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTempla
   return (
     <button
       className={cn(
-        'w-full aspect-9/16 rounded-lg border-2 p-2 transition-all hover:border-main/50 overflow-hidden',
+        'w-full aspect-9/16 border-2 p-2 transition-all hover:border-main/50 overflow-hidden',
         isSelected ? 'border-main bg-main/10' : 'border-gray-200 bg-gray-50'
       )}
       onClick={onClick}

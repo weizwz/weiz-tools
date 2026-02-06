@@ -50,7 +50,6 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
           backgroundImage: style.base.background.image ? `url(${style.base.background.image})` : undefined,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE,
           overflow: 'hidden'
         }}>
         {/* 卡片容器背景层 */}

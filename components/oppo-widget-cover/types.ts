@@ -161,13 +161,13 @@ export const DEFAULT_STYLE: StyleConfig = {
       image: undefined
     },
     cardContainer: {
-      color: '#6a7282',
+      color: '#cad6e2',
       opacity: 50,
-      cornerRadius: 50
+      cornerRadius: 60
     },
     card: {
-      spacing: 50,
-      cornerRadius: 50,
+      spacing: 80,
+      cornerRadius: 60,
       overlay: false
     }
   },
