@@ -1,14 +1,19 @@
+'use client'
+
 import { Zap, Wind, Layers, Cloud } from 'lucide-react'
+import { useI18n } from '@/lib/i18n'
 
 export function Footer() {
+  const { t } = useI18n()
+
   return (
     <footer className='py-12 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800'>
       <div className='container mx-auto px-6'>
         <div className='flex flex-col md:flex-row justify-between items-center gap-8'>
           <div className='flex flex-col gap-2'>
             <p className='text-sm text-slate-500'>
-              © {new Date().getFullYear()} <span className='font-bold text-slate-900 dark:text-white uppercase tracking-wider'>weiz-tools</span>. All rights
-              reserved.
+              © {new Date().getFullYear()} <span className='font-bold text-slate-900 dark:text-white uppercase tracking-wider'>weiz-tools</span>.{' '}
+              {t.common.allRightsReserved}.
             </p>
           </div>
           <div className='flex flex-wrap justify-center gap-4'>
