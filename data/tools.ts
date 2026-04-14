@@ -10,7 +10,12 @@ export interface Tool {
   previewImage?: string
 }
 
-export const categories = ['全部', '生产工具', '数据工具', '格式化', '编码工具', '转换器', '生成器', '图像工具'] as const
+export const categories = ['首页', '生产工具', '数据工具', '格式化', '编码工具', '转换器', '生成器', '图像工具'] as const
+
+// 分类的英文标识符，用于逻辑判断
+export const categoryIds = ['home', 'productivity', 'data', 'formatting', 'encoding', 'converter', 'generator', 'image'] as const
+
+export type CategoryId = (typeof categoryIds)[number]
 
 export const tools: Tool[] = [
   {

@@ -34,7 +34,7 @@ const recommendedProjects = [
 export default function Home() {
   const { t } = useI18n()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('全部')
+  const [selectedCategory, setSelectedCategory] = useState('首页')
   const [pinnedTools, setPinnedTools] = useState<string[]>([])
 
   // 监听分类筛选事件
@@ -74,7 +74,7 @@ export default function Home() {
     .filter((tool) => {
       const matchesSearch =
         searchQuery === '' || tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || tool.description.toLowerCase().includes(searchQuery.toLowerCase())
-      const matchesCategory = selectedCategory === '全部' || tool.category === selectedCategory
+      const matchesCategory = selectedCategory === '首页' || selectedCategory === '全部' || tool.category === selectedCategory
       return matchesSearch && matchesCategory
     })
     .sort((a, b) => {
@@ -177,7 +177,7 @@ export default function Home() {
           <div className='flex justify-between items-center mb-8'>
             <h2 className='text-2xl font-bold text-slate-900 dark:text-white'>{t.home.allTools}</h2>
             <p className='text-sm text-slate-500'>
-              {filteredTools.length} {selectedCategory !== '全部' && `· ${selectedCategory}`}
+              {filteredTools.length} {selectedCategory !== '首页' && selectedCategory !== '全部' && `· ${selectedCategory}`}
             </p>
           </div>
 
