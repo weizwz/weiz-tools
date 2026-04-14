@@ -33,6 +33,11 @@ export interface Locale {
     markdownReady: string
     tryDemo: string
     documentation: string
+    searchPlaceholder: string
+    popularTools: string
+    recommendedProjects: string
+    allTools: string
+    pinTool: string
   }
   about: {
     title: string
@@ -59,14 +64,7 @@ export interface Locale {
     copyright: string
   }
   tools: Record<string, ToolLocale>
-  categories: {
-    all: string
-    codingTools: string
-    formatting: string
-    converters: string
-    generators: string
-    imageProcessing: string
-  }
+  categories: Record<string, string>
 }
 
 const zh: Locale = {
@@ -89,10 +87,10 @@ const zh: Locale = {
 
   // 首页
   home: {
-    heroTitle: '终极工具箱',
+    heroTitle: '一站式实用工具工作台',
     heroSubtitle: '为开发者而生',
-    heroDescription: '精心策划的高效工具集合，涵盖代码格式化、设计资源等，助力加速您的现代 Web 开发工作流。',
-    exploreAll: '探索所有',
+    heroDescription: '整体实用工具，提升开发效率。探索、交流、提升您的技能，让工作更加高效便捷。',
+    exploreAll: '探索',
     featuredTools: '精选工具',
     featuredToolsDesc: '社区最常用的工具',
     imgPreview: '图片预览',
@@ -103,7 +101,12 @@ const zh: Locale = {
     teamLibrary: '团队库',
     markdownReady: 'Markdown 支持',
     tryDemo: '在线演示',
-    documentation: '使用文档'
+    documentation: '使用文档',
+    searchPlaceholder: '搜索工具、快捷工具搜索、时间、JSON、图片...',
+    popularTools: '使用量最多',
+    recommendedProjects: '推荐项目',
+    allTools: '精选工具',
+    pinTool: '置顶工具'
   },
 
   // 关于页
@@ -182,6 +185,12 @@ const zh: Locale = {
 
   // 分类
   categories: {
+    全部: '全部',
+    编码工具: '编码工具',
+    格式化: '格式化',
+    转换器: '转换器',
+    生成器: '生成器',
+    图像处理: '图像处理',
     all: '全部',
     codingTools: '编码工具',
     formatting: '格式化',

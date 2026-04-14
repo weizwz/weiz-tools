@@ -20,11 +20,10 @@ const en: Locale = {
 
   // Homepage
   home: {
-    heroTitle: 'ULTIMATE TOOLBOX',
+    heroTitle: 'TINYASH TOOLBOX',
     heroSubtitle: 'FOR DEVELOPERS',
-    heroDescription:
-      'A curated collection of productivity tools, code formatters, and design assets crafted to accelerate your modern web development workflow.',
-    exploreAll: 'Explore All Tools',
+    heroDescription: 'Practical tools to boost development efficiency. Explore, communicate, and enhance your skills for more efficient work.',
+    exploreAll: 'Explore',
     featuredTools: 'Featured Tools',
     featuredToolsDesc: 'Most used tools by our community',
     imgPreview: 'IMG PREVIEW',
@@ -36,7 +35,12 @@ const en: Locale = {
     teamLibrary: 'Team Library',
     markdownReady: 'Markdown Ready',
     tryDemo: 'Try Demo',
-    documentation: 'Documentation'
+    documentation: 'Documentation',
+    searchPlaceholder: 'Search tools, JSON, OCR, Image, Time...',
+    popularTools: 'Most Used',
+    recommendedProjects: 'Recommended Projects',
+    allTools: 'Browse',
+    pinTool: 'Pin Tool'
   },
 
   // About page
@@ -116,6 +120,12 @@ const en: Locale = {
 
   // Categories
   categories: {
+    全部: 'All',
+    编码工具: 'Coding Tools',
+    格式化: 'Formatting',
+    转换器: 'Converters',
+    生成器: 'Generators',
+    图像处理: 'Image Processing',
     all: 'All',
     codingTools: 'Coding Tools',
     formatting: 'Formatting',

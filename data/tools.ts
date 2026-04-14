@@ -10,14 +10,14 @@ export interface Tool {
   previewImage?: string
 }
 
-export const categories = ['全部', '编码工具', '格式化', '转换器', '生成器'] as const
+export const categories = ['全部', '生产工具', '数据工具', '格式化', '编码工具', '转换器', '生成器', '图像工具'] as const
 
 export const tools: Tool[] = [
   {
     id: 'oppo-widget-cover',
     name: 'OPPO 组件封面',
     description: 'OPPO 手机桌面小组件封面图生成器',
-    category: '图像处理',
+    category: '图像工具',
     color: 'yellow',
     href: '/tools/oppo-widget-cover',
     tags: ['Cover', 'Image'],
@@ -103,7 +103,7 @@ export const tools: Tool[] = [
     description: 'PX, REM, EM 和 Viewport 单位互转',
     category: '转换器',
     color: 'cyan',
-    href: '/tools/base64', // Note: User's page.tsx linked Unit Converter to base64, keeping as is or creating new? I'll keep the link but add the entry so I can feature it.
+    href: '/tools/base64',
     tags: ['CSS', 'Responsive', 'Layout'],
     previewImage: '/previews/unit.png'
   }
