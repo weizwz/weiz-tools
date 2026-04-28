@@ -9,6 +9,12 @@ const en: Locale = {
     allRightsReserved: 'All rights reserved'
   },
 
+  // Metadata
+  metadata: {
+    title: 'Zhilio Toolbox | Online Practical Tools',
+    description: 'I am a little Zhilio | A curated collection of practical online tools for everyone'
+  },
+
   // Navigation
   nav: {
     home: 'Home',

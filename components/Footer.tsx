@@ -12,7 +12,7 @@ export function Footer() {
         <div className='flex flex-col md:flex-row justify-between items-center gap-8'>
           <div className='flex flex-col gap-2'>
             <p className='text-sm text-slate-500'>
-              © {new Date().getFullYear()} <span className='font-bold text-slate-900 dark:text-white uppercase tracking-wider'>weiz-tools</span>.{' '}
+              © {new Date().getFullYear()} <span className='font-bold text-slate-900 dark:text-white uppercase tracking-wider'>知了工具箱</span>.{' '}
               {t.common.allRightsReserved}.
             </p>
           </div>

@@ -9,27 +9,8 @@ import { useI18n } from '@/lib/i18n'
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 
-// 推荐项目数据
-const recommendedProjects = [
-  {
-    id: 1,
-    title: '工具 1',
-    description: '简洁、快速、一键即用的工具，提升、日工、用体。',
-    image: '/previews/tool1.png'
-  },
-  {
-    id: 2,
-    title: '工具 2',
-    description: '简洁、快速、一键即用的工具，提升、日工、用体。',
-    image: '/previews/tool2.png'
-  },
-  {
-    id: 3,
-    title: '工具 3',
-    description: '简洁、快速、一键即用的工具，提升、日工、用体。',
-    image: '/previews/tool3.png'
-  }
-]
+// 推荐项目 ID 配置，当前默认取前三个项目的 id
+const recommendedProjectIds = tools.slice(0, 3).map((t) => t.id)
 
 export default function Home() {
   const { t } = useI18n()
@@ -86,24 +67,23 @@ export default function Home() {
   // 热门工具（前5个）
   const popularTools = tools.slice(0, 5)
 
+  // 推荐项目数据
+  const recommendedProjects = recommendedProjectIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as typeof tools
+
   return (
     <div className='min-h-screen bg-slate-50 dark:bg-slate-900'>
       <Navbar />
 
       {/* 第一模块：Hero Section */}
-      <section className='pt-24 pb-16 bg-white dark:bg-slate-900'>
+      <section className='pt-24 pb-8 bg-white dark:bg-slate-900'>
         <div className='container mx-auto px-6'>
-          <div className='flex flex-col lg:flex-row gap-12 items-start'>
+          <div className='flex flex-col lg:flex-row gap-12 items-center'>
             {/* 左侧：标语、搜索栏、热门工具 */}
-            <div className='flex-1 w-full lg:w-1/2'>
+            <div className='w-full lg:w-7/12'>
               {/* 网站标语 */}
               <div className='mb-8'>
                 <p className='text-sm text-main font-semibold mb-2 uppercase tracking-wider'>TINYASH TOOLBOX</p>
-                <h1 className='text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white leading-tight'>
-                  一站式实用工
-                  <br />
-                  具工作台
-                </h1>
+                <h1 className='text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white leading-tight'>在线实用工具箱</h1>
                 <p className='text-slate-600 dark:text-slate-400 text-base leading-relaxed'>
                   整体实用工具，提升开发效率。探索、交流、提升您的技能，让工作更加高效便捷。
                 </p>
@@ -148,30 +128,41 @@ export default function Home() {
             </div>
 
             {/* 右侧：推荐项目 */}
-            <div className='flex-1 w-full lg:w-1/2'>
+            <div className='w-full lg:w-5/12'>
               <div className='space-y-4'>
-                {recommendedProjects.map((project) => (
-                  <div
-                    key={project.id}
-                    className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
-                    {/* 项目截图 */}
-                    <div className='w-24 h-24 shrink-0 bg-slate-200 dark:bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center'>
-                      <div className='w-16 h-16 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
-                    </div>
-                    {/* 项目信息 */}
-                    <div className='flex-1 min-w-0'>
-                      <h3 className='font-bold text-lg text-slate-900 dark:text-white mb-1 group-hover:text-main transition-colors'>{project.title}</h3>
-                      <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-2'>{project.description}</p>
-                    </div>
-                  </div>
-                ))}
+                {recommendedProjects.map((project) => {
+                  const toolLocale = t.tools[project.id]
+                  const projectName = toolLocale?.name || project.name
+                  const projectDesc = toolLocale?.description || project.description
+
+                  return (
+                    <Link key={project.id} href={project.href} className='block'>
+                      <div className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
+                        {/* 项目截图 */}
+                        <div className='w-36 h-24 shrink-0 dark:bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center relative'>
+                          {project.previewImage ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img src={project.previewImage} alt={projectName} className='h-full group-hover:scale-105 transition-transform duration-300' />
+                          ) : (
+                            <div className='w-16 h-16 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
+                          )}
+                        </div>
+                        {/* 项目信息 */}
+                        <div className='flex-1 min-w-0 flex flex-col justify-center'>
+                          <h3 className='font-bold text-lg text-slate-900 dark:text-white mb-1 group-hover:text-main transition-colors'>{projectName}</h3>
+                          <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3'>{projectDesc}</p>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 第二模块：所有工具 */}
+      {/* 第二模块：精选工具 */}
       <section id='all-tools' className='py-16 bg-slate-50 dark:bg-slate-900/50'>
         <div className='container mx-auto px-6'>
           <div className='flex justify-between items-center mb-8'>
@@ -212,8 +203,13 @@ export default function Home() {
                       </div>
 
                       {/* 工具预览区域 */}
-                      <div className='mt-4 h-24 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden'>
-                        <div className='w-12 h-12 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
+                      <div className='mt-4 h-24 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
+                        {tool.previewImage ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={tool.previewImage} alt={toolName} className='h-full group-hover:scale-105 transition-transform duration-300' />
+                        ) : (
+                          <div className='w-12 h-12 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
+                        )}
                       </div>
                     </div>
                   </Link>

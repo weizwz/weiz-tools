@@ -26,7 +26,7 @@ export const tools: Tool[] = [
     color: 'yellow',
     href: '/tools/oppo-widget-cover',
     tags: ['Cover', 'Image'],
-    previewImage: '/previews/oppo-widget-cover.png'
+    previewImage: '/tools.svg'
   },
   {
     id: 'json-formatter',
@@ -36,7 +36,7 @@ export const tools: Tool[] = [
     color: 'yellow',
     href: '/tools/json-formatter',
     tags: ['Formatting', 'JSON', 'Dev'],
-    previewImage: '/previews/json.png'
+    previewImage: '/tools.svg'
   },
   {
     id: 'base64',
@@ -45,7 +45,8 @@ export const tools: Tool[] = [
     category: '编码工具',
     color: 'cyan',
     href: '/tools/base64',
-    tags: ['Encoding', 'Security']
+    tags: ['Encoding', 'Security'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'color-picker',
@@ -55,7 +56,7 @@ export const tools: Tool[] = [
     color: 'magenta',
     href: '/tools/color-picker',
     tags: ['Design', 'Color', 'CSS'],
-    previewImage: '/previews/color.png'
+    previewImage: '/tools.svg'
   },
   {
     id: 'timestamp',
@@ -64,7 +65,8 @@ export const tools: Tool[] = [
     category: '转换器',
     color: 'white',
     href: '/tools/timestamp',
-    tags: ['Converter', 'Date']
+    tags: ['Converter', 'Date'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'markdown-preview',
@@ -73,7 +75,8 @@ export const tools: Tool[] = [
     category: '格式化',
     color: 'yellow',
     href: '/tools/markdown-preview',
-    tags: ['Writing', 'Docs']
+    tags: ['Writing', 'Docs'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'url-encoder',
@@ -82,7 +85,8 @@ export const tools: Tool[] = [
     category: '编码工具',
     color: 'cyan',
     href: '/tools/url-encoder',
-    tags: ['Encoding', 'Web']
+    tags: ['Encoding', 'Web'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'uuid-generator',
@@ -91,7 +95,8 @@ export const tools: Tool[] = [
     category: '生成器',
     color: 'magenta',
     href: '/tools/uuid-generator',
-    tags: ['Generator', 'ID']
+    tags: ['Generator', 'ID'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'hash-generator',
@@ -100,7 +105,8 @@ export const tools: Tool[] = [
     category: '编码工具',
     color: 'white',
     href: '/tools/hash-generator',
-    tags: ['Security', 'Crypto']
+    tags: ['Security', 'Crypto'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'unit-converter',
@@ -110,6 +116,6 @@ export const tools: Tool[] = [
     color: 'cyan',
     href: '/tools/base64',
     tags: ['CSS', 'Responsive', 'Layout'],
-    previewImage: '/previews/unit.png'
+    previewImage: '/tools.svg'
   }
 ]

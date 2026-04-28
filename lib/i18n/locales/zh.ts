@@ -65,6 +65,10 @@ export interface Locale {
   }
   tools: Record<string, ToolLocale>
   categories: Record<string, string>
+  metadata: {
+    title: string
+    description: string
+  }
 }
 
 const zh: Locale = {
@@ -74,6 +78,12 @@ const zh: Locale = {
     learnMore: '了解更多',
     enter: '进入',
     allRightsReserved: '版权所有'
+  },
+
+  // 网页元数据
+  metadata: {
+    title: '知了工具箱 | 在线实用小工具',
+    description: '我是一只小知了 | 为大家精心准备的实用小工具集合'
   },
 
   // 导航栏

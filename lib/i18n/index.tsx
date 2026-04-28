@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import zh, { type Locale } from './locales/zh'
 import en from './locales/en'
 
@@ -37,6 +37,14 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, [lang, setLang])
 
   const t = locales[lang]
+
+  useEffect(() => {
+    document.title = t.metadata.title
+    const metaDesc = document.querySelector('meta[name="description"]')
+    if (metaDesc) {
+      metaDesc.setAttribute('content', t.metadata.description)
+    }
+  }, [t.metadata])
 
   return <I18nContext.Provider value={{ lang, t, setLang, toggleLang }}>{children}</I18nContext.Provider>
 }

@@ -61,8 +61,8 @@ export function Navbar() {
       <nav className='container mx-auto px-6 h-16 flex items-center justify-between gap-8'>
         {/* Logo */}
         <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0'>
-          <div className='w-8 h-8 bg-main rounded-lg flex items-center justify-center text-white font-bold text-sm'>小</div>
-          <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>小实验室工具</span>
+          <div className='w-8 h-8 bg-main rounded-lg flex items-center justify-center text-white font-bold text-sm'>知</div>
+          <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>知了工具箱</span>
         </Link>
 
         {/* Desktop Category Links with Dropdown */}
@@ -193,4 +193,3 @@ export function Navbar() {
     </header>
   )
 }
-

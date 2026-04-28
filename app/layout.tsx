@@ -4,8 +4,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { I18nProvider } from '@/lib/i18n'
 
 export const metadata: Metadata = {
-  title: 'WEIZ-TOOLS | Ultimate Developer Toolbox',
-  description: 'A curated collection of productivity tools for developers.'
+  title: '知了工具箱 | 在线实用小工具',
+  description: '我是一只小知了 | 为大家精心准备的实用小工具集合'
 }
 
 export default function RootLayout({
