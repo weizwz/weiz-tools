@@ -82,11 +82,9 @@ export default function Home() {
             <div className='w-full lg:w-7/12'>
               {/* 网站标语 */}
               <div className='mb-8'>
-                <p className='text-sm text-main font-semibold mb-2 uppercase tracking-wider'>TINYASH TOOLBOX</p>
-                <h1 className='text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white leading-tight'>在线实用工具箱</h1>
-                <p className='text-slate-600 dark:text-slate-400 text-base leading-relaxed'>
-                  整体实用工具，提升开发效率。探索、交流、提升您的技能，让工作更加高效便捷。
-                </p>
+                <p className='text-sm text-main font-semibold mb-2 uppercase tracking-wider'>{t.home.heroTag}</p>
+                <h1 className='text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white leading-tight'>{t.home.heroTitle}</h1>
+                <p className='text-slate-600 dark:text-slate-400 text-base leading-relaxed'>{t.home.heroDescription}</p>
               </div>
 
               {/* 搜索栏 */}
@@ -139,18 +137,18 @@ export default function Home() {
                     <Link key={project.id} href={project.href} className='block'>
                       <div className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
                         {/* 项目截图 */}
-                        <div className='w-36 h-24 shrink-0 dark:bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center relative'>
+                        <div className='w-32 h-20 shrink-0 rounded-lg overflow-hidden flex items-center justify-center relative'>
                           {project.previewImage ? (
                             /* eslint-disable-next-line @next/next/no-img-element */
                             <img src={project.previewImage} alt={projectName} className='h-full group-hover:scale-105 transition-transform duration-300' />
                           ) : (
-                            <div className='w-16 h-16 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
+                            <div className='w-28 h-16 bg-linear-to-br from-main to-cyan-500 rounded-lg opacity-20 transition-opacity' />
                           )}
                         </div>
                         {/* 项目信息 */}
                         <div className='flex-1 min-w-0 flex flex-col justify-center'>
                           <h3 className='font-bold text-lg text-slate-900 dark:text-white mb-1 group-hover:text-main transition-colors'>{projectName}</h3>
-                          <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3'>{projectDesc}</p>
+                          <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-1'>{projectDesc}</p>
                         </div>
                       </div>
                     </Link>
@@ -208,7 +206,7 @@ export default function Home() {
                           /* eslint-disable-next-line @next/next/no-img-element */
                           <img src={tool.previewImage} alt={toolName} className='h-full group-hover:scale-105 transition-transform duration-300' />
                         ) : (
-                          <div className='w-12 h-12 bg-linear-to-br from-main to-blue-600 rounded-lg opacity-20 group-hover:opacity-40 transition-opacity' />
+                          <div className='w-28 h-16 bg-linear-to-br from-main to-cyan-500 rounded-lg opacity-20 transition-opacity' />
                         )}
                       </div>
                     </div>
@@ -220,7 +218,7 @@ export default function Home() {
 
           {filteredTools.length === 0 && (
             <div className='text-center py-16'>
-              <p className='text-slate-500 dark:text-slate-400'>未找到匹配的工具</p>
+              <p className='text-slate-500 dark:text-slate-400'>{t.home.noMatchTools}</p>
             </div>
           )}
         </div>

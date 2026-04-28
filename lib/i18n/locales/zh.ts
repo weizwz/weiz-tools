@@ -18,6 +18,7 @@ export interface Locale {
     tools: string
   }
   home: {
+    heroTag: string
     heroTitle: string
     heroSubtitle: string
     heroDescription: string
@@ -38,6 +39,7 @@ export interface Locale {
     recommendedProjects: string
     allTools: string
     pinTool: string
+    noMatchTools: string
   }
   about: {
     title: string
@@ -97,9 +99,10 @@ const zh: Locale = {
 
   // 首页
   home: {
-    heroTitle: '一站式实用工具工作台',
+    heroTag: 'ZHILIO TOOLBOX',
+    heroTitle: '在线实用工具箱',
     heroSubtitle: '为开发者而生',
-    heroDescription: '整体实用工具，提升开发效率。探索、交流、提升您的技能，让工作更加高效便捷。',
+    heroDescription: '在线实用工具，快捷 & 高效。探索、交流、提升您的技能，让工作生活更加流畅。',
     exploreAll: '探索',
     featuredTools: '精选工具',
     featuredToolsDesc: '社区最常用的工具',
@@ -116,7 +119,8 @@ const zh: Locale = {
     popularTools: '使用量最多',
     recommendedProjects: '推荐项目',
     allTools: '精选工具',
-    pinTool: '置顶工具'
+    pinTool: '置顶工具',
+    noMatchTools: '未找到匹配的工具'
   },
 
   // 关于页

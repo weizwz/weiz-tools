@@ -26,9 +26,10 @@ const en: Locale = {
 
   // Homepage
   home: {
-    heroTitle: 'TINYASH TOOLBOX',
+    heroTag: 'ZHILIO TOOLBOX',
+    heroTitle: 'Online Practical Toolbox',
     heroSubtitle: 'FOR DEVELOPERS',
-    heroDescription: 'Practical tools to boost development efficiency. Explore, communicate, and enhance your skills for more efficient work.',
+    heroDescription: 'Online practical tools, fast & efficient. Explore, share, and improve your skills to make your work and life smoother.',
     exploreAll: 'Explore',
     featuredTools: 'Featured Tools',
     featuredToolsDesc: 'Most used tools by our community',
@@ -46,7 +47,8 @@ const en: Locale = {
     popularTools: 'Most Used',
     recommendedProjects: 'Recommended Projects',
     allTools: 'Browse',
-    pinTool: 'Pin Tool'
+    pinTool: 'Pin Tool',
+    noMatchTools: 'No matching tools found'
   },
 
   // About page

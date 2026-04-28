@@ -45,8 +45,7 @@ export const tools: Tool[] = [
     category: '编码工具',
     color: 'cyan',
     href: '/tools/base64',
-    tags: ['Encoding', 'Security'],
-    previewImage: '/tools.svg'
+    tags: ['Encoding', 'Security']
   },
   {
     id: 'color-picker',
