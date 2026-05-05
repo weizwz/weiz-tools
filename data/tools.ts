@@ -26,7 +26,7 @@ export const tools: Tool[] = [
     color: 'yellow',
     href: '/tools/oppo-widget-cover',
     tags: ['Cover', 'Image'],
-    previewImage: '/tools.svg'
+    previewImage: 'https://p.weizwz.com/tool/oppo-widget-cover_b1e074300cc8ae51.webp'
   },
   {
     id: 'json-formatter',

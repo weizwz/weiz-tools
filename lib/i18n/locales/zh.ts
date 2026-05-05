@@ -100,7 +100,7 @@ const zh: Locale = {
   // 首页
   home: {
     heroTag: 'ZHILIO TOOLBOX',
-    heroTitle: '在线实用工具箱',
+    heroTitle: '一站式在线工具箱平台',
     heroSubtitle: '为开发者而生',
     heroDescription: '在线实用工具，快捷 & 高效。探索、交流、提升您的技能，让工作生活更加流畅。',
     exploreAll: '探索',

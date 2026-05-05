@@ -137,12 +137,16 @@ export default function Home() {
                     <Link key={project.id} href={project.href} className='block'>
                       <div className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
                         {/* 项目截图 */}
-                        <div className='w-32 h-20 shrink-0 rounded-lg overflow-hidden flex items-center justify-center relative'>
+                        <div className='w-24 h-20 shrink-0 rounded-lg overflow-hidden flex items-center justify-center relative'>
                           {project.previewImage ? (
                             /* eslint-disable-next-line @next/next/no-img-element */
-                            <img src={project.previewImage} alt={projectName} className='h-full group-hover:scale-105 transition-transform duration-300' />
+                            <img
+                              src={project.previewImage}
+                              alt={projectName}
+                              className='h-full rounded-md group-hover:scale-120 transition-transform duration-300'
+                            />
                           ) : (
-                            <div className='w-28 h-16 bg-linear-to-br from-main to-cyan-500 rounded-lg opacity-20 transition-opacity' />
+                            <div className='w-20 h-20 bg-linear-to-br from-main to-cyan-500 rounded-full opacity-20 transition-opacity' />
                           )}
                         </div>
                         {/* 项目信息 */}
@@ -170,7 +174,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6'>
             {filteredTools.map((tool) => {
               const toolLocale = t.tools[tool.id]
               const toolName = toolLocale?.name || tool.name
@@ -196,17 +200,17 @@ export default function Home() {
                   <Link href={tool.href} className='block h-full'>
                     <div className='bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-xl hover:border-main/50 transition-all duration-300 h-full flex flex-col'>
                       <div className='flex-1'>
-                        <h3 className='text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-main transition-colors'>{toolName}</h3>
-                        <p className='text-sm text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2'>{toolDesc}</p>
+                        <h3 className='text-lg font-bold text-slate-900 -mt-2 mb-1 dark:text-white group-hover:text-main transition-colors'>{toolName}</h3>
+                        <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-1'>{toolDesc}</p>
                       </div>
 
                       {/* 工具预览区域 */}
-                      <div className='mt-4 h-24 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
+                      <div className='mt-4 h-36 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
                         {tool.previewImage ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
-                          <img src={tool.previewImage} alt={toolName} className='h-full group-hover:scale-105 transition-transform duration-300' />
+                          <img src={tool.previewImage} alt={toolName} className='h-32 w-32 group-hover:scale-120 transition-transform duration-500' />
                         ) : (
-                          <div className='w-28 h-16 bg-linear-to-br from-main to-cyan-500 rounded-lg opacity-20 transition-opacity' />
+                          <div className='h-32 w-32 bg-linear-to-br from-main to-cyan-500 rounded-full opacity-20 transition-opacity' />
                         )}
                       </div>
                     </div>

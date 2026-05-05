@@ -27,7 +27,7 @@ const en: Locale = {
   // Homepage
   home: {
     heroTag: 'ZHILIO TOOLBOX',
-    heroTitle: 'Online Practical Toolbox',
+    heroTitle: 'One-stop online toolbox platform',
     heroSubtitle: 'FOR DEVELOPERS',
     heroDescription: 'Online practical tools, fast & efficient. Explore, share, and improve your skills to make your work and life smoother.',
     exploreAll: 'Explore',
