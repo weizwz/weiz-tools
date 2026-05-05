@@ -11,7 +11,13 @@ export function Navbar() {
   const { theme, setTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
-  const { lang, toggleLang } = useI18n()
+  const [isLangOpen, setIsLangOpen] = useState(false)
+  const { lang, setLang } = useI18n()
+
+  const languages = [
+    { code: 'zh' as const, label: '中文' },
+    { code: 'en' as const, label: 'English' }
+  ]
 
   const handleCategoryClick = (categoryIndex: number) => {
     const categoryId = categoryIds[categoryIndex]
@@ -114,14 +120,33 @@ export function Navbar() {
         {/* Right Actions */}
         <div className='flex items-center gap-2 shrink-0'>
           {/* Language Toggle */}
-          <button
-            className='p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-1.5'
-            onClick={toggleLang}
-            aria-label='Toggle Language'
-            title={lang === 'zh' ? 'Switch to English' : '切换到中文'}>
-            <Languages className='w-5 h-5' />
-            <span className='text-xs font-bold uppercase hidden sm:inline'>{lang === 'zh' ? 'EN' : '中'}</span>
-          </button>
+          <div className='relative' onMouseEnter={() => setIsLangOpen(true)} onMouseLeave={() => setIsLangOpen(false)}>
+            <button
+              className='p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-1.5'
+              aria-label='Toggle Language'>
+              <Languages className='w-5 h-5' />
+              <ChevronDown className='w-3 h-3 hidden sm:block' />
+            </button>
+            {isLangOpen && (
+              <div className='absolute top-full right-0 mt-0 min-w-[110px] bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 animate-in fade-in slide-in-from-top-2 duration-200'>
+                {languages.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLang(l.code)
+                      setIsLangOpen(false)
+                    }}
+                    className={`w-full text-left px-4 py-2 text-sm transition-colors cursor-pointer ${
+                      lang === l.code
+                        ? 'text-main font-semibold bg-slate-50 dark:bg-slate-700/50'
+                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-main'
+                    }`}>
+                    {l.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Theme Toggle */}
           <button
