@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
 import { Moon, Sun, Menu, Languages, ChevronDown } from 'lucide-react'
@@ -67,7 +68,7 @@ export function Navbar() {
       <nav className='container mx-auto px-6 h-16 flex items-center justify-between gap-8'>
         {/* Logo */}
         <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0'>
-          <div className='w-8 h-8 bg-main rounded-lg flex items-center justify-center text-white font-bold text-sm'>知</div>
+          <Image src='/logo.png' alt='logo' width={32} height={32} className='rounded-lg' />
           <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>知了工具箱</span>
         </Link>
 

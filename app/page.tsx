@@ -208,7 +208,11 @@ export default function Home() {
                       <div className='mt-4 h-36 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
                         {tool.previewImage ? (
                           /* eslint-disable-next-line @next/next/no-img-element */
-                          <img src={tool.previewImage} alt={toolName} className='h-32 w-32 group-hover:scale-120 transition-transform duration-500' />
+                          <img
+                            src={tool.previewImage}
+                            alt={toolName}
+                            className='h-32 w-32 rounded-sm group-hover:scale-120 transition-transform duration-500 dark:brightness-80'
+                          />
                         ) : (
                           <div className='h-32 w-32 bg-linear-to-br from-main to-cyan-500 rounded-full opacity-20 transition-opacity' />
                         )}
