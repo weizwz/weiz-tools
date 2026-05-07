@@ -51,7 +51,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>全局背景</h3>
 
       {/* 背景颜色 */}
-      <div className='mb-6'>
+      <div className='mb-4'>
         <label className='text-xs text-gray-500 block mb-2'>背景颜色</label>
         <div className='flex gap-2 items-center'>
           <input
@@ -150,7 +150,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
           </div>
 
           {/* 容器透明度 */}
-          <div className='mb-4'>
+          <div className='mb-2'>
             <label className='text-xs text-gray-500 block mb-2'>透明度: {style.base.cardContainer.opacity}%</label>
             <input
               type='range'
@@ -171,7 +171,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
           </div>
 
           {/* 容器圆角 */}
-          <div className='mb-4'>
+          <div className='mb-6'>
             <label className='text-xs text-gray-500 block mb-2'>圆角: {style.base.cardContainer.cornerRadius}px</label>
             <input
               type='range'
@@ -199,12 +199,12 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片样式</h3>
 
       {/* 间距设置 */}
-      <div className='mb-6'>
+      <div className='mb-2'>
         <label className='text-xs text-gray-500 block mb-2'>间距: {style.base.card.spacing}px</label>
         <input
           type='range'
           min={0}
-          max={100}
+          max={120}
           value={style.base.card.spacing}
           onChange={(e) =>
             onStyleChange({
@@ -279,28 +279,32 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
         })()}
 
       {/* 导出设置 */}
-      <h3 className='text-sm font-semibold text-gray-700 mb-4'>导出设置</h3>
+      {style.layout.type === 'tilt' && (
+        <>
+          <h3 className='text-sm font-semibold text-gray-700 mb-4'>导出设置</h3>
 
-      <div className='flex items-center justify-between mb-4'>
-        <span className='text-sm text-gray-600'>开启叠图</span>
-        <label className='relative inline-flex items-center cursor-pointer'>
-          <input
-            type='checkbox'
-            className='sr-only peer'
-            checked={style.base.card.overlay}
-            onChange={(e) =>
-              onStyleChange({
-                ...style,
-                base: {
-                  ...style.base,
-                  card: { ...style.base.card, overlay: e.target.checked }
+          <div className='flex items-center justify-between mb-4'>
+            <span className='text-sm text-gray-600'>开启叠图</span>
+            <label className='relative inline-flex items-center cursor-pointer'>
+              <input
+                type='checkbox'
+                className='sr-only peer'
+                checked={style.base.card.overlay}
+                onChange={(e) =>
+                  onStyleChange({
+                    ...style,
+                    base: {
+                      ...style.base,
+                      card: { ...style.base.card, overlay: e.target.checked }
+                    }
+                  })
                 }
-              })
-            }
-          />
-          <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-main"></div>
-        </label>
-      </div>
+              />
+              <div className="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-main"></div>
+            </label>
+          </div>
+        </>
+      )}
 
       <Button className='w-full' onClick={onExport} disabled={isExporting}>
         <Download className='w-4 h-4 mr-2' />

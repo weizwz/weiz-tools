@@ -72,7 +72,14 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
             {layout.rows.map((row, rowIndex) => (
               <div key={rowIndex} className='flex items-center justify-center' style={{ gap: style.base.card.spacing * PREVIEW_SCALE }}>
                 {row.map((slot) => (
-                  <CardSlotItem key={slot.id} slot={slot} image={cards.get(slot.id)} style={style} onUpload={(file) => handleFileUpload(slot.id, file)} />
+                  <CardSlotItem
+                    key={slot.id}
+                    slot={slot}
+                    image={cards.get(slot.id)}
+                    style={style}
+                    spacing={style.base.card.spacing}
+                    onUpload={(file) => handleFileUpload(slot.id, file)}
+                  />
                 ))}
               </div>
             ))}
@@ -84,9 +91,22 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
 }
 
 // 卡片槽位组件
-function CardSlotItem({ slot, image, style, onUpload }: { slot: CardSlot; image?: string; style: StyleConfig; onUpload: (file: File) => void }) {
+function CardSlotItem({
+  slot,
+  image,
+  style,
+  spacing,
+  onUpload
+}: {
+  slot: CardSlot
+  image?: string
+  style: StyleConfig
+  spacing: number
+  onUpload: (file: File) => void
+}) {
   const inputRef = useRef<HTMLInputElement>(null)
   const size = CARD_SIZES[slot.size]
+  const width = slot.size === 'small' ? (CARD_SIZES.medium.width - spacing) / 2 : size.width
 
   const handleClick = () => {
     inputRef.current?.click()
@@ -105,7 +125,7 @@ function CardSlotItem({ slot, image, style, onUpload }: { slot: CardSlot; image?
     <div
       className='relative cursor-pointer group overflow-hidden'
       style={{
-        width: size.width * PREVIEW_SCALE,
+        width: width * PREVIEW_SCALE,
         height: size.height * PREVIEW_SCALE,
         borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE,
         backgroundColor: image ? 'transparent' : 'rgba(255,255,255,0.8)'
