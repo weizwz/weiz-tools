@@ -157,12 +157,12 @@ export const DEFAULT_TILT_CONFIG: TiltLayoutConfig = {
 export const DEFAULT_STYLE: StyleConfig = {
   base: {
     background: {
-      color: '#ffffff',
+      color: '#e1e8f1',
       image: undefined
     },
     cardContainer: {
-      color: '#cad6e2',
-      opacity: 50,
+      color: '#ffffff',
+      opacity: 90,
       cornerRadius: 60
     },
     card: {
