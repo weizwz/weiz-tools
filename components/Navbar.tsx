@@ -13,7 +13,7 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [isLangOpen, setIsLangOpen] = useState(false)
-  const { lang, setLang } = useI18n()
+  const { lang, setLang, t } = useI18n()
 
   const languages = [
     { code: 'zh' as const, label: '中文' },
@@ -69,7 +69,7 @@ export function Navbar() {
         {/* Logo */}
         <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0'>
           <Image src='/logo.png' alt='logo' width={32} height={32} className='rounded-lg' />
-          <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>知了工具箱</span>
+          <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>{t.common.siteName}</span>
         </Link>
 
         {/* Desktop Category Links with Dropdown */}

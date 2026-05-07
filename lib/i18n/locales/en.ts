@@ -3,6 +3,7 @@ import type { Locale } from './zh'
 const en: Locale = {
   // Common
   common: {
+    siteName: 'Zhilio Toolbox',
     getStarted: 'Get Started',
     learnMore: 'Learn More',
     enter: 'Enter',
@@ -27,9 +28,9 @@ const en: Locale = {
   // Homepage
   home: {
     heroTag: 'ZHILIO TOOLBOX',
-    heroTitle: 'One-stop online toolbox platform',
+    heroTitle: 'One-stop online tool platform',
     heroSubtitle: 'FOR DEVELOPERS',
-    heroDescription: 'Online practical tools, fast & efficient. Explore, share, and improve your skills to make your work and life smoother.',
+    heroDescription: 'Portable and practical online tools 👉 Help you easily improve efficiency and make your work and life smoother 😏',
     exploreAll: 'Explore',
     featuredTools: 'Featured Tools',
     featuredToolsDesc: 'Most used tools by our community',

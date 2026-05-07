@@ -5,6 +5,7 @@ interface ToolLocale {
 
 export interface Locale {
   common: {
+    siteName: string
     getStarted: string
     learnMore: string
     enter: string
@@ -76,6 +77,7 @@ export interface Locale {
 const zh: Locale = {
   // 通用
   common: {
+    siteName: '知了工具箱',
     getStarted: '开始使用',
     learnMore: '了解更多',
     enter: '进入',
@@ -84,8 +86,8 @@ const zh: Locale = {
 
   // 网页元数据
   metadata: {
-    title: '知了工具箱 | 在线实用小工具',
-    description: '我是一只小知了 | 为大家精心准备的实用小工具集合'
+    title: '知了工具箱 | 一站式在线工具平台',
+    description: '便携实用的在线工具 👉 助您轻松提升效率，让工作生活更加流畅 😏'
   },
 
   // 导航栏
@@ -100,9 +102,9 @@ const zh: Locale = {
   // 首页
   home: {
     heroTag: 'ZHILIO TOOLBOX',
-    heroTitle: '一站式在线工具箱平台',
+    heroTitle: '一站式在线工具平台',
     heroSubtitle: '为开发者而生',
-    heroDescription: '在线实用工具，快捷 & 高效。探索、交流、提升您的技能，让工作生活更加流畅。',
+    heroDescription: '便携实用的在线工具 👉 助您轻松提升效率，让工作生活更加流畅 😏',
     exploreAll: '探索',
     featuredTools: '精选工具',
     featuredToolsDesc: '社区最常用的工具',
