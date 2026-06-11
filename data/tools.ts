@@ -7,13 +7,13 @@ export interface Tool {
   href: string
   // New fields for featured section
   tags?: string[]
-  previewImage?: string
+  previewImage: string
 }
 
-export const categories = ['首页', '生产工具', '数据工具', '格式化', '编码工具', '转换器', '生成器', '图像工具'] as const
+export const categories = ['首页', 'Markdown', '数据工具', '格式化', '编码工具', '转换器', '生成器', '图像工具'] as const
 
 // 分类的英文标识符，用于逻辑判断
-export const categoryIds = ['home', 'productivity', 'data', 'formatting', 'encoding', 'converter', 'generator', 'image'] as const
+export const categoryIds = ['home', 'Markdown', 'data', 'formatting', 'encoding', 'converter', 'generator', 'image'] as const
 
 export type CategoryId = (typeof categoryIds)[number]
 
@@ -45,7 +45,8 @@ export const tools: Tool[] = [
     category: '编码工具',
     color: 'cyan',
     href: '/tools/base64',
-    tags: ['Encoding', 'Security']
+    tags: ['Encoding', 'Security'],
+    previewImage: '/tools.svg'
   },
   {
     id: 'color-picker',
@@ -68,13 +69,63 @@ export const tools: Tool[] = [
     previewImage: '/tools.svg'
   },
   {
-    id: 'markdown-preview',
-    name: 'Markdown 预览',
-    description: '实时预览 Markdown 渲染效果',
-    category: '格式化',
+    id: 'markdown-editor',
+    name: 'MD 编辑器',
+    description: '在线 markdown 编辑器',
+    category: 'Markdown',
     color: 'yellow',
-    href: '/tools/markdown-preview',
-    tags: ['Writing', 'Docs'],
+    href: '/tools/markdown-editor',
+    tags: ['Markdown', 'Editor'],
+    previewImage: '/tools.svg'
+  },
+  {
+    id: 'html-to-markdown',
+    name: 'HTML 转 MD',
+    description: '将 HTML 转换为 Markdown 格式',
+    category: 'Markdown',
+    color: 'cyan',
+    href: '/tools/html-to-markdown',
+    tags: ['Markdown', 'Converter'],
+    previewImage: '/tools.svg'
+  },
+  {
+    id: 'markdown-formatting',
+    name: 'MD 格式化',
+    description: '美化和格式化 Markdown 文本',
+    category: 'Markdown',
+    color: 'magenta',
+    href: '/tools/markdown-formatting',
+    tags: ['Markdown', 'Formatting'],
+    previewImage: '/tools.svg'
+  },
+  {
+    id: 'markdown-export',
+    name: 'MD 多格式导出',
+    description: '将 Markdown 导出为 PDF、Word、HTML 等格式',
+    category: 'Markdown',
+    color: 'white',
+    href: '/tools/markdown-export',
+    tags: ['Markdown', 'Export'],
+    previewImage: '/tools.svg'
+  },
+  {
+    id: 'markdown-to-wechat',
+    name: 'MD 转公众号',
+    description: '将 Markdown 转换为微信公众号支持的富文本格式',
+    category: 'Markdown',
+    color: 'yellow',
+    href: '/tools/markdown-to-wechat',
+    tags: ['Markdown', 'WeChat'],
+    previewImage: '/tools.svg'
+  },
+  {
+    id: 'markdown-to-xhs',
+    name: 'MD 转小红书',
+    description: '将 Markdown 转换为小红书图文格式',
+    category: 'Markdown',
+    color: 'cyan',
+    href: '/tools/markdown-to-xhs',
+    tags: ['Markdown', 'Xiaohongshu'],
     previewImage: '/tools.svg'
   },
   {

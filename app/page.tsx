@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { Navbar } from '@/components/Navbar'
@@ -138,16 +139,11 @@ export default function Home() {
                       <div className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
                         {/* 项目截图 */}
                         <div className='w-24 h-20 shrink-0 rounded-lg overflow-hidden flex items-center justify-center relative'>
-                          {project.previewImage ? (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              src={project.previewImage}
-                              alt={projectName}
-                              className='h-full rounded-md group-hover:scale-120 transition-transform duration-300'
-                            />
-                          ) : (
-                            <div className='w-20 h-20 bg-linear-to-br from-main to-cyan-500 rounded-full opacity-20 transition-opacity' />
-                          )}
+                          <img
+                            src={project.previewImage}
+                            alt={projectName}
+                            className='h-full rounded-md group-hover:scale-120 transition-transform duration-300'
+                          />
                         </div>
                         {/* 项目信息 */}
                         <div className='flex-1 min-w-0 flex flex-col justify-center'>
@@ -206,16 +202,11 @@ export default function Home() {
 
                       {/* 工具预览区域 */}
                       <div className='mt-4 h-36 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
-                        {tool.previewImage ? (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            src={tool.previewImage}
-                            alt={toolName}
-                            className='h-32 w-32 rounded-sm group-hover:scale-120 transition-transform duration-500 dark:brightness-80'
-                          />
-                        ) : (
-                          <div className='h-32 w-32 bg-linear-to-br from-main to-cyan-500 rounded-full opacity-20 transition-opacity' />
-                        )}
+                        <img
+                          src={tool.previewImage}
+                          alt={toolName}
+                          className='h-32 w-32 rounded-sm group-hover:scale-120 transition-transform duration-500 dark:brightness-80'
+                        />
                       </div>
                     </div>
                   </Link>
