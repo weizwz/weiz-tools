@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { I18nProvider } from '@/lib/i18n'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://tools.weizwz.com'),
   title: '知了工具箱 | 在线实用小工具',
   description: '我是一只小知了 | 为大家精心准备的实用小工具集合',
   keywords: ['工具箱', '在线工具', '实用工具', '开发者工具', '效率工具', '知了工具箱'],
