@@ -1,14 +1,16 @@
+import { botanicalNotesMotion } from '../motions'
 import { escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const oliveJournalTheme: LayoutTheme = {
   id: 'olive-journal',
-  name: '橄榄手记',
-  subtitle: '内刊手记风·涂鸦眨眼动效',
+  name: '内刊手记',
+  subtitle: '内刊手记风·植物手记动效',
+  motionId: 'botanical-notes',
   defaultPalette: {
     id: 'default',
     name: '默认',
-    subtitle: '橄榄手记 · 麦芽原配色',
+    subtitle: '内刊手记 · 麦芽原配色',
     colors: {
       bg: '#fdfdf8',
       heading: '#23251d',
@@ -31,7 +33,7 @@ export const oliveJournalTheme: LayoutTheme = {
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, capabilities, author, theme, dateStr } = ctx
-      const authorLabel = author.trim() || '橄榄手记'
+      const authorLabel = author.trim() || '内刊手记'
       const parts = title
         .split(/[：:]/)
         .map((s) => s.trim())
@@ -39,49 +41,27 @@ export const oliveJournalTheme: LayoutTheme = {
       const mainTitle = parts[0] || title
       const emphasis = parts[1] || ''
 
-      const eyeBlinkLeft = capabilities.useMotion
-        ? `<animate attributeName="ry" values="3;0.4;3;3" keyTimes="0;0.05;0.1;1" dur="4s" repeatCount="indefinite"/>`
-        : ''
-      const eyeBlinkRight = capabilities.useMotion
-        ? `<animate attributeName="ry" values="3;0.4;3;3" keyTimes="0;0.05;0.1;1" dur="4s" repeatCount="indefinite"/>`
-        : ''
-      const waveAnim = capabilities.useMotion
-        ? `<animate attributeName="d" values="M0,5 Q30,1 60,5 T120,5;M0,5 Q30,9 60,5 T120,5;M0,5 Q30,1 60,5 T120,5" dur="4s" repeatCount="indefinite"/>`
+      const bannerMotion = capabilities.useMotion
+        ? `<section style="margin-top:10px;">${botanicalNotesMotion.renderBannerMotion(colors, true)}</section>`
         : ''
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;">
-          <section style="padding:22px 20px 18px;">
-            <section style="display:flex;align-items:center;gap:8px;margin-bottom:18px;">
+          <section style="padding:22px 20px 12px;">
+            <section style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
               <span style="width:8px;height:8px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#65675e;">橄榄手记 · 专栏观察</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#65675e;">内刊手记 · 专栏观察</span>
               <span style="flex:1;height:1px;background:${theme.borderColor};display:inline-block;"><span leaf="">&nbsp;</span></span>
               <span style="font-size:10px;color:${theme.textMuted};font-weight:500;">${dateStr}</span>
             </section>
-            <section style="display:flex;align-items:stretch;gap:14px;">
-              <section style="flex:1;min-width:0;">
-                <p style="font-size:20px;font-weight:800;color:${colors.heading};margin:0 0 10px;line-height:1.25;letter-spacing:-0.4px;">
-                  ${escapeHtml(mainTitle)}${emphasis ? ` · <span style="border-bottom:3px solid ${colors.headingDecor};">${escapeHtml(emphasis)}</span>` : ''}
-                </p>
-                <section style="display:flex;align-items:center;gap:4px;margin-bottom:8px;">
-                  <span style="width:22px;height:3px;background:${colors.headingDecor};border-radius:2px;display:inline-block;"></span>
-                  <span style="width:8px;height:3px;background:${colors.strong};border-radius:2px;display:inline-block;"></span>
-                </section>
-                <svg width="120" height="10" viewBox="0 0 120 10" style="display:block;">
-                  <path d="M0,5 Q30,1 60,5 T120,5" fill="none" stroke="${colors.headingDecor}" stroke-width="1.5" stroke-opacity="0.6">${waveAnim}</path>
-                </svg>
-              </section>
-              <section style="flex-shrink:0;width:84px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:${colors.tableAccent};border:1px dashed ${theme.borderColor};border-radius:6px;padding:6px;">
-                <svg width="52" height="52" viewBox="0 0 64 64" style="display:block;">
-                  <ellipse cx="32" cy="36" rx="22" ry="18" fill="none" stroke="${theme.text}" stroke-width="2"></ellipse>
-                  <ellipse cx="26" cy="30" rx="2.8" ry="3" fill="${theme.text}">${eyeBlinkLeft}</ellipse>
-                  <ellipse cx="38" cy="30" rx="2.8" ry="3" fill="${theme.text}">${eyeBlinkRight}</ellipse>
-                  <path d="M28 40 Q32 44 36 40" fill="none" stroke="${theme.text}" stroke-width="1.5"></path>
-                  <path d="M12 34 L8 28 M52 34 L56 28" stroke="${theme.borderColor}" stroke-width="2" stroke-linecap="round"></path>
-                </svg>
-                <span style="font-size:8px;font-weight:700;color:${theme.textMuted};letter-spacing:1px;margin-top:3px;">DOODLE</span>
-              </section>
+            <p style="font-size:20px;font-weight:800;color:${colors.heading};margin:0 0 10px;line-height:1.25;letter-spacing:-0.4px;">
+              ${escapeHtml(mainTitle)}${emphasis ? ` · <span style="border-bottom:3px solid ${colors.headingDecor};">${escapeHtml(emphasis)}</span>` : ''}
+            </p>
+            <section style="display:flex;align-items:center;gap:4px;">
+              <span style="width:22px;height:3px;background:${colors.headingDecor};border-radius:2px;display:inline-block;"></span>
+              <span style="width:8px;height:3px;background:${colors.strong};border-radius:2px;display:inline-block;"></span>
             </section>
+            ${bannerMotion}
           </section>
           <section style="background:${colors.heading};padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
             <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;">${escapeHtml(authorLabel)}</p>
@@ -95,7 +75,7 @@ export const oliveJournalTheme: LayoutTheme = {
     },
 
     renderToc(headings: string[], ctx: RenderContext): string {
-      const { colors, theme } = ctx
+      const { colors, theme, capabilities } = ctx
       const items = headings
         .slice(0, 6)
         .map((text, idx) => {
@@ -109,31 +89,40 @@ export const oliveJournalTheme: LayoutTheme = {
         })
         .join('')
 
+      const tocDecor = `<section style="width:62px;flex-shrink:0;">${botanicalNotesMotion.renderTocDecor(colors, capabilities.useMotion)}</section>`
+
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;">
           <section style="padding:10px 16px;background:${colors.heading};display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <p style="margin:0;font-size:10px;font-weight:800;letter-spacing:2px;color:#ffffff;">EDITOR'S NOTE · 篇幅导览</p>
             <span style="font-size:10px;color:rgba(255,255,255,0.7);">${headings.length} 节</span>
           </section>
-          <section style="padding:14px 16px;background:${colors.tableAccent};">
-            ${items}
+          <section style="padding:14px 16px;background:${colors.tableAccent};display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+            <section style="flex:1;min-width:0;">${items}</section>
+            ${tocDecor}
           </section>
         </section>
       `
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, fontSize } = ctx
+      const { colors, capabilities, fontSize } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
+      const rail = capabilities.useFancyDivider
+        ? `<section style="margin-top:4px;">${botanicalNotesMotion.renderSectionRail(colors, capabilities.useMotion, index)}</section>`
+        : ''
       return `
-        <section style="margin:${marginTop} 0 18px 0;display:flex;align-items:center;gap:14px;">
-          <section style="text-align:center;flex-shrink:0;">
-            <p style="margin:0;font-size:24px;font-weight:800;color:${colors.heading};line-height:1;letter-spacing:-1.5px;">${num}</p>
-            <p style="margin:2px 0 0;font-size:8px;font-weight:700;color:${colors.headingDecor};letter-spacing:2px;">PART</p>
+        <section style="margin:${marginTop} 0 18px 0;">
+          <section style="display:flex;align-items:center;gap:14px;">
+            <section style="text-align:center;flex-shrink:0;">
+              <p style="margin:0;font-size:24px;font-weight:800;color:${colors.heading};line-height:1;letter-spacing:-1.5px;">${num}</p>
+              <p style="margin:2px 0 0;font-size:8px;font-weight:700;color:${colors.headingDecor};letter-spacing:2px;">PART</p>
+            </section>
+            <span style="width:1px;height:32px;background:${colors.divider};flex-shrink:0;display:inline-block;"></span>
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.35;letter-spacing:0.2px;">${content}</h2>
           </section>
-          <span style="width:1px;height:32px;background:${colors.divider};flex-shrink:0;display:inline-block;"></span>
-          <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.35;letter-spacing:0.2px;">${content}</h2>
+          ${rail}
         </section>
       `
     },
@@ -149,28 +138,16 @@ export const oliveJournalTheme: LayoutTheme = {
     },
 
     renderDivider(ctx: RenderContext): string {
-      const { theme, colors, capabilities } = ctx
+      const { colors, capabilities } = ctx
       if (!capabilities.useFancyDivider) {
         return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
       }
-      if (!capabilities.useMotion) {
-        return `
-          <section style="margin:26px 0;display:flex;align-items:center;justify-content:center;gap:10px;">
-            <span style="width:8px;height:8px;border-radius:50%;background:${theme.text};display:inline-block;"></span>
-            <span style="width:8px;height:8px;border-radius:50%;background:${colors.divider};display:inline-block;"></span>
-            <span style="width:8px;height:8px;border-radius:50%;background:${colors.headingDecor};display:inline-block;"></span>
-          </section>
-        `
-      }
-      return `
-        <section style="margin:26px 0;text-align:center;">
-          <svg width="64" height="12" viewBox="0 0 64 12" style="display:inline-block;">
-            <circle cx="12" cy="6" r="3.5" fill="${theme.text}"><animate attributeName="opacity" values="1;0.3;1" dur="2.1s" repeatCount="indefinite"/></circle>
-            <circle cx="32" cy="6" r="3.5" fill="${colors.divider}"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.1s" begin="0.35s" repeatCount="indefinite"/></circle>
-            <circle cx="52" cy="6" r="3.5" fill="${colors.headingDecor}"><animate attributeName="opacity" values="0.3;1;0.3" dur="2.1s" begin="0.7s" repeatCount="indefinite"/></circle>
-          </svg>
-        </section>
-      `
+      return `<section style="margin:24px 0;">${botanicalNotesMotion.renderDivider(colors, capabilities.useMotion)}</section>`
+    },
+
+    renderTail(ctx: RenderContext): string {
+      const { colors, capabilities } = ctx
+      return `<section style="margin:28px 0 6px;">${botanicalNotesMotion.renderTail(colors, capabilities.useMotion)}</section>`
     },
 
     renderImage(href: string, text: string, ctx: RenderContext): string {

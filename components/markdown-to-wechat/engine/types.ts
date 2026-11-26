@@ -1,5 +1,12 @@
 export type ThemeId = 'moyu-green' | 'red-white' | 'olive-journal'
 
+export type MotionId =
+  | 'blueprint-grid'
+  | 'botanical-notes'
+  | 'deep-sea-terminal'
+  | 'editorial-vermilion'
+  | 'swiss-signal'
+
 export type VisualLevel = 'basic' | 'decorated' | 'motion'
 
 export type PreviewWidth = 'auto' | 375 | 402 | 440
@@ -48,10 +55,21 @@ export interface RenderContext {
   dateStr: string
 }
 
+export interface MotionPreset {
+  id: MotionId
+  name: string
+  renderBannerMotion: (colors: PaletteColors, animated: boolean) => string
+  renderTocDecor: (colors: PaletteColors, animated: boolean) => string
+  renderSectionRail: (colors: PaletteColors, animated: boolean, index: number) => string
+  renderDivider: (colors: PaletteColors, animated: boolean) => string
+  renderTail: (colors: PaletteColors, animated: boolean) => string
+}
+
 export interface LayoutTheme {
   id: ThemeId
   name: string
   subtitle: string
+  motionId?: MotionId
   defaultPalette: ColorPalette
   text: string
   textMuted: string
@@ -67,6 +85,7 @@ export interface LayoutTheme {
     renderBlockquote?: (content: string, ctx: RenderContext) => string
     renderDivider?: (ctx: RenderContext) => string
     renderImage?: (href: string, text: string, ctx: RenderContext) => string
+    renderTail?: (ctx: RenderContext) => string
   }
 }
 

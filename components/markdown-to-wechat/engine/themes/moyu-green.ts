@@ -1,14 +1,16 @@
+import { swissSignalMotion } from '../motions'
 import { escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const moyuGreenTheme: LayoutTheme = {
   id: 'moyu-green',
-  name: '摸鱼绿',
-  subtitle: '杂志资讯风·双色滑轨动效',
+  name: '杂志资讯',
+  subtitle: '杂志资讯风·瑞士信号动效',
+  motionId: 'swiss-signal',
   defaultPalette: {
     id: 'default',
     name: '默认',
-    subtitle: '摸鱼绿 · 松青原配色',
+    subtitle: '杂志资讯 · 松青原配色',
     colors: {
       bg: '#ffffff',
       heading: '#0F172A',
@@ -30,24 +32,20 @@ export const moyuGreenTheme: LayoutTheme = {
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, capabilities, fontSize, author, dateStr } = ctx
-      const authorLabel = author.trim() || '摸鱼绿'
+      const authorLabel = author.trim() || '杂志资讯'
       const borderCol = hexToRgba(colors.headingDecor, 0.28)
       const tagBg = hexToRgba(colors.headingDecor, 0.08)
 
-      const signalDots = capabilities.useMotion
-        ? `<svg width="26" height="8" viewBox="0 0 26 8" style="display:inline-block;vertical-align:middle;margin-left:4px;"><circle cx="4" cy="4" r="2.2" fill="${colors.headingDecor}"><animate attributeName="opacity" values="1;0.25;1" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="12" cy="4" r="2.2" fill="${colors.strong}" opacity="0.7"><animate attributeName="opacity" values="0.7;1;0.25;0.7" dur="1.6s" begin="0.25s" repeatCount="indefinite"/></circle><circle cx="20" cy="4" r="2.2" fill="${colors.headingDecor}" opacity="0.4"><animate attributeName="opacity" values="0.4;0.95;0.4" dur="1.6s" begin="0.5s" repeatCount="indefinite"/></circle></svg>`
-        : ''
-
-      const sliderSvg = capabilities.useMotion
-        ? `<svg width="180" height="10" viewBox="0 0 180 10" style="display:block;margin-top:10px;"><line x1="0" y1="5" x2="176" y2="5" stroke="${borderCol}" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="5" r="3" fill="${colors.headingDecor}"><animate attributeName="cx" values="10;166;10" dur="3.6s" repeatCount="indefinite"/></circle></svg>`
+      const bannerMotion = capabilities.useMotion
+        ? `<section style="margin-top:8px;">${swissSignalMotion.renderBannerMotion(colors, true)}</section>`
         : ''
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border-radius:16px;overflow:hidden;border:1px solid ${borderCol};box-shadow:0 4px 16px -6px ${hexToRgba(colors.headingDecor, 0.14)};">
-          <section style="padding:24px 22px 16px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
+          <section style="padding:24px 22px 12px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
             <section style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
               <span style="width:7px;height:7px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">DEEP DIVE · 深度解析${signalDots}</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">DEEP DIVE · 深度解析</span>
               <span style="flex:1;height:1px;background:linear-gradient(to right,${borderCol},transparent);display:inline-block;"><span leaf="">&nbsp;</span></span>
               <span style="font-size:10px;color:${ctx.theme.textMuted};font-weight:500;">${dateStr}</span>
             </section>
@@ -55,7 +53,7 @@ export const moyuGreenTheme: LayoutTheme = {
               ${escapeHtml(title)}
             </p>
             <section style="width:48px;height:3px;background:linear-gradient(to right,${colors.headingDecor},${colors.strong});border-radius:2px;"><span leaf="">&nbsp;</span></section>
-            ${sliderSvg}
+            ${bannerMotion}
           </section>
           <section style="background:${colors.headingDecor};padding:11px 22px;display:flex;align-items:center;justify-content:space-between;">
             <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;letter-spacing:0.5px;">${escapeHtml(authorLabel)}</p>
@@ -91,15 +89,13 @@ export const moyuGreenTheme: LayoutTheme = {
         })
         .join('')
 
-      const radarSvg = capabilities.useMotion
-        ? `<svg width="14" height="14" viewBox="0 0 14 14" style="display:inline-block;vertical-align:middle;margin-right:4px;"><circle cx="7" cy="7" r="2.2" fill="${colors.headingDecor}"/><circle cx="7" cy="7" r="3" fill="none" stroke="${colors.headingDecor}" stroke-width="1"><animate attributeName="r" values="2.5;6.5" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.9;0" dur="2s" repeatCount="indefinite"/></circle></svg>`
-        : ''
+      const tocDecor = `<section style="width:56px;flex-shrink:0;">${swissSignalMotion.renderTocDecor(colors, capabilities.useMotion)}</section>`
 
       return `
         <section style="margin:0 0 28px 0;">
-          <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-            <p style="font-size:10px;color:#9CA3AF;margin:0;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;">${radarSvg}${headings.length} PARTS + CONCLUSION</p>
-            <p style="font-size:10px;color:#9CA3AF;margin:0;">👉 滑动</p>
+          <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+            <p style="font-size:10px;color:#9CA3AF;margin:0;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;">${headings.length} PARTS + CONCLUSION · 👉 滑动</p>
+            ${tocDecor}
           </section>
           <section style="overflow-x:auto;white-space:nowrap;padding-bottom:6px;">
             ${cards}
@@ -113,17 +109,23 @@ export const moyuGreenTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, fontSize } = ctx
+      const { colors, capabilities, fontSize } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
+      const rail = capabilities.useFancyDivider
+        ? `<section style="margin-top:4px;">${swissSignalMotion.renderSectionRail(colors, capabilities.useMotion, index)}</section>`
+        : ''
       return `
-        <section style="margin:${marginTop} 0 18px 0;display:flex;align-items:center;gap:14px;">
-          <section style="text-align:center;flex-shrink:0;">
-            <p style="margin:0;font-size:26px;font-weight:900;color:${colors.headingDecor};line-height:1;letter-spacing:-1.5px;">${num}</p>
-            <p style="margin:2px 0 0;font-size:8px;font-weight:700;color:${colors.divider};letter-spacing:2px;">PART</p>
+        <section style="margin:${marginTop} 0 18px 0;">
+          <section style="display:flex;align-items:center;gap:14px;">
+            <section style="text-align:center;flex-shrink:0;">
+              <p style="margin:0;font-size:26px;font-weight:900;color:${colors.headingDecor};line-height:1;letter-spacing:-1.5px;">${num}</p>
+              <p style="margin:2px 0 0;font-size:8px;font-weight:700;color:${colors.divider};letter-spacing:2px;">PART</p>
+            </section>
+            <span style="width:1px;height:32px;background:${colors.divider};flex-shrink:0;display:inline-block;"></span>
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:900;color:${colors.heading};line-height:1.35;letter-spacing:0.3px;">${content}</h2>
           </section>
-          <span style="width:1px;height:32px;background:${colors.divider};flex-shrink:0;display:inline-block;"></span>
-          <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:900;color:${colors.heading};line-height:1.35;letter-spacing:0.3px;">${content}</h2>
+          ${rail}
         </section>
       `
     },
@@ -153,19 +155,12 @@ export const moyuGreenTheme: LayoutTheme = {
       if (!capabilities.useFancyDivider) {
         return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
       }
-      if (!capabilities.useMotion) {
-        return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
-      }
-      return `
-        <section style="margin:26px 0;text-align:center;">
-          <svg width="100%" height="14" viewBox="0 0 240 14" preserveAspectRatio="none" style="display:block;">
-            <line x1="0" y1="7" x2="240" y2="7" stroke="${colors.divider}" stroke-width="1" stroke-dasharray="4 4"/>
-            <circle cx="120" cy="7" r="3" fill="${colors.headingDecor}">
-              <animate attributeName="cx" values="20;220;20" dur="5s" repeatCount="indefinite"/>
-            </circle>
-          </svg>
-        </section>
-      `
+      return `<section style="margin:24px 0;">${swissSignalMotion.renderDivider(colors, capabilities.useMotion)}</section>`
+    },
+
+    renderTail(ctx: RenderContext): string {
+      const { colors, capabilities } = ctx
+      return `<section style="margin:28px 0 6px;">${swissSignalMotion.renderTail(colors, capabilities.useMotion)}</section>`
     }
   }
 }

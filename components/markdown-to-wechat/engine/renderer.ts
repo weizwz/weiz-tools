@@ -239,11 +239,17 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       ? theme.slots.renderToc(h2Headings, ctx)
       : ''
 
+  const tailHtml =
+    (capabilities.useMotion || capabilities.useFancyDivider) && theme.slots.renderTail
+      ? theme.slots.renderTail(ctx)
+      : ''
+
   const fullHtml = `
     <section id="wechat-article-root" style="padding:20px 18px;background-color:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;word-wrap:break-word;box-sizing:border-box;">
       ${bannerHtml}
       ${tocHtml}
       ${bodyHtml}
+      ${tailHtml}
     </section>
   `.trim()
 
