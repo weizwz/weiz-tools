@@ -2,8 +2,8 @@ import { editorialVermilionMotion } from '../motions'
 import { escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
-export const redWhiteTheme: LayoutTheme = {
-  id: 'red-white',
+export const editorialCardTheme: LayoutTheme = {
+  id: 'editorial-card',
   name: '社论卡片',
   subtitle: '社论卡片风·墨红社论动效',
   motionId: 'editorial-vermilion',

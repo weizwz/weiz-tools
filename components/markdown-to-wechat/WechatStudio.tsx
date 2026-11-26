@@ -24,7 +24,7 @@ interface DraftState {
 const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
   author: '唯知AI',
-  themeId: 'moyu-green',
+  themeId: 'magazine-news',
   visualLevel: 'motion',
   paletteId: 'default',
   customColors: {},

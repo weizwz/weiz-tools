@@ -2,8 +2,8 @@ import { botanicalNotesMotion } from '../motions'
 import { escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
-export const oliveJournalTheme: LayoutTheme = {
-  id: 'olive-journal',
+export const internalJournalTheme: LayoutTheme = {
+  id: 'internal-journal',
   name: '内刊手记',
   subtitle: '内刊手记风·植物手记动效',
   motionId: 'botanical-notes',

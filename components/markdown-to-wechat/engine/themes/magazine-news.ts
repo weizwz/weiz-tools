@@ -2,8 +2,8 @@ import { swissSignalMotion } from '../motions'
 import { escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
-export const moyuGreenTheme: LayoutTheme = {
-  id: 'moyu-green',
+export const magazineNewsTheme: LayoutTheme = {
+  id: 'magazine-news',
   name: '杂志资讯',
   subtitle: '杂志资讯风·瑞士信号动效',
   motionId: 'swiss-signal',

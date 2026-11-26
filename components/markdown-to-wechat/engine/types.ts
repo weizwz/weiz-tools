@@ -1,4 +1,4 @@
-export type ThemeId = 'moyu-green' | 'red-white' | 'olive-journal'
+export type ThemeId = 'magazine-news' | 'editorial-card' | 'internal-journal'
 
 export type MotionId =
   | 'blueprint-grid'
