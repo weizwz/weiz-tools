@@ -31,9 +31,24 @@ export const editorialCardTheme: LayoutTheme = {
   preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, author, theme } = ctx
+      const { colors, capabilities, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || '社论卡片'
       const shadowColor = hexToRgba(colors.headingDecor, 0.16)
+      const avatarHtml = meta.avatar
+        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
+        : ''
+      const tagList = [
+        ...(meta.category.trim() ? [meta.category.trim()] : []),
+        ...meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
+      ].slice(0, 3)
+      const tagsHtml = tagList.length
+        ? `<section style="display:flex;gap:5px;flex-wrap:wrap;">${tagList
+            .map(
+              (t) =>
+                `<span style="background:${colors.tableAccent};color:${colors.headingDecor};padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;border:1px solid ${colors.divider};">${escapeHtml(t)}</span>`
+            )
+            .join('')}</section>`
+        : '<span></span>'
 
       const bannerMotion = capabilities.useMotion
         ? `<section style="margin-top:8px;">${editorialVermilionMotion.renderBannerMotion(colors, true)}</section>`
@@ -46,9 +61,13 @@ export const editorialCardTheme: LayoutTheme = {
             ${escapeHtml(title)}
           </p>
           ${bannerMotion}
-          <p style="text-align:right;font-size:12px;color:${theme.textMuted};margin:8px 0 0;letter-spacing:1px;">
-            —— ${escapeHtml(authorLabel)}
-          </p>
+          <section style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px;">
+            ${tagsHtml}
+            <section style="display:flex;align-items:center;gap:6px;">
+              ${avatarHtml}
+              <span style="font-size:12px;color:${theme.textMuted};letter-spacing:0.6px;">—— ${escapeHtml(authorLabel)} · ${escapeHtml(dateStr)}</span>
+            </section>
+          </section>
         </section>
       `
     },

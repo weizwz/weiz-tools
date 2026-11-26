@@ -49,7 +49,7 @@ export default function RootLayout({
       <head>
         <meta name='color-scheme' content='light dark' />
       </head>
-      <body className='min-h-screen bg-background text-foreground selection:bg-main/15 selection:text-main'>
+      <body className='min-h-screen bg-background text-foreground font-sans antialiased selection:bg-main/15 selection:text-main'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <I18nProvider>{children}</I18nProvider>
         </ThemeProvider>

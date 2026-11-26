@@ -75,13 +75,13 @@ export function ThemeSelector({
   }
 
   return (
-    <div ref={containerRef} className='relative flex flex-wrap items-center gap-2'>
+    <div ref={containerRef} className='relative flex flex-wrap items-center gap-1.5'>
       {/* 1. 基础排版 / 主题选择器 */}
       <div className='relative'>
         <button
           type='button'
           onClick={() => toggleMenu('theme')}
-          className='inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs hover:border-slate-400 transition-colors cursor-pointer'>
+          className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
           <span className='text-muted-foreground'>基础</span>
           <span className='inline-block h-2.5 w-2.5 rounded-full' style={{ backgroundColor: activeTheme.defaultPalette.colors.headingDecor }} />
           <span className='font-medium text-foreground'>{activeTheme.name}</span>
@@ -89,8 +89,8 @@ export function ThemeSelector({
         </button>
 
         {openMenu === 'theme' && (
-          <div className='absolute left-0 top-full z-50 mt-2 w-120 max-w-[90vw] rounded-2xl border border-border bg-card p-3 shadow-xl'>
-            <div className='mb-2.5 flex items-center justify-between px-1 text-[11px] font-medium tracking-wider text-muted-foreground'>
+          <div className='absolute left-0 top-full z-50 mt-2 w-120 max-w-[90vw] rounded-lg border border-border bg-popover p-3 shadow-xl'>
+            <div className='mb-2.5 flex items-center justify-between px-1 font-mono text-[11px] tracking-wider text-muted-foreground'>
               <span>BASIC LAYOUTS · 基础排版</span>
               <span>{WECHAT_THEMES.length} THEMES</span>
             </div>
@@ -105,12 +105,12 @@ export function ThemeSelector({
                       onThemeChange(theme.id)
                       setOpenMenu(null)
                     }}
-                    className={`flex items-start gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
+                    className={`flex items-start gap-2.5 rounded-md border p-2.5 text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? 'border-slate-900 bg-slate-50/90 dark:border-[#409eff] dark:bg-slate-800/70'
-                        : 'border-border hover:border-slate-300 hover:bg-muted/40'
+                        ? 'border-foreground bg-secondary'
+                        : 'border-border hover:border-foreground/35 hover:bg-secondary/50'
                     }`}>
-                    <span className='mt-1 h-3 w-3 shrink-0 rounded-full' style={{ backgroundColor: theme.defaultPalette.colors.headingDecor }} />
+                    <span className='mt-1 h-2.5 w-2.5 shrink-0 rounded-full' style={{ backgroundColor: theme.defaultPalette.colors.headingDecor }} />
                     <div className='min-w-0'>
                       <div className='text-xs font-semibold text-foreground'>{theme.name}</div>
                       <div className='mt-0.5 truncate text-[11px] text-muted-foreground'>{theme.subtitle}</div>
@@ -128,9 +128,9 @@ export function ThemeSelector({
         <button
           type='button'
           onClick={() => toggleMenu('level')}
-          className='inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs hover:border-slate-400 transition-colors cursor-pointer'>
+          className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
           <span className='text-muted-foreground'>视觉</span>
-          <span className='inline-flex h-4 items-center rounded-full bg-slate-900 px-1.5 text-[10px] font-bold text-white dark:bg-[#409eff]'>
+          <span className='inline-flex h-4 items-center rounded-sm bg-foreground px-1.5 font-mono text-[10px] font-bold text-background'>
             {activeLevel.badge}
           </span>
           <span className='font-medium text-foreground'>{activeLevel.name}</span>
@@ -138,8 +138,8 @@ export function ThemeSelector({
         </button>
 
         {openMenu === 'level' && (
-          <div className='absolute left-0 top-full z-50 mt-2 w-72 rounded-2xl border border-border bg-card p-2.5 shadow-xl'>
-            <div className='mb-2 flex items-center justify-between px-1 text-[11px] font-medium tracking-wider text-muted-foreground'>
+          <div className='absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-border bg-popover p-2.5 shadow-xl'>
+            <div className='mb-2 flex items-center justify-between px-1 font-mono text-[11px] tracking-wider text-muted-foreground'>
               <span>VISUAL MODES · 视觉效果</span>
               <span>3 MODES</span>
             </div>
@@ -154,12 +154,12 @@ export function ThemeSelector({
                       onVisualLevelChange(item.level)
                       setOpenMenu(null)
                     }}
-                    className={`flex w-full items-start gap-2.5 rounded-xl border p-2.5 text-left transition-all cursor-pointer ${
+                    className={`flex w-full items-start gap-2.5 rounded-md border p-2.5 text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? 'border-slate-900 bg-slate-50/90 dark:border-[#409eff] dark:bg-slate-800/70'
-                        : 'border-border hover:border-slate-300 hover:bg-muted/40'
+                        ? 'border-foreground bg-secondary'
+                        : 'border-border hover:border-foreground/35 hover:bg-secondary/50'
                     }`}>
-                    <span className='mt-0.5 inline-flex h-5 shrink-0 items-center justify-center rounded-full bg-slate-900 px-2 text-[10px] font-bold text-white dark:bg-[#409eff]'>
+                    <span className='mt-0.5 inline-flex h-5 shrink-0 items-center justify-center rounded-sm bg-foreground px-1.5 font-mono text-[10px] font-bold text-background'>
                       {item.badge}
                     </span>
                     <div className='min-w-0'>
@@ -179,11 +179,11 @@ export function ThemeSelector({
         <button
           type='button'
           onClick={() => toggleMenu('palette')}
-          className='inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-xs hover:border-slate-400 transition-colors cursor-pointer'>
+          className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
           <span className='text-muted-foreground'>配色</span>
           <span className='flex items-center -space-x-1'>
             {[resolvedColors.bg, resolvedColors.headingDecor, resolvedColors.strong, resolvedColors.tableAccent].map((c, idx) => (
-              <span key={idx} className='h-3 w-3 rounded-full border border-white dark:border-slate-800 shadow-xs' style={{ backgroundColor: c }} />
+              <span key={idx} className='h-3 w-3 rounded-full border border-background' style={{ backgroundColor: c }} />
             ))}
           </span>
           <span className='font-medium text-foreground'>{activePaletteName}</span>
@@ -191,8 +191,8 @@ export function ThemeSelector({
         </button>
 
         {openMenu === 'palette' && (
-          <div className='absolute right-0 top-full z-50 mt-2 w-80 max-w-[92vw] rounded-2xl border border-border bg-card p-3 shadow-xl'>
-            <div className='mb-2 flex items-center justify-between px-1 text-[11px] font-medium tracking-wider text-muted-foreground'>
+          <div className='absolute right-0 top-full z-50 mt-2 w-80 max-w-[92vw] rounded-lg border border-border bg-popover p-3 shadow-xl'>
+            <div className='mb-2 flex items-center justify-between px-1 font-mono text-[11px] tracking-wider text-muted-foreground'>
               <span>COLORWAYS · 主题配色</span>
               <span>{themePalettes.length + 1} PALETTES</span>
             </div>
@@ -209,14 +209,14 @@ export function ThemeSelector({
                       setShowCustomEditor(false)
                       setOpenMenu(null)
                     }}
-                    className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left transition-all cursor-pointer ${
+                    className={`flex w-full items-center gap-3 rounded-md border px-3 py-2 text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? 'border-slate-900 bg-slate-50/90 dark:border-[#409eff] dark:bg-slate-800/70'
-                        : 'border-border hover:border-slate-300 hover:bg-muted/40'
+                        ? 'border-foreground bg-secondary'
+                        : 'border-border hover:border-foreground/35 hover:bg-secondary/50'
                     }`}>
                     <div className='flex shrink-0 items-center -space-x-1'>
                       {[p.colors.bg, p.colors.headingDecor, p.colors.strong, p.colors.tableAccent].map((c, idx) => (
-                        <span key={idx} className='h-4 w-4 rounded-full border border-slate-200 dark:border-slate-700' style={{ backgroundColor: c }} />
+                        <span key={idx} className='h-4 w-4 rounded-full border border-border' style={{ backgroundColor: c }} />
                       ))}
                     </div>
                     <div className='min-w-0'>
@@ -229,8 +229,8 @@ export function ThemeSelector({
 
               {/* 自定义配色（11 项细粒度控制） */}
               <div
-                className={`rounded-xl border transition-all ${
-                  paletteId === 'custom' ? 'border-slate-900 bg-slate-50/90 dark:border-[#409eff] dark:bg-slate-800/70' : 'border-border'
+                className={`rounded-md border transition-colors ${
+                  paletteId === 'custom' ? 'border-foreground bg-secondary' : 'border-border'
                 }`}>
                 <div className='flex items-center justify-between px-3 py-2'>
                   <button
@@ -289,12 +289,12 @@ export function ThemeSelector({
       </div>
 
       {/* 4. 字号选择 */}
-      <div className='flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-xs'>
+      <div className='flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs'>
         <span className='text-muted-foreground'>字号</span>
         <select
           value={fontSize}
           onChange={(e) => onFontSizeChange(Number(e.target.value) as FontSizeOption)}
-          className='bg-transparent font-medium text-foreground outline-none cursor-pointer'>
+          className='bg-transparent font-mono font-medium text-foreground outline-none cursor-pointer'>
           {FONT_SIZES.map((size) => (
             <option key={size} value={size} className='bg-card text-foreground'>
               {size}px

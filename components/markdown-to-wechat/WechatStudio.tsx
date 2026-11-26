@@ -4,15 +4,15 @@ import { useEffect, useMemo, useState } from 'react'
 import { EditorPanel } from './EditorPanel'
 import { PreviewPanel } from './PreviewPanel'
 import { renderWechatArticle } from './engine/renderer'
-import { SAMPLE_MARKDOWN } from './engine/tokens'
-import { CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './engine/types'
+import { DEFAULT_ARTICLE_META, SAMPLE_MARKDOWN } from './engine/tokens'
+import { ArticleMeta, CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './engine/types'
 import { exportHtmlFile } from './engine/wechat-inline'
 
 const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v4'
 
 interface DraftState {
   markdown: string
-  author: string
+  meta: ArticleMeta
   themeId: ThemeId
   visualLevel: VisualLevel
   paletteId: string
@@ -23,7 +23,7 @@ interface DraftState {
 
 const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
-  author: '唯知AI',
+  meta: DEFAULT_ARTICLE_META,
   themeId: 'magazine-news',
   visualLevel: 'motion',
   paletteId: 'default',
@@ -40,8 +40,13 @@ export function WechatStudio() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
-        const parsed = JSON.parse(saved) as Partial<DraftState>
-        setDraft((prev) => ({ ...prev, ...parsed }))
+        const parsed = JSON.parse(saved) as Partial<DraftState> & { author?: string }
+        const mergedMeta: ArticleMeta = {
+          ...DEFAULT_ARTICLE_META,
+          ...(parsed.meta || {}),
+          ...(parsed.author && !parsed.meta?.author ? { author: parsed.author } : {})
+        }
+        setDraft((prev) => ({ ...prev, ...parsed, meta: mergedMeta }))
       }
     } catch {
       // ignore storage errors
@@ -67,7 +72,7 @@ export function WechatStudio() {
         paletteId: draft.paletteId,
         customColors: draft.customColors,
         fontSize: draft.fontSize,
-        author: draft.author
+        meta: draft.meta
       }),
     [
       draft.markdown,
@@ -76,15 +81,15 @@ export function WechatStudio() {
       draft.paletteId,
       draft.customColors,
       draft.fontSize,
-      draft.author
+      draft.meta
     ]
   )
 
   return (
-    <div className='grid h-full min-h-0 grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-2 lg:grid-rows-[minmax(0,1fr)] overflow-hidden bg-card'>
+    <div className='grid h-full min-h-0 grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-2 lg:grid-rows-[minmax(0,1fr)] overflow-hidden bg-background'>
       <EditorPanel
         markdown={draft.markdown}
-        author={draft.author}
+        meta={draft.meta}
         themeId={draft.themeId}
         visualLevel={draft.visualLevel}
         paletteId={draft.paletteId}
@@ -93,7 +98,7 @@ export function WechatStudio() {
         wordCount={rendered.wordCount}
         readingMinutes={rendered.readingMinutes}
         onMarkdownChange={(markdown) => setDraft((prev) => ({ ...prev, markdown }))}
-        onAuthorChange={(author) => setDraft((prev) => ({ ...prev, author }))}
+        onMetaChange={(meta) => setDraft((prev) => ({ ...prev, meta }))}
         onThemeChange={(themeId) => setDraft((prev) => ({ ...prev, themeId }))}
         onVisualLevelChange={(visualLevel) => setDraft((prev) => ({ ...prev, visualLevel }))}
         onPaletteChange={(paletteId) => setDraft((prev) => ({ ...prev, paletteId }))}

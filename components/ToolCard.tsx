@@ -12,10 +12,10 @@ interface ToolCardProps {
 }
 
 const dotColorMap: Record<Tool['color'], string> = {
-  yellow: 'bg-amber-400',
-  cyan: 'bg-sky-400',
-  magenta: 'bg-violet-400',
-  white: 'bg-slate-400'
+  yellow: 'bg-amber-500',
+  cyan: 'bg-sky-500',
+  magenta: 'bg-violet-500',
+  white: 'bg-neutral-400'
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
@@ -51,27 +51,27 @@ export function ToolCard({ tool }: ToolCardProps) {
         type='button'
         onClick={togglePin}
         aria-label='Pin tool'
-        className={`absolute top-3.5 right-3.5 z-10 p-1.5 rounded-lg transition-all cursor-pointer ${
+        className={`absolute top-3.5 right-3.5 z-10 p-1.5 rounded-md border transition-all cursor-pointer ${
           isPinned
-            ? 'bg-main text-white shadow-xs'
-            : 'bg-muted/70 text-muted-foreground hover:text-main hover:bg-main-soft opacity-0 group-hover:opacity-100'
+            ? 'bg-foreground text-background border-foreground'
+            : 'bg-background text-muted-foreground border-border hover:text-foreground hover:border-foreground/40 opacity-0 group-hover:opacity-100'
         }`}>
-        <Pin className={`w-3.5 h-3.5 ${isPinned ? 'fill-current' : ''}`} />
+        <Pin className={`w-3 h-3 ${isPinned ? 'fill-current' : ''}`} />
       </button>
 
       <Link href={tool.href} className='block h-full'>
-        <Card className='card-style cursor-pointer overflow-hidden h-full py-0'>
+        <Card className='card-style cursor-pointer overflow-hidden h-full py-0 shadow-none'>
           <CardHeader className='space-y-3 p-5'>
             <div className='flex items-center justify-between'>
-              <div className='w-10 h-10 rounded-xl bg-main-soft text-main flex items-center justify-center text-lg font-bold uppercase'>
+              <div className='w-9 h-9 rounded-md bg-secondary border border-border text-foreground flex items-center justify-center text-sm font-mono font-semibold uppercase'>
                 {name.charAt(0)}
               </div>
-              <span className={`w-2 h-2 rounded-full ${dotColorMap[tool.color]} opacity-70 group-hover:opacity-100 transition-opacity`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${dotColorMap[tool.color]}`} />
             </div>
             <div>
-              <CardTitle className='text-foreground text-base font-semibold mb-1.5 flex items-center gap-1 group-hover:text-main transition-colors'>
+              <CardTitle className='text-foreground text-sm font-semibold mb-1.5 flex items-center gap-1'>
                 <span className='truncate'>{name}</span>
-                <ArrowUpRight className='w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all shrink-0' />
+                <ArrowUpRight className='w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0' />
               </CardTitle>
               <CardDescription className='text-muted-foreground text-xs leading-relaxed line-clamp-2'>{description}</CardDescription>
             </div>

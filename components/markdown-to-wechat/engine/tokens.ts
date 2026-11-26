@@ -1,4 +1,5 @@
 import {
+  ArticleMeta,
   ColorPalette,
   CustomColors,
   LayoutTheme,
@@ -7,6 +8,15 @@ import {
   VisualCapabilities,
   VisualLevel
 } from './types'
+
+export const DEFAULT_ARTICLE_META: ArticleMeta = {
+  avatar: '',
+  author: '唯知AI',
+  date: '',
+  category: '',
+  tags: '',
+  ending: '我是 唯知AI，请多多点赞关注，我将持续分享优秀内容。'
+}
 
 export const VISUAL_LEVELS: { level: VisualLevel; badge: string; name: string; desc: string }[] = [
   { level: 'basic', badge: '基础', name: '基础排版', desc: '保留主题配色、标题层级与引用/代码高亮' },

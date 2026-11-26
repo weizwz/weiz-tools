@@ -50,14 +50,17 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   const colors = resolvePaletteColors(theme, options.paletteId, options.customColors)
   const capabilities = resolveVisualCapabilities(options.visualLevel)
   const now = new Date()
+  const { meta } = options
+  const dateStr = meta.date.trim() || `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`
 
   const ctx: RenderContext = {
     theme,
     colors,
     capabilities,
     fontSize: options.fontSize,
-    author: options.author,
-    dateStr: `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`
+    author: meta.author,
+    dateStr,
+    meta
   }
 
   const slots = { ...baseSlots, ...theme.slots }
@@ -239,6 +242,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       ? theme.slots.renderToc(h2Headings, ctx)
       : ''
 
+  const endingHtml = slots.renderEnding(ctx)
   const tailHtml =
     (capabilities.useMotion || capabilities.useFancyDivider) && theme.slots.renderTail
       ? theme.slots.renderTail(ctx)
@@ -249,6 +253,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       ${bannerHtml}
       ${tocHtml}
       ${bodyHtml}
+      ${endingHtml}
       ${tailHtml}
     </section>
   `.trim()

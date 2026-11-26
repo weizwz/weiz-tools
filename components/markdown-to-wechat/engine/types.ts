@@ -46,6 +46,15 @@ export interface VisualCapabilities {
   useMotion: boolean
 }
 
+export interface ArticleMeta {
+  avatar: string
+  author: string
+  date: string
+  category: string
+  tags: string
+  ending: string
+}
+
 export interface RenderContext {
   theme: LayoutTheme
   colors: PaletteColors
@@ -53,6 +62,7 @@ export interface RenderContext {
   fontSize: FontSizeOption
   author: string
   dateStr: string
+  meta: ArticleMeta
 }
 
 export interface MotionPreset {
@@ -85,6 +95,7 @@ export interface LayoutTheme {
     renderBlockquote?: (content: string, ctx: RenderContext) => string
     renderDivider?: (ctx: RenderContext) => string
     renderImage?: (href: string, text: string, ctx: RenderContext) => string
+    renderEnding?: (ctx: RenderContext) => string
     renderTail?: (ctx: RenderContext) => string
   }
 }
@@ -95,7 +106,7 @@ export interface RenderOptions {
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
-  author: string
+  meta: ArticleMeta
 }
 
 export interface ComplianceIssue {

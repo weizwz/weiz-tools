@@ -1,14 +1,14 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Download, FileText, Trash2 } from 'lucide-react'
+import { ArticleMetaPopover } from './ArticleMetaPopover'
 import { ThemeSelector } from './ThemeSelector'
-import { CustomColors, FontSizeOption, ThemeId, VisualLevel } from './engine/types'
+import { ArticleMeta, CustomColors, FontSizeOption, ThemeId, VisualLevel } from './engine/types'
 
 interface EditorPanelProps {
   markdown: string
-  author: string
+  meta: ArticleMeta
   themeId: ThemeId
   visualLevel: VisualLevel
   paletteId: string
@@ -17,7 +17,7 @@ interface EditorPanelProps {
   wordCount: number
   readingMinutes: number
   onMarkdownChange: (value: string) => void
-  onAuthorChange: (value: string) => void
+  onMetaChange: (meta: ArticleMeta) => void
   onThemeChange: (id: ThemeId) => void
   onVisualLevelChange: (level: VisualLevel) => void
   onPaletteChange: (paletteId: string) => void
@@ -30,7 +30,7 @@ interface EditorPanelProps {
 
 export function EditorPanel({
   markdown,
-  author,
+  meta,
   themeId,
   visualLevel,
   paletteId,
@@ -39,7 +39,7 @@ export function EditorPanel({
   wordCount,
   readingMinutes,
   onMarkdownChange,
-  onAuthorChange,
+  onMetaChange,
   onThemeChange,
   onVisualLevelChange,
   onPaletteChange,
@@ -50,11 +50,11 @@ export function EditorPanel({
   onExportHtml
 }: EditorPanelProps) {
   return (
-    <section className='flex h-full min-h-0 flex-col bg-card border-r border-border min-w-0'>
+    <section className='flex h-full min-h-0 flex-col bg-background border-r border-border min-w-0'>
       {/* 顶部控制栏 */}
       <div className='border-b border-border px-4 py-2.5 space-y-2'>
         <div className='flex flex-wrap items-center justify-between gap-2'>
-          <span className='text-xs font-semibold tracking-wider text-muted-foreground uppercase'>
+          <span className='text-[11px] font-mono tracking-wider text-muted-foreground uppercase'>
             MARKDOWN
           </span>
           <ThemeSelector
@@ -71,17 +71,9 @@ export function EditorPanel({
           />
         </div>
 
-        {/* 第二行：署名与快捷操作 */}
+        {/* 第二行：文章信息与快捷操作 */}
         <div className='flex flex-wrap items-center justify-between gap-2'>
-          <div className='flex items-center gap-2'>
-            <span className='text-xs text-muted-foreground shrink-0'>署名</span>
-            <Input
-              value={author}
-              onChange={(e) => onAuthorChange(e.target.value)}
-              placeholder='公众号名称 / 作者'
-              className='h-7 w-36 rounded-full px-3 text-xs'
-            />
-          </div>
+          <ArticleMetaPopover meta={meta} onChange={onMetaChange} />
 
           <div className='flex items-center gap-1.5'>
             <Button
@@ -89,7 +81,7 @@ export function EditorPanel({
               variant='outline'
               size='xs'
               onClick={onLoadSample}
-              className='rounded-full cursor-pointer'
+              className='rounded-md cursor-pointer'
             >
               <FileText className='h-3 w-3' />
               <span>载入示例</span>
@@ -99,7 +91,7 @@ export function EditorPanel({
               variant='outline'
               size='xs'
               onClick={onClear}
-              className='rounded-full cursor-pointer'
+              className='rounded-md cursor-pointer'
             >
               <Trash2 className='h-3 w-3' />
               <span>清空</span>
@@ -109,7 +101,7 @@ export function EditorPanel({
               variant='outline'
               size='xs'
               onClick={onExportHtml}
-              className='rounded-full cursor-pointer'
+              className='rounded-md cursor-pointer'
             >
               <Download className='h-3 w-3' />
               <span>导出 HTML</span>
@@ -130,7 +122,7 @@ export function EditorPanel({
       </div>
 
       {/* 底部统计栏 */}
-      <div className='flex items-center justify-between border-t border-border px-4 py-1.5 text-xs text-muted-foreground bg-muted/30'>
+      <div className='flex items-center justify-between border-t border-border px-4 py-1.5 font-mono text-[11px] tabular-nums text-muted-foreground bg-secondary/40'>
         <span>纯前端本地渲染 · 自动保存草稿</span>
         <span>
           {wordCount} 字 · 预计阅读 {readingMinutes} 分钟

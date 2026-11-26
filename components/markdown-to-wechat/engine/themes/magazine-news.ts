@@ -31,23 +31,34 @@ export const magazineNewsTheme: LayoutTheme = {
   preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, fontSize, author, dateStr } = ctx
+      const { colors, capabilities, fontSize, author, dateStr, meta } = ctx
       const authorLabel = author.trim() || '杂志资讯'
       const borderCol = hexToRgba(colors.headingDecor, 0.28)
       const tagBg = hexToRgba(colors.headingDecor, 0.08)
-
-      const bannerMotion = capabilities.useMotion
-        ? `<section style="margin-top:8px;">${swissSignalMotion.renderBannerMotion(colors, true)}</section>`
+      const avatarHtml = meta.avatar
+        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.5);flex-shrink:0;" />`
         : ''
+      const tagList = [
+        ...(meta.category.trim() ? [meta.category.trim()] : []),
+        ...meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
+      ].slice(0, 3)
+      const badges = (tagList.length > 0 ? tagList : ['深度解析', '推荐'])
+        .map(
+          (t) =>
+            `<span style="background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;font-size:9px;color:#fff;font-weight:600;">${escapeHtml(t)}</span>`
+        )
+        .join('')
+
+      const bannerMotion = capabilities.useMotion ? `<section style="margin-top:8px;">${swissSignalMotion.renderBannerMotion(colors, true)}</section>` : ''
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border-radius:16px;overflow:hidden;border:1px solid ${borderCol};box-shadow:0 4px 16px -6px ${hexToRgba(colors.headingDecor, 0.14)};">
           <section style="padding:24px 22px 12px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
             <section style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
               <span style="width:7px;height:7px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">DEEP DIVE · 深度解析</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">KEEP SHARE · 持续分享</span>
               <span style="flex:1;height:1px;background:linear-gradient(to right,${borderCol},transparent);display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;color:${ctx.theme.textMuted};font-weight:500;">${dateStr}</span>
+              <span style="font-size:10px;color:${ctx.theme.textMuted};font-weight:500;">${escapeHtml(dateStr)}</span>
             </section>
             <p style="font-size:${fontSize + 5}px;font-weight:900;color:${colors.heading};margin:0 0 12px;line-height:1.35;letter-spacing:-0.4px;">
               ${escapeHtml(title)}
@@ -55,11 +66,13 @@ export const magazineNewsTheme: LayoutTheme = {
             <section style="width:48px;height:3px;background:linear-gradient(to right,${colors.headingDecor},${colors.strong});border-radius:2px;"><span leaf="">&nbsp;</span></section>
             ${bannerMotion}
           </section>
-          <section style="background:${colors.headingDecor};padding:11px 22px;display:flex;align-items:center;justify-content:space-between;">
-            <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;letter-spacing:0.5px;">${escapeHtml(authorLabel)}</p>
-            <section style="display:flex;gap:4px;">
-              <span style="background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;font-size:9px;color:#fff;font-weight:600;">深度拆解</span>
-              <span style="background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;font-size:9px;color:#fff;font-weight:600;">实战</span>
+          <section style="background:${colors.headingDecor};padding:11px 22px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <section style="display:flex;align-items:center;gap:7px;">
+              ${avatarHtml}
+              <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;letter-spacing:0.5px;">${escapeHtml(authorLabel)}</p>
+            </section>
+            <section style="display:flex;gap:4px;flex-wrap:wrap;">
+              ${badges}
             </section>
           </section>
         </section>

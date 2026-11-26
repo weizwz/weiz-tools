@@ -45,5 +45,28 @@ export const baseSlots = {
         ${text ? `<figcaption style="margin-top:8px;font-size:12px;color:${theme.textMuted};">— ${escapeHtml(text)}</figcaption>` : ''}
       </figure>
     `
+  },
+
+  renderEnding(ctx: RenderContext): string {
+    const { meta, colors, theme, author, dateStr } = ctx
+    const ending = meta.ending.trim()
+    if (!ending) return ''
+    const authorName = author.trim() || theme.name
+    const avatarHtml = meta.avatar
+      ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorName)}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.35)};flex-shrink:0;" />`
+      : `<section style="width:42px;height:42px;border-radius:50%;background:${colors.headingDecor};color:#ffffff;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;">${escapeHtml(authorName.slice(0, 1))}</section>`
+
+    return `
+      <section style="margin:28px 0 8px 0;padding:14px 16px;background:${colors.tableAccent};border:1px solid ${hexToRgba(colors.headingDecor, 0.22)};border-radius:12px;">
+        <section style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          ${avatarHtml}
+          <section style="min-width:0;flex:1;">
+            <p style="margin:0;font-size:13.5px;font-weight:800;color:${colors.heading};line-height:1.3;">${escapeHtml(authorName)}</p>
+            <p style="margin:2px 0 0;font-size:11px;color:${theme.textMuted};line-height:1.2;">${escapeHtml(dateStr)}${meta.category.trim() ? ` · ${escapeHtml(meta.category.trim())}` : ''}</p>
+          </section>
+        </section>
+        <p style="margin:0;font-size:13px;line-height:1.75;color:${theme.text};">${escapeHtml(ending)}</p>
+      </section>
+    `
   }
 }

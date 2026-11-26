@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
-import { Moon, Sun, Menu, X, Languages, ChevronDown } from 'lucide-react'
+import { Moon, Sun, Menu, X, Languages, ChevronDown, ArrowUpRight } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
 import { categories, categoryIds, tools } from '@/data/tools'
 
@@ -49,18 +49,25 @@ export function Navbar() {
   }
 
   return (
-    <header className='fixed top-0 inset-x-0 z-50 h-14 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-border transition-colors'>
-      <nav className='max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-6'>
-        <Link href='/' className='flex items-center gap-2.5 hover:opacity-85 transition-opacity shrink-0'>
-          <Image src='/logo.png' alt='logo' width={28} height={28} className='rounded-lg' />
-          <span className='font-semibold text-base tracking-tight text-foreground whitespace-nowrap'>{t.common.siteName}</span>
-        </Link>
+    <header className='fixed top-0 inset-x-0 z-50 h-14 backdrop-blur-md bg-background/85 border-b border-border'>
+      <nav className='max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-4'>
+        <div className='flex items-center gap-3 shrink-0'>
+          <Link href='/' className='flex items-center gap-2.5 group'>
+            <div className='w-6 h-6 rounded-md overflow-hidden border border-border bg-secondary flex items-center justify-center'>
+              <Image src='/logo.png' alt='logo' width={24} height={24} className='w-full h-full object-cover' />
+            </div>
+            <span className='font-semibold text-sm tracking-[-0.02em] text-foreground whitespace-nowrap'>{t.common.siteName}</span>
+          </Link>
+          <span className='hidden sm:inline-block text-border select-none font-mono text-sm'>/</span>
+          <span className='hidden sm:inline-block text-[11px] font-mono text-muted-foreground tracking-tight'>tools</span>
+        </div>
 
-        <div className='hidden lg:flex items-center gap-1 text-sm font-medium text-muted-foreground flex-1 justify-center'>
+        <div className='hidden lg:flex items-center gap-0.5 text-[13px] text-muted-foreground flex-1 justify-center'>
           {categories.map((category, index) => {
             const categoryId = categoryIds[index]
             const categoryTools = getToolsByCategory(index)
             const hasDropdown = categoryId !== 'home' && categoryTools.length > 0
+            const isOpen = activeDropdown === index
 
             return (
               <div
@@ -72,28 +79,33 @@ export function Navbar() {
                   <Link
                     href='/'
                     onClick={() => handleCategoryClick(index)}
-                    className='flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-foreground hover:bg-muted/70 transition-colors whitespace-nowrap'>
+                    className='flex items-center gap-1 px-3 py-1.5 rounded-md hover:text-foreground hover:bg-muted transition-colors whitespace-nowrap'>
                     {category}
                   </Link>
                 ) : (
                   <button
                     type='button'
                     onClick={() => handleCategoryClick(index)}
-                    className='flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-foreground hover:bg-muted/70 transition-colors whitespace-nowrap cursor-pointer'>
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-md transition-colors whitespace-nowrap cursor-pointer ${
+                      isOpen ? 'text-foreground bg-muted' : 'hover:text-foreground hover:bg-muted'
+                    }`}>
                     {category}
-                    {hasDropdown && <ChevronDown className='w-3.5 h-3.5 opacity-60' />}
+                    {hasDropdown && (
+                      <ChevronDown className={`w-3 h-3 opacity-50 transition-transform duration-150 ${isOpen ? 'rotate-180 opacity-100' : ''}`} />
+                    )}
                   </button>
                 )}
 
-                {hasDropdown && activeDropdown === index && (
-                  <div className='absolute top-full left-0 pt-1.5 min-w-[200px]'>
-                    <div className='bg-popover text-popover-foreground rounded-xl shadow-lg shadow-slate-900/5 border border-border py-1.5'>
+                {hasDropdown && isOpen && (
+                  <div className='absolute top-full left-0 pt-2 min-w-[216px] animate-in fade-in-0 zoom-in-95 duration-100'>
+                    <div className='bg-popover text-popover-foreground rounded-lg shadow-lg border border-border p-1'>
                       {categoryTools.map((tool) => (
                         <Link
                           key={tool.id}
                           href={tool.href}
-                          className='block px-3.5 py-2 text-sm text-muted-foreground hover:bg-main-soft hover:text-main transition-colors'>
-                          {tool.name}
+                          className='flex items-center justify-between px-2.5 py-1.5 rounded-md text-[13px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors group/item'>
+                          <span className='truncate'>{tool.name}</span>
+                          <ArrowUpRight className='w-3.5 h-3.5 opacity-0 group-hover/item:opacity-80 transition-opacity shrink-0' />
                         </Link>
                       ))}
                     </div>
@@ -104,18 +116,26 @@ export function Navbar() {
           })}
         </div>
 
-        <div className='flex items-center gap-1.5 shrink-0'>
+        <div className='flex items-center gap-1 shrink-0'>
+          <Link
+            href='/about'
+            className='hidden sm:inline-flex items-center px-2.5 py-1.5 rounded-md text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted transition-colors'>
+            {t.nav.about}
+          </Link>
+
+          <div className='h-4 w-px bg-border hidden sm:block mx-1' />
+
           <div className='relative' onMouseEnter={() => setIsLangOpen(true)} onMouseLeave={() => setIsLangOpen(false)}>
             <button
               type='button'
-              className='h-8 px-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors cursor-pointer flex items-center gap-1 text-xs font-medium'
+              className='h-8 px-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer flex items-center gap-1.5 text-xs font-mono'
               aria-label='Toggle Language'>
-              <Languages className='w-4 h-4' />
-              <span className='hidden sm:inline'>{lang === 'zh' ? '中文' : 'EN'}</span>
+              <Languages className='w-3.5 h-3.5' />
+              <span className='hidden sm:inline'>{lang === 'zh' ? 'ZH' : 'EN'}</span>
             </button>
             {isLangOpen && (
-              <div className='absolute top-full right-0 pt-1.5 min-w-[110px]'>
-                <div className='bg-popover rounded-xl shadow-lg shadow-slate-900/5 border border-border py-1'>
+              <div className='absolute top-full right-0 pt-2 min-w-[112px] animate-in fade-in-0 zoom-in-95 duration-100'>
+                <div className='bg-popover rounded-lg shadow-lg border border-border p-1'>
                   {languages.map((l) => (
                     <button
                       type='button'
@@ -124,10 +144,10 @@ export function Navbar() {
                         setLang(l.code)
                         setIsLangOpen(false)
                       }}
-                      className={`w-full text-left px-3.5 py-1.5 text-sm transition-colors cursor-pointer ${
+                      className={`w-full text-left px-2.5 py-1.5 rounded-md text-[13px] transition-colors cursor-pointer ${
                         lang === l.code
-                          ? 'text-main font-medium bg-main-soft'
-                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                          ? 'text-foreground font-medium bg-muted'
+                          : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                       }`}>
                       {l.label}
                     </button>
@@ -139,7 +159,7 @@ export function Navbar() {
 
           <button
             type='button'
-            className='h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors cursor-pointer flex items-center justify-center'
+            className='h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer flex items-center justify-center'
             onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label='Toggle Dark Mode'>
             <Moon className='w-4 h-4 block dark:hidden' />
@@ -149,15 +169,15 @@ export function Navbar() {
           <button
             type='button'
             aria-label='Toggle Menu'
-            className='lg:hidden h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 flex items-center justify-center'
+            className='lg:hidden h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted flex items-center justify-center cursor-pointer'
             onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X className='w-5 h-5' /> : <Menu className='w-5 h-5' />}
+            {isMenuOpen ? <X className='w-4 h-4' /> : <Menu className='w-4 h-4' />}
           </button>
         </div>
       </nav>
 
       {isMenuOpen && (
-        <div className='lg:hidden bg-card border-b border-border absolute w-full left-0 top-14 shadow-lg'>
+        <div className='lg:hidden bg-background border-b border-border absolute w-full left-0 top-14 shadow-lg'>
           <div className='px-4 py-3 space-y-1 flex flex-col max-h-[calc(100vh-3.5rem)] overflow-y-auto'>
             {categories.map((category, index) => {
               const categoryId = categoryIds[index]
@@ -172,7 +192,7 @@ export function Navbar() {
                         setIsMenuOpen(false)
                         handleCategoryClick(index)
                       }}
-                      className='block w-full text-foreground font-medium hover:text-main text-left px-3 py-2 rounded-lg hover:bg-muted/70 transition-colors text-sm'>
+                      className='block w-full text-foreground font-medium text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm'>
                       {category}
                     </Link>
                   ) : (
@@ -183,18 +203,18 @@ export function Navbar() {
                           setIsMenuOpen(false)
                           handleCategoryClick(index)
                         }}
-                        className='w-full text-foreground font-medium hover:text-main text-left px-3 py-2 rounded-lg hover:bg-muted/70 transition-colors text-sm'>
+                        className='w-full text-foreground font-medium text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm'>
                         {category}
                       </button>
 
                       {categoryTools.length > 0 && (
-                        <div className='ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2'>
+                        <div className='ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2.5'>
                           {categoryTools.map((tool) => (
                             <Link
                               key={tool.id}
                               href={tool.href}
                               onClick={() => setIsMenuOpen(false)}
-                              className='block text-xs text-muted-foreground hover:text-main px-3 py-1.5 rounded-md hover:bg-muted/50 transition-colors'>
+                              className='block text-xs text-muted-foreground hover:text-foreground px-3 py-1.5 rounded-md hover:bg-muted/70 transition-colors'>
                               {tool.name}
                             </Link>
                           ))}
@@ -205,6 +225,14 @@ export function Navbar() {
                 </div>
               )
             })}
+            <div className='pt-2 mt-2 border-t border-border'>
+              <Link
+                href='/about'
+                onClick={() => setIsMenuOpen(false)}
+                className='block w-full text-muted-foreground font-medium hover:text-foreground text-left px-3 py-2 rounded-md hover:bg-muted transition-colors text-sm'>
+                {t.nav.about}
+              </Link>
+            </div>
           </div>
         </div>
       )}

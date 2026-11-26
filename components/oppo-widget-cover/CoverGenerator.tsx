@@ -262,7 +262,7 @@ export function CoverGenerator() {
   }
 
   return (
-    <div className='flex h-full bg-white'>
+    <div className='flex h-full bg-background'>
       {/* 左侧布局选择面板 */}
       <LayoutPanel layoutType={layoutType} selectedLayout={selectedLayout} onLayoutTypeChange={handleLayoutTypeChange} onLayoutSelect={handleLayoutSelect} />
 

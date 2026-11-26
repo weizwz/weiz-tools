@@ -92,10 +92,10 @@ export function TiltCanvasPreview({ cards, style, onCardsChange }: TiltCanvasPre
   const exportOffsetX = (canvasSize - exportWidth) / 2
 
   return (
-    <div className='flex-1 flex items-center justify-center bg-gray-100 overflow-hidden p-8'>
+    <div className='flex-1 flex items-center justify-center bg-secondary/50 geist-grid-bg overflow-hidden p-8'>
       {/* 整体画布容器 3216×3216 */}
       <div
-        className='relative'
+        className='relative shadow-sm ring-1 ring-border'
         style={{
           width: canvasSize,
           height: canvasSize,
@@ -106,7 +106,7 @@ export function TiltCanvasPreview({ cards, style, onCardsChange }: TiltCanvasPre
         }}>
         {/* 导出区域虚线框 1440×3216（全高，水平居中） */}
         <div
-          className='absolute border-2 border-dashed border-main pointer-events-none z-20'
+          className='absolute border border-dashed border-main pointer-events-none z-20'
           style={{
             left: exportOffsetX,
             top: 0,
@@ -117,12 +117,12 @@ export function TiltCanvasPreview({ cards, style, onCardsChange }: TiltCanvasPre
 
         {/* 导出区域标签 */}
         <div
-          className='absolute text-xs text-main bg-white/80 px-1 rounded z-20'
+          className='absolute text-[10px] font-mono text-foreground bg-background/90 border border-border px-1.5 py-0.5 rounded-sm z-20'
           style={{
-            left: exportOffsetX + 2,
-            top: 2
+            left: exportOffsetX + 4,
+            top: 4
           }}>
-          导出区域
+          EXPORT 1440×3216
         </div>
 
         {/* 倾斜的网格容器 */}
@@ -272,7 +272,7 @@ function CardCell({
         </>
       ) : (
         <div
-          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-main transition-colors'
+          className='w-full h-full flex flex-col items-center justify-center text-muted-foreground border border-dashed border-border hover:border-foreground/50 transition-colors'
           style={{ borderRadius: style.base.card.cornerRadius * previewScale }}>
           <Plus className='w-4 h-4' />
         </div>
@@ -329,7 +329,7 @@ function EmptyCell({
     <div
       className={cn(
         'flex items-center justify-center border border-dashed transition-colors',
-        canAdd ? 'border-gray-300 hover:border-main cursor-pointer' : 'border-gray-200 cursor-not-allowed opacity-50'
+        canAdd ? 'border-border hover:border-foreground/50 cursor-pointer' : 'border-border/50 cursor-not-allowed opacity-40'
       )}
       style={{
         width: TILT_CELL_SIZE * previewScale,
@@ -337,7 +337,7 @@ function EmptyCell({
         borderRadius: style.base.card.cornerRadius * previewScale
       }}
       onClick={handleClick}>
-      {canAdd && <Plus className='w-3 h-3 text-gray-400' />}
+      {canAdd && <Plus className='w-3 h-3 text-muted-foreground' />}
       <input ref={inputRef} type='file' accept='image/png,image/jpeg,image/webp' className='hidden' onChange={handleChange} />
     </div>
   )

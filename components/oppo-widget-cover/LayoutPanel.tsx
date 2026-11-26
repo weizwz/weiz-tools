@@ -13,18 +13,26 @@ interface LayoutPanelProps {
 
 export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, onLayoutSelect }: LayoutPanelProps) {
   return (
-    <div className='w-80 bg-card border-r border-border p-4 overflow-y-auto'>
-      <h3 className='text-sm font-semibold text-foreground mb-4'>布局选择</h3>
+    <div className='w-76 bg-background border-r border-border p-4 overflow-y-auto'>
+      <div className='flex items-center justify-between mb-3'>
+        <h3 className='text-[11px] font-mono uppercase tracking-wider text-muted-foreground'>LAYOUT · 布局选择</h3>
+      </div>
 
       {/* 布局类型切换 */}
-      <div className='flex rounded-lg border border-border bg-muted/40 p-1 mb-6'>
+      <div className='flex rounded-md border border-border bg-secondary/60 p-0.5 mb-6'>
         <button
-          className={cn('flex-1 py-2 text-sm rounded-md transition-all cursor-pointer', layoutType === 'regular' ? 'bg-main text-white shadow-xs' : 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+          className={cn(
+            'flex-1 py-1.5 text-xs font-medium rounded-sm transition-colors cursor-pointer',
+            layoutType === 'regular' ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
+          )}
           onClick={() => onLayoutTypeChange('regular')}>
           布局拼图
         </button>
         <button
-          className={cn('flex-1 py-2 text-sm rounded-md transition-all cursor-pointer', layoutType === 'tilt' ? 'bg-main text-white shadow-xs' : 'text-muted-foreground hover:text-foreground hover:bg-muted')}
+          className={cn(
+            'flex-1 py-1.5 text-xs font-medium rounded-sm transition-colors cursor-pointer',
+            layoutType === 'tilt' ? 'bg-foreground text-background' : 'text-muted-foreground hover:text-foreground'
+          )}
           onClick={() => onLayoutTypeChange('tilt')}>
           侧向排版
         </button>
@@ -32,12 +40,12 @@ export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, on
 
       {/* 正规排版布局列表 */}
       {layoutType === 'regular' && (
-        <div className='space-y-6'>
+        <div className='space-y-5'>
           {Object.entries(layoutsByCardCount)
             .sort(([a], [b]) => Number(a) - Number(b))
             .map(([count, layouts]) => (
               <div key={count}>
-                <h4 className='text-xs font-medium text-muted-foreground mb-2'>{count} 张图片</h4>
+                <h4 className='text-[11px] font-mono text-muted-foreground mb-2 tabular-nums'>{count} 张图片</h4>
                 <div className='grid grid-cols-3 gap-2'>
                   {layouts.map((layout) => (
                     <LayoutThumbnail key={layout.id} layout={layout} isSelected={selectedLayout?.id === layout.id} onClick={() => onLayoutSelect(layout)} />
@@ -60,13 +68,12 @@ export function LayoutPanel({ layoutType, selectedLayout, onLayoutTypeChange, on
   )
 }
 
-// 布局缩略图组件
 function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTemplate; isSelected: boolean; onClick: () => void }) {
   return (
     <button
       className={cn(
-        'w-full aspect-9/16 border-2 rounded-lg p-2 transition-all hover:border-main/50 overflow-hidden cursor-pointer',
-        isSelected ? 'border-main bg-main-soft' : 'border-border bg-muted/40'
+        'w-full aspect-9/16 border rounded-md p-2 transition-colors overflow-hidden cursor-pointer',
+        isSelected ? 'border-foreground bg-secondary ring-1 ring-foreground/20' : 'border-border bg-secondary/30 hover:border-foreground/40 hover:bg-secondary/60'
       )}
       onClick={onClick}
       title={layout.name}>
@@ -77,7 +84,8 @@ function LayoutThumbnail({ layout, isSelected, onClick }: { layout: LayoutTempla
               <div
                 key={slot.id}
                 className={cn(
-                  'bg-gray-300 shrink-0 grow-0 basis-auto',
+                  'shrink-0 grow-0 basis-auto transition-colors',
+                  isSelected ? 'bg-foreground/75' : 'bg-muted-foreground/30',
                   slot.size === 'small' && (layout.type === 'tilt' ? 'w-16 h-16 rounded-md' : 'w-4 h-4 rounded-xs'),
                   slot.size === 'medium' && (layout.type === 'tilt' ? 'w-36 h-16 rounded-md' : 'w-9 h-4 rounded-xs'),
                   slot.size === 'large' && (layout.type === 'tilt' ? 'w-36 h-36 rounded-md' : 'w-9 h-9 rounded-xs')

@@ -32,7 +32,7 @@ export const internalJournalTheme: LayoutTheme = {
   preHeaderBg: '#181a14',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, author, theme, dateStr } = ctx
+      const { colors, capabilities, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || '内刊手记'
       const parts = title
         .split(/[：:]/)
@@ -40,6 +40,17 @@ export const internalJournalTheme: LayoutTheme = {
         .filter(Boolean)
       const mainTitle = parts[0] || title
       const emphasis = parts[1] || ''
+      const categoryLabel = meta.category.trim() ? `内刊手记 · ${meta.category.trim()}` : '内刊手记 · 专栏观察'
+      const avatarHtml = meta.avatar
+        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.4);flex-shrink:0;" />`
+        : ''
+      const tagList = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
+      const badges = (tagList.length > 0 ? tagList : ['JOURNAL', 'NOTES'])
+        .map(
+          (t) =>
+            `<span style="background:#e5e7e0;color:#23251d;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:700;border:1px solid ${theme.borderColor};">${escapeHtml(t)}</span>`
+        )
+        .join('')
 
       const bannerMotion = capabilities.useMotion
         ? `<section style="margin-top:10px;">${botanicalNotesMotion.renderBannerMotion(colors, true)}</section>`
@@ -50,9 +61,9 @@ export const internalJournalTheme: LayoutTheme = {
           <section style="padding:22px 20px 12px;">
             <section style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
               <span style="width:8px;height:8px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#65675e;">内刊手记 · 专栏观察</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:2.5px;color:#65675e;">${escapeHtml(categoryLabel)}</span>
               <span style="flex:1;height:1px;background:${theme.borderColor};display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;color:${theme.textMuted};font-weight:500;">${dateStr}</span>
+              <span style="font-size:10px;color:${theme.textMuted};font-weight:500;">${escapeHtml(dateStr)}</span>
             </section>
             <p style="font-size:20px;font-weight:800;color:${colors.heading};margin:0 0 10px;line-height:1.25;letter-spacing:-0.4px;">
               ${escapeHtml(mainTitle)}${emphasis ? ` · <span style="border-bottom:3px solid ${colors.headingDecor};">${escapeHtml(emphasis)}</span>` : ''}
@@ -64,10 +75,12 @@ export const internalJournalTheme: LayoutTheme = {
             ${bannerMotion}
           </section>
           <section style="background:${colors.heading};padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
-            <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;">${escapeHtml(authorLabel)}</p>
-            <section style="display:flex;gap:6px;">
-              <span style="background:#e5e7e0;color:#23251d;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:700;border:1px solid ${theme.borderColor};">JOURNAL</span>
-              <span style="background:#e5e7e0;color:#23251d;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:700;border:1px solid ${theme.borderColor};">NOTES</span>
+            <section style="display:flex;align-items:center;gap:7px;">
+              ${avatarHtml}
+              <p style="font-size:12px;color:rgba(255,255,255,0.92);margin:0;font-weight:600;">${escapeHtml(authorLabel)}</p>
+            </section>
+            <section style="display:flex;gap:6px;flex-wrap:wrap;">
+              ${badges}
             </section>
           </section>
         </section>

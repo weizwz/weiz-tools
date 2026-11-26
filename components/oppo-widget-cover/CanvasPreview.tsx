@@ -26,10 +26,10 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
 
   if (!layout) {
     return (
-      <div className='flex-1 flex items-center justify-center bg-gray-100'>
-        <div className='text-center text-gray-400'>
-          <ImageIcon className='w-16 h-16 mx-auto mb-4 opacity-50' />
-          <p>请从左侧选择一个布局模板</p>
+      <div className='flex-1 flex items-center justify-center bg-secondary/50 geist-grid-bg'>
+        <div className='text-center text-muted-foreground'>
+          <ImageIcon className='w-12 h-12 mx-auto mb-3 opacity-40' />
+          <p className='text-xs font-mono'>请从左侧选择一个布局模板</p>
         </div>
       </div>
     )
@@ -40,7 +40,7 @@ export function CanvasPreview({ layout, cards, style, onImageUpload }: CanvasPre
   const rotateAngle = tiltConfig?.angle ?? 27
 
   return (
-    <div className='flex-1 flex items-center justify-center bg-gray-100 overflow-auto p-8'>
+    <div className='flex-1 flex items-center justify-center bg-secondary/50 geist-grid-bg overflow-auto p-8'>
       {/* 画布容器 */}
       <div
         style={{
@@ -142,10 +142,10 @@ function CardSlotItem({
         </>
       ) : (
         <div
-          className='w-full h-full flex flex-col items-center justify-center text-gray-400 border-2 border-dashed border-gray-300 hover:border-main transition-colors'
+          className='w-full h-full flex flex-col items-center justify-center text-muted-foreground border border-dashed border-border hover:border-foreground/50 transition-colors'
           style={{ borderRadius: style.base.card.cornerRadius * PREVIEW_SCALE }}>
-          <Plus className='w-6 h-6 mb-1' />
-          <span className='text-xs'>{slot.size === 'small' ? '小卡' : slot.size === 'medium' ? '中卡' : '大卡'}</span>
+          <Plus className='w-5 h-5 mb-1' />
+          <span className='text-[11px] font-mono'>{slot.size === 'small' ? '小卡' : slot.size === 'medium' ? '中卡' : '大卡'}</span>
         </div>
       )}
 
