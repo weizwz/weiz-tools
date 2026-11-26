@@ -181,6 +181,10 @@ const zh: Locale = {
       name: 'Markdown 预览',
       description: '实时预览 Markdown 渲染效果'
     },
+    'markdown-to-wechat': {
+      name: 'MD 转公众号',
+      description: '在线 Markdown 转微信公众号富文本排版工具，支持多主题与一键复制'
+    },
     'url-encoder': {
       name: 'URL 编解码',
       description: 'URL 编码和解码工具'

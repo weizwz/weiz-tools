@@ -1,0 +1,1 @@
+export { WechatStudio } from './WechatStudio'

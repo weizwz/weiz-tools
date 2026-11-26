@@ -10,8 +10,8 @@ import { useI18n } from '@/lib/i18n'
 import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 
-// 推荐项目 ID 配置，当前默认取前三个项目的 id
-const recommendedProjectIds = tools.slice(0, 3).map((t) => t.id)
+// 推荐项目 ID 配置
+const recommendedProjectIds = ['oppo-widget-cover', 'markdown-to-wechat', 'json-formatter']
 
 export default function Home() {
   const { t } = useI18n()

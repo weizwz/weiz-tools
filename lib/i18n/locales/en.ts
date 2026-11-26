@@ -109,6 +109,10 @@ const en: Locale = {
       name: 'Markdown Preview',
       description: 'Real-time Markdown rendering preview'
     },
+    'markdown-to-wechat': {
+      name: 'WeChat Layout',
+      description: 'Online Markdown to WeChat Official Account rich text formatter with themes and one-click copy'
+    },
     'url-encoder': {
       name: 'URL Codec',
       description: 'URL encoding and decoding tool'

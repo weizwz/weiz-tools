@@ -111,11 +111,11 @@ export const tools: Tool[] = [
   {
     id: 'markdown-to-wechat',
     name: 'MD 转公众号',
-    description: '将 Markdown 转换为微信公众号支持的富文本格式',
+    description: '在线 Markdown 转微信公众号富文本排版工具，支持多主题与一键复制',
     category: 'Markdown',
     color: 'yellow',
     href: '/tools/markdown-to-wechat',
-    tags: ['Markdown', 'WeChat'],
+    tags: ['Markdown', 'WeChat', '排版'],
     previewImage: '/tools.svg'
   },
   {
