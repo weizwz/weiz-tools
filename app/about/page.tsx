@@ -10,81 +10,58 @@ export default function AboutPage() {
   const { t } = useI18n()
 
   return (
-    <div className='min-h-screen bg-[#f5f7fa]'>
+    <div className='min-h-screen flex flex-col bg-background'>
       <Navbar />
 
-      <main className='pt-32 pb-20 px-4 sm:px-6 lg:px-8'>
+      <main className='flex-1 pt-24 pb-16 px-4 sm:px-6'>
         <div className='max-w-4xl mx-auto'>
-          {/* Header */}
-          <div className='mb-16 text-center'>
-            <h1 className='text-6xl md:text-7xl font-black text-main mb-6'>{t.about.title}</h1>
-            <p className='text-2xl font-semibold text-gray-600 mt-8'>{t.about.subtitle}</p>
+          <div className='mb-12 text-center'>
+            <h1 className='text-4xl sm:text-5xl font-bold tracking-tight text-foreground mb-3'>{t.about.title}</h1>
+            <p className='text-base sm:text-lg text-muted-foreground'>{t.about.subtitle}</p>
           </div>
 
-          {/* Mission */}
-          <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300 mb-8'>
-            <CardHeader className='p-6 md:p-8'>
-              <CardTitle className='text-3xl font-black text-gray-900 mb-4'>{t.about.missionTitle}</CardTitle>
-              <CardDescription className='text-lg font-medium text-gray-700'>{t.about.missionDesc}</CardDescription>
+          <Card className='card-style mb-6 py-0'>
+            <CardHeader className='p-6 sm:p-8'>
+              <CardTitle className='text-xl font-bold text-foreground mb-2'>{t.about.missionTitle}</CardTitle>
+              <CardDescription className='text-sm sm:text-base text-muted-foreground leading-relaxed'>{t.about.missionDesc}</CardDescription>
             </CardHeader>
           </Card>
 
-          {/* Features */}
-          <div className='grid md:grid-cols-2 gap-6 mb-12'>
-            <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <CardHeader className='p-6 md:p-8'>
-                <CardTitle className='text-2xl font-bold text-gray-900 mb-2'>{t.about.speedTitle}</CardTitle>
-                <CardDescription className='text-base font-medium text-gray-600'>{t.about.speedDesc}</CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <CardHeader className='p-6 md:p-8'>
-                <CardTitle className='text-2xl font-bold text-gray-900 mb-2'>{t.about.designTitle}</CardTitle>
-                <CardDescription className='text-base font-medium text-gray-600'>{t.about.designDesc}</CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <CardHeader className='p-6 md:p-8'>
-                <CardTitle className='text-2xl font-bold text-gray-900 mb-2'>{t.about.privacyTitle}</CardTitle>
-                <CardDescription className='text-base font-medium text-gray-600'>{t.about.privacyDesc}</CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-              <CardHeader className='p-6 md:p-8'>
-                <CardTitle className='text-2xl font-bold text-gray-900 mb-2'>{t.about.responsiveTitle}</CardTitle>
-                <CardDescription className='text-base font-medium text-gray-600'>{t.about.responsiveDesc}</CardDescription>
-              </CardHeader>
-            </Card>
+          <div className='grid md:grid-cols-2 gap-4 mb-10'>
+            {[
+              { title: t.about.speedTitle, desc: t.about.speedDesc },
+              { title: t.about.designTitle, desc: t.about.designDesc },
+              { title: t.about.privacyTitle, desc: t.about.privacyDesc },
+              { title: t.about.responsiveTitle, desc: t.about.responsiveDesc }
+            ].map((item) => (
+              <Card key={item.title} className='card-style py-0'>
+                <CardHeader className='p-6'>
+                  <CardTitle className='text-lg font-semibold text-foreground mb-1.5'>{item.title}</CardTitle>
+                  <CardDescription className='text-sm text-muted-foreground leading-relaxed'>{item.desc}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
           </div>
 
-          {/* Tech Stack */}
-          <div className='mb-12'>
-            <h2 className='text-4xl font-black text-gray-900 mb-6'>{t.about.techStackTitle}</h2>
-            <div className='flex flex-wrap gap-3'>
+          <div className='mb-10'>
+            <h2 className='text-xl font-bold text-foreground mb-4'>{t.about.techStackTitle}</h2>
+            <div className='flex flex-wrap gap-2'>
               {['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4', 'shadcn/ui', 'pnpm'].map((tech) => (
-                <Badge key={tech} className='bg-main text-white px-4 py-2 text-base font-semibold rounded-full border-0 shadow-md shadow-slate-200'>
+                <Badge key={tech} className='bg-main-soft text-main border border-main/20 px-3 py-1 text-xs font-medium rounded-lg'>
                   {tech}
                 </Badge>
               ))}
             </div>
           </div>
 
-          {/* Contact */}
-          <Card className='bg-white rounded-3xl border border-slate-200 shadow-md shadow-slate-200 hover:shadow-xl transition-all duration-300'>
-            <CardHeader className='p-6 md:p-8'>
-              <CardTitle className='text-3xl font-black text-gray-900 mb-4'>{t.about.contactTitle}</CardTitle>
-              <CardDescription className='text-lg font-medium text-gray-700 leading-relaxed'>
-                {t.about.contactDesc}
-                <br />
-                <br />
-                📧 Email: hello@weiztools.com
-                <br />
-                🐙 GitHub: github.com/weiz
-                <br />
-                🐦 Twitter: @weiztools
+          <Card className='card-style py-0'>
+            <CardHeader className='p-6 sm:p-8'>
+              <CardTitle className='text-xl font-bold text-foreground mb-3'>{t.about.contactTitle}</CardTitle>
+              <CardDescription className='text-sm text-muted-foreground leading-relaxed space-y-1.5'>
+                <p>{t.about.contactDesc}</p>
+                <p className='pt-2'>Email: hello@weiztools.com</p>
+                <p>GitHub: github.com/weiz</p>
+                <p>Twitter: @weiztools</p>
               </CardDescription>
             </CardHeader>
           </Card>

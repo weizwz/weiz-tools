@@ -37,7 +37,7 @@ export function PreviewPanel({
   }
 
   return (
-    <section className='flex h-full flex-col bg-[#f5f7fa] dark:bg-slate-950 min-w-0'>
+    <section className='flex h-full flex-col bg-background min-w-0'>
       {/* 顶部工具栏 */}
       <div className='flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card px-4 py-2.5'>
         <div className='flex items-center gap-2.5'>
@@ -60,7 +60,7 @@ export function PreviewPanel({
           <button
             type='button'
             onClick={handleCopy}
-            className='inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3.5 py-1 text-xs font-medium text-white hover:bg-slate-800 dark:bg-[#409eff] dark:hover:bg-[#66b1ff] transition-colors cursor-pointer'
+            className='inline-flex items-center gap-1.5 rounded-full bg-main px-3.5 py-1 text-xs font-medium text-white hover:bg-hover transition-colors cursor-pointer'
           >
             {copied ? <Check className='h-3.5 w-3.5' /> : <Copy className='h-3.5 w-3.5' />}
             <span>{copied ? '已复制' : '复制到公众号'}</span>

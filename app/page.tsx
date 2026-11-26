@@ -4,13 +4,11 @@
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import Link from 'next/link'
-import { Search, Pin, X } from 'lucide-react'
-import { tools } from '@/data/tools'
+import { Search, Pin, X, ArrowRight, Sparkles } from 'lucide-react'
+import { tools, categories } from '@/data/tools'
 import { useI18n } from '@/lib/i18n'
-import { useState, useEffect } from 'react'
-import { Badge } from '@/components/ui/badge'
+import { useState, useEffect, useRef } from 'react'
 
-// 推荐项目 ID 配置
 const recommendedProjectIds = ['oppo-widget-cover', 'markdown-to-wechat', 'json-formatter']
 
 export default function Home() {
@@ -18,8 +16,8 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('首页')
   const [pinnedTools, setPinnedTools] = useState<string[]>([])
+  const searchInputRef = useRef<HTMLInputElement>(null)
 
-  // 监听分类筛选事件
   useEffect(() => {
     const handleFilterCategory = (e: Event) => {
       const customEvent = e as CustomEvent
@@ -29,33 +27,42 @@ export default function Home() {
     return () => window.removeEventListener('filterCategory', handleFilterCategory)
   }, [])
 
-  // 从 localStorage 加载置顶工具
   useEffect(() => {
-    const loadPinnedTools = () => {
-      const saved = localStorage.getItem('pinnedTools')
-      if (saved) {
-        try {
-          setPinnedTools(JSON.parse(saved))
-        } catch (e) {
-          console.error('Failed to load pinned tools:', e)
-        }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === '/' && document.activeElement?.tagName !== 'INPUT' && document.activeElement?.tagName !== 'TEXTAREA') {
+        e.preventDefault()
+        searchInputRef.current?.focus()
       }
     }
-    loadPinnedTools()
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
-  // 切换置顶状态
+  useEffect(() => {
+    const saved = localStorage.getItem('pinnedTools')
+    if (!saved) return
+    Promise.resolve().then(() => {
+      try {
+        setPinnedTools(JSON.parse(saved))
+      } catch {
+        // ignore storage errors
+      }
+    })
+  }, [])
+
   const togglePin = (toolId: string) => {
     const newPinned = pinnedTools.includes(toolId) ? pinnedTools.filter((id) => id !== toolId) : [...pinnedTools, toolId]
     setPinnedTools(newPinned)
     localStorage.setItem('pinnedTools', JSON.stringify(newPinned))
   }
 
-  // 筛选工具
   const filteredTools = tools
     .filter((tool) => {
-      const matchesSearch =
-        searchQuery === '' || tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || tool.description.toLowerCase().includes(searchQuery.toLowerCase())
+      const toolLocale = t.tools[tool.id]
+      const name = (toolLocale?.name || tool.name).toLowerCase()
+      const desc = (toolLocale?.description || tool.description).toLowerCase()
+      const q = searchQuery.trim().toLowerCase()
+      const matchesSearch = q === '' || name.includes(q) || desc.includes(q)
       const matchesCategory = selectedCategory === '首页' || selectedCategory === '全部' || tool.category === selectedCategory
       return matchesSearch && matchesCategory
     })
@@ -65,91 +72,94 @@ export default function Home() {
       return bPin - aPin
     })
 
-  // 热门工具（前5个）
   const popularTools = tools.slice(0, 5)
-
-  // 推荐项目数据
-  const recommendedProjects = recommendedProjectIds.map((id) => tools.find((t) => t.id === id)).filter(Boolean) as typeof tools
+  const recommendedProjects = recommendedProjectIds.map((id) => tools.find((item) => item.id === id)).filter(Boolean) as typeof tools
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-slate-900'>
+    <div className='min-h-screen flex flex-col bg-background'>
       <Navbar />
 
-      {/* 第一模块：Hero Section */}
-      <section className='pt-24 pb-8 bg-white dark:bg-slate-900'>
-        <div className='container mx-auto px-6'>
-          <div className='flex flex-col lg:flex-row gap-12 items-center'>
+      {/* Hero Section */}
+      <section className='pt-24 pb-10 bg-card border-b border-border'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6'>
+          <div className='flex flex-col lg:flex-row gap-10 items-start lg:items-center'>
             {/* 左侧：标语、搜索栏、热门工具 */}
             <div className='w-full lg:w-7/12'>
-              {/* 网站标语 */}
-              <div className='mb-8'>
-                <p className='text-sm text-main font-semibold mb-2 uppercase tracking-wider'>{t.home.heroTag}</p>
-                <h1 className='text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white leading-tight'>{t.home.heroTitle}</h1>
-                <p className='text-slate-600 dark:text-slate-400 text-base leading-relaxed'>{t.home.heroDescription}</p>
+              <div className='mb-6'>
+                <div className='inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-main-soft text-main text-xs font-semibold mb-3'>
+                  <Sparkles className='w-3.5 h-3.5' />
+                  <span>{t.home.heroTag}</span>
+                </div>
+                <h1 className='text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3 leading-tight'>{t.home.heroTitle}</h1>
+                <p className='text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl'>{t.home.heroDescription}</p>
               </div>
 
               {/* 搜索栏 */}
-              <div className='relative mb-8'>
-                <Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400' />
+              <div className='relative mb-6 max-w-xl'>
+                <Search className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
                 <input
+                  ref={searchInputRef}
                   type='text'
                   placeholder={t.home.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className='w-full pl-12 pr-12 py-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-main/50 transition-all'
+                  className='w-full pl-10 pr-14 py-3 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-main/30 focus:border-main transition-all'
                 />
-                {searchQuery && (
+                {searchQuery ? (
                   <button
+                    type='button'
                     onClick={() => setSearchQuery('')}
-                    className='absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'>
-                    <X className='w-5 h-5' />
+                    aria-label='Clear search'
+                    className='absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer'>
+                    <X className='w-4 h-4' />
                   </button>
+                ) : (
+                  <kbd className='hidden sm:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center px-1.5 py-0.5 text-[11px] font-mono text-muted-foreground bg-muted border border-border rounded'>
+                    /
+                  </kbd>
                 )}
               </div>
 
-              {/* 使用量最多的工具 */}
-              <div>
-                <p className='text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3'>{t.home.popularTools}</p>
-                <div className='flex flex-wrap gap-2'>
-                  {popularTools.map((tool) => {
-                    const toolLocale = t.tools[tool.id]
-                    const toolName = toolLocale?.name || tool.name
-                    return (
-                      <Link key={tool.id} href={tool.href}>
-                        <Badge variant='secondary' className='cursor-pointer hover:bg-main hover:text-white transition-colors px-3 py-1.5'>
-                          {toolName}
-                        </Badge>
-                      </Link>
-                    )
-                  })}
-                </div>
+              {/* 常用工具 */}
+              <div className='flex flex-wrap items-center gap-2'>
+                <span className='text-xs font-medium text-muted-foreground mr-1'>{t.home.popularTools}:</span>
+                {popularTools.map((tool) => {
+                  const toolName = t.tools[tool.id]?.name || tool.name
+                  return (
+                    <Link
+                      key={tool.id}
+                      href={tool.href}
+                      className='inline-flex items-center px-2.5 py-1 rounded-lg bg-muted/70 hover:bg-main-soft text-xs font-medium text-muted-foreground hover:text-main border border-transparent hover:border-main/20 transition-colors'>
+                      {toolName}
+                    </Link>
+                  )
+                })}
               </div>
             </div>
 
-            {/* 右侧：推荐项目 */}
+            {/* 右侧：精选推荐 */}
             <div className='w-full lg:w-5/12'>
-              <div className='space-y-4'>
+              <div className='space-y-2.5'>
                 {recommendedProjects.map((project) => {
                   const toolLocale = t.tools[project.id]
                   const projectName = toolLocale?.name || project.name
                   const projectDesc = toolLocale?.description || project.description
 
                   return (
-                    <Link key={project.id} href={project.href} className='block'>
-                      <div className='flex gap-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all cursor-pointer group'>
-                        {/* 项目截图 */}
-                        <div className='w-24 h-20 shrink-0 rounded-lg overflow-hidden flex items-center justify-center relative'>
+                    <Link key={project.id} href={project.href} className='block group'>
+                      <div className='flex items-center gap-3.5 p-3 bg-background rounded-xl border border-border hover:border-main/40 hover:bg-card hover:shadow-sm transition-all'>
+                        <div className='w-14 h-14 shrink-0 rounded-md bg-card border border-border overflow-hidden flex items-center justify-center'>
                           <img
                             src={project.previewImage}
                             alt={projectName}
-                            className='h-full rounded-md group-hover:scale-120 transition-transform duration-300'
+                            className='w-full h-full object-contain group-hover:scale-120 transition-transform duration-200'
                           />
                         </div>
-                        {/* 项目信息 */}
-                        <div className='flex-1 min-w-0 flex flex-col justify-center'>
-                          <h3 className='font-bold text-lg text-slate-900 dark:text-white mb-1 group-hover:text-main transition-colors'>{projectName}</h3>
-                          <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-1'>{projectDesc}</p>
+                        <div className='flex-1 min-w-0'>
+                          <h3 className='font-semibold text-sm text-foreground group-hover:text-main transition-colors truncate'>{projectName}</h3>
+                          <p className='text-xs text-muted-foreground line-clamp-1 mt-0.5'>{projectDesc}</p>
                         </div>
+                        <ArrowRight className='w-4 h-4 text-muted-foreground group-hover:text-main group-hover:translate-x-0.5 transition-all shrink-0 mr-1' />
                       </div>
                     </Link>
                   )
@@ -160,17 +170,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 第二模块：精选工具 */}
-      <section id='all-tools' className='py-16 bg-slate-50 dark:bg-slate-900/50'>
-        <div className='container mx-auto px-6'>
-          <div className='flex justify-between items-center mb-8'>
-            <h2 className='text-2xl font-bold text-slate-900 dark:text-white'>{t.home.allTools}</h2>
-            <p className='text-sm text-slate-500'>
-              {filteredTools.length} {selectedCategory !== '首页' && selectedCategory !== '全部' && `· ${selectedCategory}`}
-            </p>
+      {/* 工具列表区 */}
+      <section id='all-tools' className='flex-1 py-10'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6'>
+          {/* 标题与分类胶囊 */}
+          <div className='flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6'>
+            <div className='flex items-baseline gap-2.5'>
+              <h2 className='text-xl font-bold text-foreground'>{t.home.allTools}</h2>
+              <span className='text-xs font-medium text-muted-foreground bg-muted px-2 py-0.5 rounded-full'>{filteredTools.length}</span>
+            </div>
+
+            <div className='flex items-center gap-1.5 overflow-x-auto pb-1'>
+              {categories.map((category) => {
+                const isActive = selectedCategory === category
+                return (
+                  <button
+                    key={category}
+                    type='button'
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
+                      isActive ? 'bg-main text-white shadow-xs' : 'bg-card text-muted-foreground border border-border hover:text-foreground hover:bg-muted/60'
+                    }`}>
+                    {category === '首页' ? '全部' : category}
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
             {filteredTools.map((tool) => {
               const toolLocale = t.tools[tool.id]
               const toolName = toolLocale?.name || tool.name
@@ -179,34 +207,43 @@ export default function Home() {
 
               return (
                 <div key={tool.id} className='relative group'>
-                  {/* 置顶按钮 */}
                   <button
+                    type='button'
                     onClick={(e) => {
                       e.preventDefault()
                       togglePin(tool.id)
                     }}
-                    className={`absolute top-3 right-3 z-10 p-2 rounded-lg transition-all ${
-                      isPinned ? 'bg-main text-white shadow-lg' : 'bg-white/80 dark:bg-slate-800/80 text-slate-400 hover:text-main'
+                    className={`absolute top-3.5 right-3.5 z-10 p-1.5 rounded-lg transition-all cursor-pointer ${
+                      isPinned
+                        ? 'bg-main text-white shadow-xs'
+                        : 'bg-muted/80 text-muted-foreground hover:text-main hover:bg-main-soft opacity-0 group-hover:opacity-100'
                     }`}
-                    title={t.home.pinTool}>
-                    <Pin className={`w-4 h-4 ${isPinned ? 'fill-current' : ''}`} />
+                    title={t.home.pinTool}
+                    aria-label={t.home.pinTool}>
+                    <Pin className={`w-3.5 h-3.5 ${isPinned ? 'fill-current' : ''}`} />
                   </button>
 
-                  {/* 工具卡片 */}
                   <Link href={tool.href} className='block h-full'>
-                    <div className='bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 hover:shadow-xl hover:border-main/50 transition-all duration-300 h-full flex flex-col'>
-                      <div className='flex-1'>
-                        <h3 className='text-lg font-bold text-slate-900 -mt-2 mb-1 dark:text-white group-hover:text-main transition-colors'>{toolName}</h3>
-                        <p className='text-sm text-slate-600 dark:text-slate-400 line-clamp-1'>{toolDesc}</p>
+                    <div className='card-style p-5 h-full flex flex-col justify-between gap-4'>
+                      <div className='flex items-start gap-3.5 pr-7'>
+                        <div className='w-11 h-11 shrink-0 rounded-sm bg-muted/60 border border-border flex items-center justify-center overflow-hidden'>
+                          <img
+                            src={tool.previewImage}
+                            alt={toolName}
+                            className='w-full h-full object-contain group-hover:scale-120 transition-transform duration-200'
+                          />
+                        </div>
+                        <div className='min-w-0'>
+                          <h3 className='text-sm font-semibold text-foreground group-hover:text-main transition-colors truncate'>{toolName}</h3>
+                          <p className='text-xs text-muted-foreground line-clamp-2 mt-1 leading-relaxed'>{toolDesc}</p>
+                        </div>
                       </div>
 
-                      {/* 工具预览区域 */}
-                      <div className='mt-4 h-36 bg-slate-100 dark:bg-slate-700/50 rounded-lg flex items-center justify-center overflow-hidden relative'>
-                        <img
-                          src={tool.previewImage}
-                          alt={toolName}
-                          className='h-32 w-32 rounded-sm group-hover:scale-120 transition-transform duration-500 dark:brightness-80'
-                        />
+                      <div className='flex items-center justify-between pt-2 border-t border-border/60'>
+                        <span className='text-[11px] font-medium text-muted-foreground bg-muted/70 px-2 py-0.5 rounded-md'>{tool.category}</span>
+                        <span className='text-xs font-medium text-main opacity-0 group-hover:opacity-100 transition-opacity inline-flex items-center gap-0.5'>
+                          使用 <ArrowRight className='w-3 h-3' />
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -216,8 +253,8 @@ export default function Home() {
           </div>
 
           {filteredTools.length === 0 && (
-            <div className='text-center py-16'>
-              <p className='text-slate-500 dark:text-slate-400'>{t.home.noMatchTools}</p>
+            <div className='text-center py-16 bg-card rounded-xl border border-border'>
+              <p className='text-sm text-muted-foreground'>{t.home.noMatchTools}</p>
             </div>
           )}
         </div>

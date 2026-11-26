@@ -46,8 +46,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='zh-CN' suppressHydrationWarning>
-      <head></head>
-      <body className='bg-white text-slate-800 dark:bg-gray-900 dark:text-slate-200'>
+      <head>
+        <meta name='color-scheme' content='light dark' />
+      </head>
+      <body className='min-h-screen bg-background text-foreground selection:bg-main/15 selection:text-main'>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
           <I18nProvider>{children}</I18nProvider>
         </ThemeProvider>

@@ -4,12 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
-import { Moon, Sun, Menu, Languages, ChevronDown } from 'lucide-react'
+import { Moon, Sun, Menu, X, Languages, ChevronDown } from 'lucide-react'
 import { useI18n } from '@/lib/i18n'
 import { categories, categoryIds, tools } from '@/data/tools'
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme()
+  const { resolvedTheme, setTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
   const [isLangOpen, setIsLangOpen] = useState(false)
@@ -24,56 +24,39 @@ export function Navbar() {
     const categoryId = categoryIds[categoryIndex]
     if (categoryId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' })
+      window.dispatchEvent(new CustomEvent('filterCategory', { detail: '首页' }))
       return
     }
+    const category = categories[categoryIndex]
+    window.dispatchEvent(new CustomEvent('filterCategory', { detail: category }))
     const section = document.getElementById('all-tools')
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' })
-      // 触发分类筛选
-      const category = categories[categoryIndex]
-      const event = new CustomEvent('filterCategory', { detail: category })
-      window.dispatchEvent(event)
     }
   }
 
-  // 根据分类获取工具列表
-  const getToolsByCategory = (categoryIndex: number): Array<{ id: string; name: string; href: string; category: string }> => {
+  const getToolsByCategory = (categoryIndex: number) => {
     const categoryId = categoryIds[categoryIndex]
-    if (categoryId === 'home') {
-      return [] // 首页不显示下拉菜单
-    }
-
+    if (categoryId === 'home') return []
     const category = categories[categoryIndex]
-    const realTools = tools.filter((tool) => tool.category === category)
-
-    // 如果该分类没有工具，添加一些模拟的工具
-    if (realTools.length === 0) {
-      return [
-        { id: `${category}-1`, name: `${category}工具 1`, href: '#', category },
-        { id: `${category}-2`, name: `${category}工具 2`, href: '#', category },
-        { id: `${category}-3`, name: `${category}工具 3`, href: '#', category }
-      ]
-    }
-
-    return realTools.map((tool) => ({
-      id: tool.id,
-      name: tool.name,
-      href: tool.href,
-      category: tool.category
-    }))
+    return tools
+      .filter((tool) => tool.category === category)
+      .map((tool) => ({
+        id: tool.id,
+        name: t.tools[tool.id]?.name || tool.name,
+        href: tool.href
+      }))
   }
 
   return (
-    <header className='fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 transition-colors duration-300'>
-      <nav className='container mx-auto px-6 h-16 flex items-center justify-between gap-8'>
-        {/* Logo */}
-        <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0'>
-          <Image src='/logo.png' alt='logo' width={32} height={32} className='rounded-lg' />
-          <span className='font-bold text-base tracking-tight text-slate-800 dark:text-white whitespace-nowrap'>{t.common.siteName}</span>
+    <header className='fixed top-0 inset-x-0 z-50 h-14 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-border transition-colors'>
+      <nav className='max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-6'>
+        <Link href='/' className='flex items-center gap-2.5 hover:opacity-85 transition-opacity shrink-0'>
+          <Image src='/logo.png' alt='logo' width={28} height={28} className='rounded-lg' />
+          <span className='font-semibold text-base tracking-tight text-foreground whitespace-nowrap'>{t.common.siteName}</span>
         </Link>
 
-        {/* Desktop Category Links with Dropdown */}
-        <div className='hidden lg:flex items-center gap-1 xl:gap-2 text-sm font-medium text-slate-600 dark:text-slate-300 flex-1 justify-center'>
+        <div className='hidden lg:flex items-center gap-1 text-sm font-medium text-muted-foreground flex-1 justify-center'>
           {categories.map((category, index) => {
             const categoryId = categoryIds[index]
             const categoryTools = getToolsByCategory(index)
@@ -82,35 +65,38 @@ export function Navbar() {
             return (
               <div
                 key={category}
-                className='relative group'
+                className='relative'
                 onMouseEnter={() => hasDropdown && setActiveDropdown(index)}
                 onMouseLeave={() => setActiveDropdown(null)}>
                 {categoryId === 'home' ? (
                   <Link
                     href='/'
-                    className='flex items-center gap-1 hover:text-main transition-colors whitespace-nowrap px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800'>
+                    onClick={() => handleCategoryClick(index)}
+                    className='flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-foreground hover:bg-muted/70 transition-colors whitespace-nowrap'>
                     {category}
                   </Link>
                 ) : (
                   <button
+                    type='button'
                     onClick={() => handleCategoryClick(index)}
-                    className='flex items-center gap-1 hover:text-main transition-colors whitespace-nowrap px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800'>
+                    className='flex items-center gap-1 px-3 py-1.5 rounded-lg hover:text-foreground hover:bg-muted/70 transition-colors whitespace-nowrap cursor-pointer'>
                     {category}
-                    {hasDropdown && <ChevronDown className='w-3 h-3' />}
+                    {hasDropdown && <ChevronDown className='w-3.5 h-3.5 opacity-60' />}
                   </button>
                 )}
 
-                {/* Dropdown Menu - 移除间距，让下拉菜单紧贴导航项 */}
                 {hasDropdown && activeDropdown === index && (
-                  <div className='absolute top-full left-0 min-w-[200px] bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-2 animate-in fade-in slide-in-from-top-2 duration-200'>
-                    {categoryTools.map((tool) => (
-                      <Link
-                        key={tool.id}
-                        href={tool.href}
-                        className='block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-main transition-colors'>
-                        {tool.name}
-                      </Link>
-                    ))}
+                  <div className='absolute top-full left-0 pt-1.5 min-w-[200px]'>
+                    <div className='bg-popover text-popover-foreground rounded-xl shadow-lg shadow-slate-900/5 border border-border py-1.5'>
+                      {categoryTools.map((tool) => (
+                        <Link
+                          key={tool.id}
+                          href={tool.href}
+                          className='block px-3.5 py-2 text-sm text-muted-foreground hover:bg-main-soft hover:text-main transition-colors'>
+                          {tool.name}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
@@ -118,91 +104,97 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Right Actions */}
-        <div className='flex items-center gap-2 shrink-0'>
-          {/* Language Toggle */}
+        <div className='flex items-center gap-1.5 shrink-0'>
           <div className='relative' onMouseEnter={() => setIsLangOpen(true)} onMouseLeave={() => setIsLangOpen(false)}>
             <button
-              className='p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-1.5'
+              type='button'
+              className='h-8 px-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors cursor-pointer flex items-center gap-1 text-xs font-medium'
               aria-label='Toggle Language'>
-              <Languages className='w-5 h-5' />
-              <ChevronDown className='w-3 h-3 hidden sm:block' />
+              <Languages className='w-4 h-4' />
+              <span className='hidden sm:inline'>{lang === 'zh' ? '中文' : 'EN'}</span>
             </button>
             {isLangOpen && (
-              <div className='absolute top-full right-0 mt-0 min-w-[110px] bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 py-1 animate-in fade-in slide-in-from-top-2 duration-200'>
-                {languages.map((l) => (
-                  <button
-                    key={l.code}
-                    onClick={() => {
-                      setLang(l.code)
-                      setIsLangOpen(false)
-                    }}
-                    className={`w-full text-left px-4 py-2 text-sm transition-colors cursor-pointer ${
-                      lang === l.code
-                        ? 'text-main font-semibold bg-slate-50 dark:bg-slate-700/50'
-                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-main'
-                    }`}>
-                    {l.label}
-                  </button>
-                ))}
+              <div className='absolute top-full right-0 pt-1.5 min-w-[110px]'>
+                <div className='bg-popover rounded-xl shadow-lg shadow-slate-900/5 border border-border py-1'>
+                  {languages.map((l) => (
+                    <button
+                      type='button'
+                      key={l.code}
+                      onClick={() => {
+                        setLang(l.code)
+                        setIsLangOpen(false)
+                      }}
+                      className={`w-full text-left px-3.5 py-1.5 text-sm transition-colors cursor-pointer ${
+                        lang === l.code
+                          ? 'text-main font-medium bg-main-soft'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}>
+                      {l.label}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
           </div>
 
-          {/* Theme Toggle */}
           <button
-            className='p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer'
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            type='button'
+            className='h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 transition-colors cursor-pointer flex items-center justify-center'
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label='Toggle Dark Mode'>
-            <Moon className='w-5 h-5 block dark:hidden' />
-            <Sun className='w-5 h-5 hidden dark:block' />
+            <Moon className='w-4 h-4 block dark:hidden' />
+            <Sun className='w-4 h-4 hidden dark:block' />
           </button>
 
-          {/* Mobile Menu Toggle */}
-          <button className='lg:hidden p-2 text-slate-600 dark:text-slate-300' onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            <Menu className='w-6 h-6' />
+          <button
+            type='button'
+            aria-label='Toggle Menu'
+            className='lg:hidden h-8 w-8 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/70 flex items-center justify-center'
+            onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X className='w-5 h-5' /> : <Menu className='w-5 h-5' />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Menu Content */}
       {isMenuOpen && (
-        <div className='lg:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 absolute w-full left-0 top-16 shadow-lg'>
-          <div className='px-6 py-4 space-y-2 flex flex-col max-h-[calc(100vh-4rem)] overflow-y-auto'>
+        <div className='lg:hidden bg-card border-b border-border absolute w-full left-0 top-14 shadow-lg'>
+          <div className='px-4 py-3 space-y-1 flex flex-col max-h-[calc(100vh-3.5rem)] overflow-y-auto'>
             {categories.map((category, index) => {
               const categoryId = categoryIds[index]
               const categoryTools = getToolsByCategory(index)
-              const hasTools = categoryTools.length > 0
 
               return (
                 <div key={category}>
                   {categoryId === 'home' ? (
                     <Link
                       href='/'
-                      onClick={() => setIsMenuOpen(false)}
-                      className='block w-full text-slate-600 dark:text-slate-300 font-medium hover:text-main text-left px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'>
+                      onClick={() => {
+                        setIsMenuOpen(false)
+                        handleCategoryClick(index)
+                      }}
+                      className='block w-full text-foreground font-medium hover:text-main text-left px-3 py-2 rounded-lg hover:bg-muted/70 transition-colors text-sm'>
                       {category}
                     </Link>
                   ) : (
                     <>
                       <button
+                        type='button'
                         onClick={() => {
                           setIsMenuOpen(false)
                           handleCategoryClick(index)
                         }}
-                        className='w-full text-slate-600 dark:text-slate-300 font-medium hover:text-main text-left px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'>
+                        className='w-full text-foreground font-medium hover:text-main text-left px-3 py-2 rounded-lg hover:bg-muted/70 transition-colors text-sm'>
                         {category}
                       </button>
 
-                      {/* Mobile Submenu */}
-                      {hasTools && (
-                        <div className='ml-4 mt-1 space-y-1'>
+                      {categoryTools.length > 0 && (
+                        <div className='ml-3 mt-0.5 space-y-0.5 border-l border-border pl-2'>
                           {categoryTools.map((tool) => (
                             <Link
                               key={tool.id}
                               href={tool.href}
                               onClick={() => setIsMenuOpen(false)}
-                              className='block text-sm text-slate-500 dark:text-slate-400 hover:text-main px-3 py-1.5 rounded-md hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors'>
+                              className='block text-xs text-muted-foreground hover:text-main px-3 py-1.5 rounded-md hover:bg-muted/50 transition-colors'>
                               {tool.name}
                             </Link>
                           ))}

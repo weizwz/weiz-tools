@@ -47,12 +47,12 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
   }
 
   return (
-    <div className='w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto'>
-      <h3 className='text-sm font-semibold text-gray-700 mb-4'>全局背景</h3>
+    <div className='w-80 bg-card border-l border-border p-4 overflow-y-auto'>
+      <h3 className='text-sm font-semibold text-foreground mb-4'>全局背景</h3>
 
       {/* 背景颜色 */}
       <div className='mb-4'>
-        <label className='text-xs text-gray-500 block mb-2'>背景颜色</label>
+        <label className='text-xs text-muted-foreground block mb-2'>背景颜色</label>
         <div className='flex gap-2 items-center'>
           <input
             type='color'
@@ -87,36 +87,36 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
 
       {/* 背景图片 */}
       <div className='mb-6'>
-        <label className='text-xs text-gray-500 block mb-2'>背景图片</label>
+        <label className='text-xs text-muted-foreground block mb-2'>背景图片</label>
         {style.base.background.image ? (
           <div className='relative'>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={style.base.background.image} alt='背景' className='w-full h-24 object-cover rounded-lg border border-gray-200' />
+            <img src={style.base.background.image} alt='背景' className='w-full h-24 object-cover rounded-lg border border-border' />
             <Button variant='destructive' size='icon-xs' className='absolute top-1 right-1' onClick={removeBackgroundImage}>
               <Trash2 className='w-3 h-3' />
             </Button>
           </div>
         ) : (
-          <label className='flex items-center justify-center gap-2 w-full h-16 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-main/50 transition-colors'>
-            <Upload className='w-4 h-4 text-gray-400' />
-            <span className='text-sm text-gray-400'>上传图片</span>
+          <label className='flex items-center justify-center gap-2 w-full h-16 border-2 border-dashed border-border rounded-lg cursor-pointer hover:border-main/50 transition-colors'>
+            <Upload className='w-4 h-4 text-muted-foreground' />
+            <span className='text-sm text-muted-foreground'>上传图片</span>
             <input type='file' accept='image/*' className='hidden' onChange={handleBackgroundImageUpload} />
           </label>
         )}
       </div>
 
       {/* 分隔线 */}
-      <div className='border-t border-gray-200 my-6' />
+      <div className='border-t border-border my-6' />
 
       {/* 布局拼图专属配置（仅在 regular 布局时显示） */}
       {style.layout.type === 'regular' && (
         <>
           {/* 卡片容器 */}
-          <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片容器</h3>
+          <h3 className='text-sm font-semibold text-foreground mb-4'>卡片容器</h3>
 
           {/* 容器背景颜色 */}
           <div className='mb-4'>
-            <label className='text-xs text-gray-500 block mb-2'>背景颜色</label>
+            <label className='text-xs text-muted-foreground block mb-2'>背景颜色</label>
             <div className='flex gap-2 items-center'>
               <input
                 type='color'
@@ -151,7 +151,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
 
           {/* 容器透明度 */}
           <div className='mb-2'>
-            <label className='text-xs text-gray-500 block mb-2'>透明度: {style.base.cardContainer.opacity}%</label>
+            <label className='text-xs text-muted-foreground block mb-2'>透明度: {style.base.cardContainer.opacity}%</label>
             <input
               type='range'
               min={0}
@@ -172,7 +172,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
 
           {/* 容器圆角 */}
           <div className='mb-6'>
-            <label className='text-xs text-gray-500 block mb-2'>圆角: {style.base.cardContainer.cornerRadius}px</label>
+            <label className='text-xs text-muted-foreground block mb-2'>圆角: {style.base.cardContainer.cornerRadius}px</label>
             <input
               type='range'
               min={0}
@@ -192,15 +192,15 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
           </div>
 
           {/* 分隔线 */}
-          <div className='border-t border-gray-200 my-6' />
+          <div className='border-t border-border my-6' />
         </>
       )}
 
-      <h3 className='text-sm font-semibold text-gray-700 mb-4'>卡片样式</h3>
+      <h3 className='text-sm font-semibold text-foreground mb-4'>卡片样式</h3>
 
       {/* 间距设置 */}
       <div className='mb-2'>
-        <label className='text-xs text-gray-500 block mb-2'>间距: {style.base.card.spacing}px</label>
+        <label className='text-xs text-muted-foreground block mb-2'>间距: {style.base.card.spacing}px</label>
         <input
           type='range'
           min={0}
@@ -221,7 +221,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
 
       {/* 圆角设置 */}
       <div className='mb-6'>
-        <label className='text-xs text-gray-500 block mb-2'>圆角: {style.base.card.cornerRadius}px</label>
+        <label className='text-xs text-muted-foreground block mb-2'>圆角: {style.base.card.cornerRadius}px</label>
         <input
           type='range'
           min={0}
@@ -241,7 +241,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       </div>
 
       {/* 分隔线 */}
-      <div className='border-t border-gray-200 my-6' />
+      <div className='border-t border-border my-6' />
 
       {/* 侧向排版专属配置（仅在 tilt 布局时显示） */}
       {style.layout.type === 'tilt' &&
@@ -249,11 +249,11 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
           const tiltConfig = style.layout.config
           return (
             <>
-              <h3 className='text-sm font-semibold text-gray-700 mb-4'>侧向排版设置</h3>
+              <h3 className='text-sm font-semibold text-foreground mb-4'>侧向排版设置</h3>
 
               {/* 倾斜角度 */}
               <div className='mb-4'>
-                <label className='text-xs text-gray-500 block mb-2'>倾斜角度: {tiltConfig.angle}°</label>
+                <label className='text-xs text-muted-foreground block mb-2'>倾斜角度: {tiltConfig.angle}°</label>
                 <input
                   type='range'
                   min={0}
@@ -273,7 +273,7 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
               </div>
 
               {/* 分隔线 */}
-              <div className='border-t border-gray-200 my-6' />
+              <div className='border-t border-border my-6' />
             </>
           )
         })()}
@@ -281,10 +281,10 @@ export function StylePanel({ style, onStyleChange, onExport, isExporting }: Styl
       {/* 导出设置 */}
       {style.layout.type === 'tilt' && (
         <>
-          <h3 className='text-sm font-semibold text-gray-700 mb-4'>导出设置</h3>
+          <h3 className='text-sm font-semibold text-foreground mb-4'>导出设置</h3>
 
           <div className='flex items-center justify-between mb-4'>
-            <span className='text-sm text-gray-600'>开启叠图</span>
+            <span className='text-sm text-muted-foreground'>开启叠图</span>
             <label className='relative inline-flex items-center cursor-pointer'>
               <input
                 type='checkbox'

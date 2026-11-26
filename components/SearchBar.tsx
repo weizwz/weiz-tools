@@ -16,20 +16,21 @@ export function SearchBar({ value, onChange, placeholder }: SearchBarProps) {
 
   return (
     <div className='relative max-w-2xl mx-auto'>
-      <Search className='absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400' />
+      <Search className='absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground' />
       <Input
         type='text'
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={displayPlaceholder}
-        className='shadow-soft h-14 text-lg pl-12 pr-12 bg-white text-gray-900 placeholder:text-gray-400 focus-visible:shadow-soft-lg transition-smooth font-medium rounded-full border-0 focus-visible:ring-2 focus-visible:ring-blue-500'
+        className='h-12 text-base pl-10 pr-10 bg-card text-foreground placeholder:text-muted-foreground rounded-xl border border-border shadow-xs focus-visible:ring-2 focus-visible:ring-main/30 focus-visible:border-main transition-all'
       />
       {value && (
         <button
+          type='button'
           onClick={() => onChange('')}
-          className='absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-smooth p-1 rounded-full hover:bg-gray-100'
+          className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md hover:bg-muted cursor-pointer'
           aria-label={t.search.clearLabel}>
-          <X className='w-5 h-5' />
+          <X className='w-4 h-4' />
         </button>
       )}
     </div>

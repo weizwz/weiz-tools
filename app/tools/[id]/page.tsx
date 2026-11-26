@@ -19,12 +19,11 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className='min-h-screen bg-gray-50'>
+    <div className='min-h-screen flex flex-col bg-background'>
       <Navbar />
 
-      <main className='pt-32 pb-20 px-4 sm:px-6 lg:px-8'>
+      <main className='flex-1 pt-24 pb-16 px-4 sm:px-6'>
         <div className='max-w-5xl mx-auto'>
-          {/* Tool Header */}
           <ToolPageHeader tool={tool} />
         </div>
       </main>
