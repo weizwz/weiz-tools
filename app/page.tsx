@@ -82,7 +82,7 @@ export default function Home() {
       <section className='relative pt-24 pb-12 border-b border-border overflow-hidden bg-background'>
         <div
           aria-hidden='true'
-          className='pointer-events-none absolute inset-0 geist-grid-bg opacity-45 [mask-image:radial-gradient(ellipse_80%_75%_at_50%_20%,#000_30%,transparent_100%)]'
+          className='pointer-events-none absolute inset-0 geist-grid-bg opacity-45 mask-[radial-gradient(ellipse_80%_75%_at_50%_20%,#000_30%,transparent_100%)]'
         />
 
         <div className='relative max-w-7xl mx-auto px-4 sm:px-6'>
@@ -107,9 +107,7 @@ export default function Home() {
                     <span className='w-1.5 h-1.5 rounded-full bg-main' />
                     <span>{t.home.heroTag}</span>
                   </div>
-                  <h1 className='text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-[-0.04em] text-foreground mb-3 leading-[1.1]'>
-                    {t.home.heroTitle}
-                  </h1>
+                  <h1 className='text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-[-0.04em] text-foreground mb-3 leading-[1.1]'>{t.home.heroTitle}</h1>
                   <p className='text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl'>{t.home.heroDescription}</p>
                 </div>
 
@@ -132,7 +130,7 @@ export default function Home() {
                       <X className='w-3.5 h-3.5' />
                     </button>
                   ) : (
-                    <kbd className='hidden sm:inline-flex absolute right-2.5 top-1/2 -translate-y-1/2 items-center justify-center min-w-[20px] h-5 px-1.5 text-[11px] font-mono text-muted-foreground bg-background border border-border rounded-sm'>
+                    <kbd className='hidden sm:inline-flex absolute right-2.5 top-1/2 -translate-y-1/2 items-center justify-center min-w-5 h-5 px-1.5 text-[11px] font-mono text-muted-foreground bg-background border border-border rounded-sm'>
                       /
                     </kbd>
                   )}
@@ -174,9 +172,7 @@ export default function Home() {
                               <img src={project.previewImage} alt={projectName} className='w-full h-full object-contain' />
                             </div>
                             <div className='flex-1 min-w-0'>
-                              <h3 className='font-medium text-sm text-foreground group-hover:text-main transition-colors truncate'>
-                                {projectName}
-                              </h3>
+                              <h3 className='font-medium text-sm text-foreground group-hover:text-main transition-colors truncate'>{projectName}</h3>
                               <p className='text-xs text-muted-foreground line-clamp-1 mt-0.5'>{projectDesc}</p>
                             </div>
                             <ArrowUpRight className='w-4 h-4 text-muted-foreground/60 group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0' />
@@ -211,9 +207,7 @@ export default function Home() {
                     type='button'
                     onClick={() => setSelectedCategory(category)}
                     className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
-                      isActive
-                        ? 'bg-foreground text-background'
-                        : 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted'
+                      isActive ? 'bg-foreground text-background' : 'bg-transparent text-muted-foreground hover:text-foreground hover:bg-muted'
                     }`}>
                     {category === '首页' ? '全部' : category}
                   </button>
