@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Download, FileText, Trash2 } from 'lucide-react'
 import { ThemeSelector } from './ThemeSelector'
-import { CustomColors, FontSizeOption, ThemeId, VisualLevel } from './themes/types'
+import { CustomColors, FontSizeOption, ThemeId, VisualLevel } from './engine/types'
 
 interface EditorPanelProps {
   markdown: string

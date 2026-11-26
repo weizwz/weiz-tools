@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { AlertTriangle, Check, CheckCircle2, Copy, Info } from 'lucide-react'
-import { ComplianceIssue, PreviewWidth } from './themes/types'
-import { copyWechatHtml } from './themes/wechat-inline'
+import { ComplianceIssue, PreviewWidth } from './engine/types'
+import { copyWechatHtml } from './engine/wechat-inline'
 
 interface PreviewPanelProps {
   html: string

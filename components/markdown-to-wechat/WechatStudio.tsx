@@ -3,10 +3,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { EditorPanel } from './EditorPanel'
 import { PreviewPanel } from './PreviewPanel'
-import { SAMPLE_MARKDOWN } from './themes/presets'
-import { renderWechatArticle } from './themes/renderer'
-import { CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './themes/types'
-import { exportHtmlFile } from './themes/wechat-inline'
+import { renderWechatArticle } from './engine/renderer'
+import { SAMPLE_MARKDOWN } from './engine/tokens'
+import { CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './engine/types'
+import { exportHtmlFile } from './engine/wechat-inline'
 
 const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v4'
 

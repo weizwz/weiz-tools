@@ -31,17 +31,43 @@ export interface ColorPalette {
 
 export type CustomColors = Partial<PaletteColors>
 
-export interface WechatTheme {
+export interface VisualCapabilities {
+  showBanner: boolean
+  showToc: boolean
+  showCodeHeader: boolean
+  useFancyDivider: boolean
+  useMotion: boolean
+}
+
+export interface RenderContext {
+  theme: LayoutTheme
+  colors: PaletteColors
+  capabilities: VisualCapabilities
+  fontSize: FontSizeOption
+  author: string
+  dateStr: string
+}
+
+export interface LayoutTheme {
   id: ThemeId
   name: string
   subtitle: string
-  palette: ColorPalette
-  palettes: ColorPalette[]
+  defaultPalette: ColorPalette
   text: string
   textMuted: string
   borderColor: string
   codeBorder?: string
   preHeaderBg: string
+  slots: {
+    renderBanner?: (title: string, ctx: RenderContext) => string
+    renderToc?: (headings: string[], ctx: RenderContext) => string
+    renderH2?: (content: string, index: number, ctx: RenderContext) => string
+    renderH3?: (content: string, ctx: RenderContext) => string
+    renderStrong?: (content: string, ctx: RenderContext) => string
+    renderBlockquote?: (content: string, ctx: RenderContext) => string
+    renderDivider?: (ctx: RenderContext) => string
+    renderImage?: (href: string, text: string, ctx: RenderContext) => string
+  }
 }
 
 export interface RenderOptions {

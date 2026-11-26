@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, Pipette, RotateCcw } from 'lucide-react'
-import { PALETTE_COLOR_FIELDS, VISUAL_LEVELS, WECHAT_THEMES } from './themes/presets'
+import { WECHAT_THEMES } from './engine/themes'
+import {
+  getThemePalettes,
+  PALETTE_COLOR_FIELDS,
+  resolvePaletteColors,
+  VISUAL_LEVELS
+} from './engine/tokens'
 import {
   CustomColors,
   FontSizeOption,
@@ -10,7 +16,7 @@ import {
   PaletteColors,
   ThemeId,
   VisualLevel
-} from './themes/types'
+} from './engine/types'
 
 interface ThemeSelectorProps {
   themeId: ThemeId
@@ -47,11 +53,9 @@ export function ThemeSelector({
 
   const activeTheme = WECHAT_THEMES.find((t) => t.id === themeId) || WECHAT_THEMES[0]
   const activeLevel = VISUAL_LEVELS.find((v) => v.level === visualLevel) || VISUAL_LEVELS[2]
-  const basePalette = activeTheme.palettes.find((p) => p.id === paletteId) || activeTheme.palette
-
-  const resolvedColors: PaletteColors =
-    paletteId === 'custom' ? { ...basePalette.colors, ...customColors } : basePalette.colors
-
+  const themePalettes = getThemePalettes(activeTheme)
+  const basePalette = themePalettes.find((p) => p.id === paletteId) || activeTheme.defaultPalette
+  const resolvedColors: PaletteColors = resolvePaletteColors(activeTheme, paletteId, customColors)
   const activePaletteName = paletteId === 'custom' ? '自定义' : basePalette.name
 
   useEffect(() => {
@@ -79,7 +83,7 @@ export function ThemeSelector({
 
   const resetCustomToThemeDefault = () => {
     onPaletteChange('custom')
-    onCustomColorsChange({ ...activeTheme.palette.colors })
+    onCustomColorsChange({ ...activeTheme.defaultPalette.colors })
   }
 
   return (
@@ -94,7 +98,7 @@ export function ThemeSelector({
           <span className='text-muted-foreground'>基础</span>
           <span
             className='inline-block h-2.5 w-2.5 rounded-full'
-            style={{ backgroundColor: activeTheme.palette.colors.headingDecor }}
+            style={{ backgroundColor: activeTheme.defaultPalette.colors.headingDecor }}
           />
           <span className='font-medium text-foreground'>{activeTheme.name}</span>
           <ChevronDown className='h-3 w-3 text-muted-foreground' />
@@ -125,7 +129,7 @@ export function ThemeSelector({
                   >
                     <span
                       className='mt-1 h-3 w-3 shrink-0 rounded-full'
-                      style={{ backgroundColor: theme.palette.colors.headingDecor }}
+                      style={{ backgroundColor: theme.defaultPalette.colors.headingDecor }}
                     />
                     <div className='min-w-0'>
                       <div className='text-xs font-semibold text-foreground'>{theme.name}</div>
@@ -224,11 +228,11 @@ export function ThemeSelector({
           <div className='absolute right-0 top-full z-50 mt-2 w-80 max-w-[92vw] rounded-2xl border border-border bg-card p-3 shadow-xl'>
             <div className='mb-2 flex items-center justify-between px-1 text-[11px] font-medium tracking-wider text-muted-foreground'>
               <span>COLORWAYS · 主题配色</span>
-              <span>{activeTheme.palettes.length + 1} PALETTES</span>
+              <span>{themePalettes.length + 1} PALETTES</span>
             </div>
 
             <div className='max-h-[420px] space-y-1.5 overflow-y-auto pr-0.5'>
-              {activeTheme.palettes.map((p) => {
+              {themePalettes.map((p) => {
                 const isSelected = paletteId === p.id
                 return (
                   <button
@@ -336,7 +340,7 @@ export function ThemeSelector({
             </div>
 
             <div className='mt-2 border-t border-border pt-2 text-[10px] text-muted-foreground'>
-              内置主题原配色 + 5 套公众号流行配色 + 11 项全自定义。
+              主题自带原配色 + 5 套流行配色 + 11 项全自定义。
             </div>
           </div>
         )}

@@ -1,9 +1,17 @@
-import { ColorPalette, PaletteColorKey, VisualLevel, WechatTheme } from './types'
+import {
+  ColorPalette,
+  CustomColors,
+  LayoutTheme,
+  PaletteColorKey,
+  PaletteColors,
+  VisualCapabilities,
+  VisualLevel
+} from './types'
 
 export const VISUAL_LEVELS: { level: VisualLevel; badge: string; name: string; desc: string }[] = [
   { level: 'basic', badge: '基础', name: '基础排版', desc: '保留主题配色、标题层级与引用/代码高亮' },
   { level: 'decorated', badge: '增强', name: '装饰增强', desc: '开启主题首图卡、篇幅导览卡与静态分隔装饰' },
-  { level: 'motion', badge: '动效', name: '主题动效', desc: '全套卡片排版 + 公众号兼容 SVG 微动效' }
+  { level: 'motion', badge: '动效', name: '主题动效', desc: '全套卡片排版 + 主题专属 SVG 微动效' }
 ]
 
 export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
@@ -20,7 +28,7 @@ export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
   { key: 'blockquoteAccent', label: '引用' }
 ]
 
-const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
+export const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
   {
     id: 'tech-blue',
     name: '科技蓝',
@@ -108,108 +116,82 @@ const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
   }
 ]
 
-function buildPalettes(themeName: string, defaultPalette: ColorPalette): ColorPalette[] {
+export function getThemePalettes(theme: LayoutTheme): ColorPalette[] {
   return [
-    defaultPalette,
+    theme.defaultPalette,
     ...POPULAR_PALETTES.map((p) => ({
       ...p,
-      subtitle: `${themeName} · 流行配色`
+      subtitle: `${theme.name} · 流行配色`
     }))
   ]
 }
 
-const RAW_THEMES: WechatTheme[] = [
-  {
-    id: 'moyu-green',
-    name: '摸鱼绿',
-    subtitle: '翡翠杂志风·高信息密度',
-    palette: {
-      id: 'default',
-      name: '默认',
-      subtitle: '摸鱼绿 · 主题原配色',
-      colors: {
-        bg: '#ffffff',
-        heading: '#111827',
-        strong: '#059669',
-        headingDecor: '#059669',
-        divider: '#A7F3D0',
-        listMarker: '#059669',
-        codeBlockBg: '#1E293B',
-        tableAccent: '#ECFDF5',
-        inlineCodeText: '#059669',
-        inlineCodeBg: '#F3F4F6',
-        blockquoteAccent: '#059669'
-      }
-    },
-    palettes: [],
-    text: '#374151',
-    textMuted: '#9CA3AF',
-    borderColor: '#E5E7EB',
-    preHeaderBg: '#0F172A'
-  },
-  {
-    id: 'red-white',
-    name: '红白风',
-    subtitle: '经典编辑风·克制点睛',
-    palette: {
-      id: 'default',
-      name: '默认',
-      subtitle: '红白风 · 主题原配色',
-      colors: {
-        bg: '#ffffff',
-        heading: '#1C1917',
-        strong: '#DC2626',
-        headingDecor: '#DC2626',
-        divider: '#FECACA',
-        listMarker: '#DC2626',
-        codeBlockBg: '#1E293B',
-        tableAccent: '#FEF2F2',
-        inlineCodeText: '#1F2937',
-        inlineCodeBg: '#F3F4F6',
-        blockquoteAccent: '#DC2626'
-      }
-    },
-    palettes: [],
-    text: '#374151',
-    textMuted: '#9CA3AF',
-    borderColor: '#FEE2E2',
-    preHeaderBg: '#0F172A'
-  },
-  {
-    id: 'olive-journal',
-    name: '橄榄手记',
-    subtitle: '内刊手记风·米白纸感',
-    palette: {
-      id: 'default',
-      name: '默认',
-      subtitle: '橄榄手记 · 主题原配色',
-      colors: {
-        bg: '#fdfdf8',
-        heading: '#23251d',
-        strong: '#23251d',
-        headingDecor: '#ed7b2f',
-        divider: '#bfc1b7',
-        listMarker: '#ed7b2f',
-        codeBlockBg: '#1E293B',
-        tableAccent: '#eeefe9',
-        inlineCodeText: '#23251d',
-        inlineCodeBg: '#eeefe9',
-        blockquoteAccent: '#ed7b2f'
-      }
-    },
-    palettes: [],
-    text: '#4d4f46',
-    textMuted: '#9ea096',
-    borderColor: '#bfc1b7',
-    codeBorder: '#b6b7af',
-    preHeaderBg: '#0F172A'
+export function resolvePaletteColors(
+  theme: LayoutTheme,
+  paletteId: string,
+  customColors: CustomColors
+): PaletteColors {
+  const palettes = getThemePalettes(theme)
+  const base = palettes.find((p) => p.id === paletteId) || theme.defaultPalette
+  if (paletteId === 'custom') {
+    return { ...base.colors, ...customColors }
   }
-]
+  return base.colors
+}
 
-export const WECHAT_THEMES: WechatTheme[] = RAW_THEMES.map((t) => ({
-  ...t,
-  palettes: buildPalettes(t.name, t.palette)
-}))
+export function resolveVisualCapabilities(level: VisualLevel): VisualCapabilities {
+  if (level === 'basic') {
+    return {
+      showBanner: false,
+      showToc: false,
+      showCodeHeader: false,
+      useFancyDivider: false,
+      useMotion: false
+    }
+  }
+  if (level === 'decorated') {
+    return {
+      showBanner: true,
+      showToc: true,
+      showCodeHeader: true,
+      useFancyDivider: true,
+      useMotion: false
+    }
+  }
+  return {
+    showBanner: true,
+    showToc: true,
+    showCodeHeader: true,
+    useFancyDivider: true,
+    useMotion: true
+  }
+}
+
+export function hexToRgba(hex: string, alpha: number): string {
+  const clean = hex.replace('#', '')
+  const normalized =
+    clean.length === 3
+      ? clean
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : clean
+  const intVal = parseInt(normalized, 16)
+  if (Number.isNaN(intVal)) return `rgba(37, 99, 235, ${alpha})`
+  const r = (intVal >> 16) & 255
+  const g = (intVal >> 8) & 255
+  const b = intVal & 255
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`
+}
+
+export function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把经验变成可复用的能力
 

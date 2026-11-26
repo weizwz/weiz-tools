@@ -17,7 +17,7 @@ export async function copyWechatHtml(html: string): Promise<boolean> {
       ])
       return true
     } catch {
-      // 降级到 execCommand
+      // fallback
     }
   }
 
