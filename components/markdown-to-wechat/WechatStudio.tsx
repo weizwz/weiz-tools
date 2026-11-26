@@ -5,29 +5,31 @@ import { EditorPanel } from './EditorPanel'
 import { PreviewPanel } from './PreviewPanel'
 import { SAMPLE_MARKDOWN } from './themes/presets'
 import { renderWechatArticle } from './themes/renderer'
-import { FontSizeOption, PreviewWidth, ThemeId } from './themes/types'
+import { CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './themes/types'
 import { exportHtmlFile } from './themes/wechat-inline'
 
-const STORAGE_KEY = 'weiz-tools:wechat-layout-draft'
+const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v4'
 
 interface DraftState {
   markdown: string
   author: string
   themeId: ThemeId
-  customColor: string
+  visualLevel: VisualLevel
+  paletteId: string
+  customColors: CustomColors
   fontSize: FontSizeOption
-  enableMotion: boolean
   previewWidth: PreviewWidth
 }
 
 const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
-  author: '极简工坊',
-  themeId: 'blueprint',
-  customColor: '',
+  author: '唯知AI',
+  themeId: 'moyu-green',
+  visualLevel: 'motion',
+  paletteId: 'default',
+  customColors: {},
   fontSize: 15,
-  enableMotion: true,
-  previewWidth: 402
+  previewWidth: 'auto'
 }
 
 export function WechatStudio() {
@@ -61,31 +63,42 @@ export function WechatStudio() {
     () =>
       renderWechatArticle(draft.markdown, {
         themeId: draft.themeId,
-        customColor: draft.customColor,
+        visualLevel: draft.visualLevel,
+        paletteId: draft.paletteId,
+        customColors: draft.customColors,
         fontSize: draft.fontSize,
-        enableMotion: draft.enableMotion,
         author: draft.author
       }),
-    [draft.markdown, draft.themeId, draft.customColor, draft.fontSize, draft.enableMotion, draft.author]
+    [
+      draft.markdown,
+      draft.themeId,
+      draft.visualLevel,
+      draft.paletteId,
+      draft.customColors,
+      draft.fontSize,
+      draft.author
+    ]
   )
 
   return (
-    <div className='grid h-full grid-cols-1 lg:grid-cols-2 bg-card'>
+    <div className='grid h-full min-h-0 grid-cols-1 grid-rows-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-2 lg:grid-rows-[minmax(0,1fr)] overflow-hidden bg-card'>
       <EditorPanel
         markdown={draft.markdown}
         author={draft.author}
         themeId={draft.themeId}
-        customColor={draft.customColor}
+        visualLevel={draft.visualLevel}
+        paletteId={draft.paletteId}
+        customColors={draft.customColors}
         fontSize={draft.fontSize}
-        enableMotion={draft.enableMotion}
         wordCount={rendered.wordCount}
         readingMinutes={rendered.readingMinutes}
         onMarkdownChange={(markdown) => setDraft((prev) => ({ ...prev, markdown }))}
         onAuthorChange={(author) => setDraft((prev) => ({ ...prev, author }))}
         onThemeChange={(themeId) => setDraft((prev) => ({ ...prev, themeId }))}
-        onCustomColorChange={(customColor) => setDraft((prev) => ({ ...prev, customColor }))}
+        onVisualLevelChange={(visualLevel) => setDraft((prev) => ({ ...prev, visualLevel }))}
+        onPaletteChange={(paletteId) => setDraft((prev) => ({ ...prev, paletteId }))}
+        onCustomColorsChange={(customColors) => setDraft((prev) => ({ ...prev, customColors }))}
         onFontSizeChange={(fontSize) => setDraft((prev) => ({ ...prev, fontSize }))}
-        onMotionChange={(enableMotion) => setDraft((prev) => ({ ...prev, enableMotion }))}
         onLoadSample={() => setDraft((prev) => ({ ...prev, markdown: SAMPLE_MARKDOWN }))}
         onClear={() => setDraft((prev) => ({ ...prev, markdown: '' }))}
         onExportHtml={() => exportHtmlFile(rendered.html)}

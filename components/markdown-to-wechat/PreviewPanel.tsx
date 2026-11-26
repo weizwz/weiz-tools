@@ -13,6 +13,7 @@ interface PreviewPanelProps {
 }
 
 const WIDTH_OPTIONS: { label: string; value: PreviewWidth }[] = [
+  { label: '适应', value: 'auto' },
   { label: '小屏 375', value: 375 },
   { label: '标准 402', value: 402 },
   { label: '大屏 440', value: 440 }
@@ -37,7 +38,7 @@ export function PreviewPanel({
   }
 
   return (
-    <section className='flex h-full flex-col bg-background min-w-0'>
+    <section className='flex h-full min-h-0 flex-col bg-background min-w-0'>
       {/* 顶部工具栏 */}
       <div className='flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card px-4 py-2.5'>
         <div className='flex items-center gap-2.5'>
@@ -55,12 +56,12 @@ export function PreviewPanel({
           )}
         </div>
 
-        <div className='flex items-center gap-2'>
+        <div className='flex flex-wrap items-center gap-2'>
           {/* 一键复制 */}
           <button
             type='button'
             onClick={handleCopy}
-            className='inline-flex items-center gap-1.5 rounded-full bg-main px-3.5 py-1 text-xs font-medium text-white hover:bg-hover transition-colors cursor-pointer'
+            className='inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3.5 py-1 text-xs font-medium text-white hover:bg-slate-800 dark:bg-[#409eff] dark:hover:bg-[#66b1ff] transition-colors cursor-pointer'
           >
             {copied ? <Check className='h-3.5 w-3.5' /> : <Copy className='h-3.5 w-3.5' />}
             <span>{copied ? '已复制' : '复制到公众号'}</span>
@@ -70,12 +71,12 @@ export function PreviewPanel({
           <div className='flex items-center rounded-full border border-border bg-background p-0.5'>
             {WIDTH_OPTIONS.map((opt) => (
               <button
-                key={opt.value}
+                key={String(opt.value)}
                 type='button'
                 onClick={() => onPreviewWidthChange(opt.value)}
                 className={`rounded-full px-2.5 py-0.5 text-xs transition-colors cursor-pointer ${
                   previewWidth === opt.value
-                    ? 'bg-muted font-semibold text-foreground'
+                    ? 'bg-slate-900 text-white font-semibold dark:bg-[#409eff] dark:text-white'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -99,10 +100,14 @@ export function PreviewPanel({
       )}
 
       {/* 居中手机预览画布 */}
-      <div className='flex-1 overflow-y-auto px-4 py-6'>
+      <div className='flex-1 min-h-0 overflow-y-auto px-6 py-6 sm:px-10'>
         <div
           className='mx-auto rounded-xl border border-border bg-white shadow-sm overflow-hidden transition-[width] duration-200'
-          style={{ width: `${previewWidth}px`, maxWidth: '100%' }}
+          style={
+            previewWidth === 'auto'
+              ? { width: '100%', maxWidth: '402px' }
+              : { width: `${previewWidth}px`, maxWidth: '100%' }
+          }
         >
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>

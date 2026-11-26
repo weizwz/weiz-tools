@@ -4,23 +4,25 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Download, FileText, Trash2 } from 'lucide-react'
 import { ThemeSelector } from './ThemeSelector'
-import { FontSizeOption, ThemeId } from './themes/types'
+import { CustomColors, FontSizeOption, ThemeId, VisualLevel } from './themes/types'
 
 interface EditorPanelProps {
   markdown: string
   author: string
   themeId: ThemeId
-  customColor: string
+  visualLevel: VisualLevel
+  paletteId: string
+  customColors: CustomColors
   fontSize: FontSizeOption
-  enableMotion: boolean
   wordCount: number
   readingMinutes: number
   onMarkdownChange: (value: string) => void
   onAuthorChange: (value: string) => void
   onThemeChange: (id: ThemeId) => void
-  onCustomColorChange: (color: string) => void
+  onVisualLevelChange: (level: VisualLevel) => void
+  onPaletteChange: (paletteId: string) => void
+  onCustomColorsChange: (colors: CustomColors) => void
   onFontSizeChange: (size: FontSizeOption) => void
-  onMotionChange: (enabled: boolean) => void
   onLoadSample: () => void
   onClear: () => void
   onExportHtml: () => void
@@ -30,23 +32,25 @@ export function EditorPanel({
   markdown,
   author,
   themeId,
-  customColor,
+  visualLevel,
+  paletteId,
+  customColors,
   fontSize,
-  enableMotion,
   wordCount,
   readingMinutes,
   onMarkdownChange,
   onAuthorChange,
   onThemeChange,
-  onCustomColorChange,
+  onVisualLevelChange,
+  onPaletteChange,
+  onCustomColorsChange,
   onFontSizeChange,
-  onMotionChange,
   onLoadSample,
   onClear,
   onExportHtml
 }: EditorPanelProps) {
   return (
-    <section className='flex h-full flex-col bg-card border-r border-border min-w-0'>
+    <section className='flex h-full min-h-0 flex-col bg-card border-r border-border min-w-0'>
       {/* 顶部控制栏 */}
       <div className='border-b border-border px-4 py-2.5 space-y-2'>
         <div className='flex flex-wrap items-center justify-between gap-2'>
@@ -55,13 +59,15 @@ export function EditorPanel({
           </span>
           <ThemeSelector
             themeId={themeId}
-            customColor={customColor}
+            visualLevel={visualLevel}
+            paletteId={paletteId}
+            customColors={customColors}
             fontSize={fontSize}
-            enableMotion={enableMotion}
             onThemeChange={onThemeChange}
-            onCustomColorChange={onCustomColorChange}
+            onVisualLevelChange={onVisualLevelChange}
+            onPaletteChange={onPaletteChange}
+            onCustomColorsChange={onCustomColorsChange}
             onFontSizeChange={onFontSizeChange}
-            onMotionChange={onMotionChange}
           />
         </div>
 
@@ -119,7 +125,7 @@ export function EditorPanel({
           onChange={(e) => onMarkdownChange(e.target.value)}
           placeholder='在此输入或粘贴 Markdown 内容，右侧实时生成公众号排版...'
           spellCheck={false}
-          className='h-full w-full resize-none bg-transparent p-5 font-mono text-sm leading-7 text-foreground placeholder:text-muted-foreground/60 focus:outline-none'
+          className='h-full w-full resize-none overflow-y-auto bg-transparent p-5 font-mono text-sm leading-7 text-foreground placeholder:text-muted-foreground/60 focus:outline-none'
         />
       </div>
 

@@ -1,137 +1,250 @@
-import { WechatTheme } from './types'
+import { ColorPalette, PaletteColorKey, VisualLevel, WechatTheme } from './types'
 
-export const WECHAT_THEMES: WechatTheme[] = [
+export const VISUAL_LEVELS: { level: VisualLevel; badge: string; name: string; desc: string }[] = [
+  { level: 'basic', badge: '基础', name: '基础排版', desc: '保留主题配色、标题层级与引用/代码高亮' },
+  { level: 'decorated', badge: '增强', name: '装饰增强', desc: '开启主题首图卡、篇幅导览卡与静态分隔装饰' },
+  { level: 'motion', badge: '动效', name: '主题动效', desc: '全套卡片排版 + 公众号兼容 SVG 微动效' }
+]
+
+export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
+  { key: 'bg', label: '正文底色' },
+  { key: 'heading', label: '标题' },
+  { key: 'strong', label: '重点加粗' },
+  { key: 'headingDecor', label: '标题装饰' },
+  { key: 'divider', label: '分割线' },
+  { key: 'listMarker', label: '列表标记' },
+  { key: 'codeBlockBg', label: '代码块' },
+  { key: 'tableAccent', label: '表格' },
+  { key: 'inlineCodeText', label: '行内代码文字' },
+  { key: 'inlineCodeBg', label: '行内代码底色/阴影' },
+  { key: 'blockquoteAccent', label: '引用' }
+]
+
+const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
   {
-    id: 'blueprint',
-    name: '蓝图网格',
-    badge: 'BP',
-    description: '工程制图网格 + 导览目录卡片，适合技术深度文章',
-    primary: '#2563eb',
-    primarySoft: '#eff6ff',
-    primaryBorder: '#bfdbfe',
-    text: '#27272a',
-    textMuted: '#64748b',
-    headingColor: '#0f172a',
-    bg: '#ffffff',
-    gridBg:
-      'linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px)',
-    blockquoteBg: '#eff6ff',
-    blockquoteBorder: '#2563eb',
-    codeBg: '#f1f5f9',
-    codeText: '#1e40af',
-    preBg: '#0f172a',
-    preHeaderBg: '#1e293b',
-    hrColor: '#dbeafe'
+    id: 'tech-blue',
+    name: '科技蓝',
+    colors: {
+      bg: '#ffffff',
+      heading: '#0f172a',
+      strong: '#1d4ed8',
+      headingDecor: '#2563eb',
+      divider: '#bfdbfe',
+      listMarker: '#2563eb',
+      codeBlockBg: '#0f172a',
+      tableAccent: '#eff6ff',
+      inlineCodeText: '#1e40af',
+      inlineCodeBg: '#eff6ff',
+      blockquoteAccent: '#2563eb'
+    }
   },
   {
-    id: 'minimal-tech',
-    name: '极简科技',
-    badge: 'MT',
-    description: '清爽留白与高对比排版，适配通用科技专栏',
-    primary: '#409eff',
-    primarySoft: '#f0f7ff',
-    primaryBorder: '#c6e2ff',
-    text: '#303133',
-    textMuted: '#909399',
-    headingColor: '#1f2937',
-    bg: '#ffffff',
-    blockquoteBg: '#f5f7fa',
-    blockquoteBorder: '#409eff',
-    codeBg: '#f4f4f5',
-    codeText: '#2563eb',
-    preBg: '#1e293b',
-    preHeaderBg: '#334155',
-    hrColor: '#e4e7ed'
+    id: 'emerald-green',
+    name: '翡翠绿',
+    colors: {
+      bg: '#ffffff',
+      heading: '#064e3b',
+      strong: '#059669',
+      headingDecor: '#10b981',
+      divider: '#a7f3d0',
+      listMarker: '#059669',
+      codeBlockBg: '#1e293b',
+      tableAccent: '#ecfdf5',
+      inlineCodeText: '#047857',
+      inlineCodeBg: '#ecfdf5',
+      blockquoteAccent: '#059669'
+    }
   },
   {
-    id: 'editorial',
-    name: '杂志刊物',
-    badge: 'ED',
-    description: '温润纸感与刊物眉标，适合随笔、复盘与人物专访',
-    primary: '#b45309',
-    primarySoft: '#fffbeb',
-    primaryBorder: '#fde68a',
-    text: '#292524',
-    textMuted: '#78716c',
-    headingColor: '#1c1917',
-    bg: '#fffdf9',
-    blockquoteBg: '#fef3c7',
-    blockquoteBorder: '#d97706',
-    codeBg: '#f5f5f4',
-    codeText: '#92400e',
-    preBg: '#1c1917',
-    preHeaderBg: '#292524',
-    hrColor: '#e7e5e4'
+    id: 'graphite-black',
+    name: '石墨黑',
+    colors: {
+      bg: '#ffffff',
+      heading: '#18181b',
+      strong: '#18181b',
+      headingDecor: '#52525b',
+      divider: '#e4e4e7',
+      listMarker: '#3f3f46',
+      codeBlockBg: '#18181b',
+      tableAccent: '#f4f4f5',
+      inlineCodeText: '#27272a',
+      inlineCodeBg: '#f4f4f5',
+      blockquoteAccent: '#3f3f46'
+    }
   },
   {
-    id: 'geek-dark',
-    name: '极客紫调',
-    badge: 'GK',
-    description: '高识别度紫靛强调色，适合开源发布与产品更新',
-    primary: '#6366f1',
-    primarySoft: '#eef2ff',
-    primaryBorder: '#c7d2fe',
-    text: '#1f2937',
-    textMuted: '#6b7280',
-    headingColor: '#111827',
-    bg: '#ffffff',
-    blockquoteBg: '#eef2ff',
-    blockquoteBorder: '#6366f1',
-    codeBg: '#f3f4f6',
-    codeText: '#4338ca',
-    preBg: '#111827',
-    preHeaderBg: '#1f2937',
-    hrColor: '#e5e7eb'
+    id: 'vibrant-orange',
+    name: '活力橙',
+    colors: {
+      bg: '#fffdf9',
+      heading: '#431407',
+      strong: '#ea580c',
+      headingDecor: '#f97316',
+      divider: '#fed7aa',
+      listMarker: '#ea580c',
+      codeBlockBg: '#1c1917',
+      tableAccent: '#fff7ed',
+      inlineCodeText: '#c2410c',
+      inlineCodeBg: '#ffedd5',
+      blockquoteAccent: '#ea580c'
+    }
+  },
+  {
+    id: 'lavender-purple',
+    name: '薰衣紫',
+    colors: {
+      bg: '#ffffff',
+      heading: '#2e1065',
+      strong: '#7c3aed',
+      headingDecor: '#8b5cf6',
+      divider: '#ddd6fe',
+      listMarker: '#7c3aed',
+      codeBlockBg: '#1e1b4b',
+      tableAccent: '#f5f3ff',
+      inlineCodeText: '#6d28d9',
+      inlineCodeBg: '#f5f3ff',
+      blockquoteAccent: '#7c3aed'
+    }
   }
 ]
 
-export const COLOR_PRESETS = [
-  { label: '主题默认', value: '' },
-  { label: '工程蓝', value: '#2563eb' },
-  { label: '晴空蓝', value: '#409eff' },
-  { label: '翡翠绿', value: '#10b981' },
-  { label: '琥珀橙', value: '#d97706' },
-  { label: '极客紫', value: '#6366f1' },
-  { label: '珊瑚红', value: '#e11d48' }
+function buildPalettes(themeName: string, defaultPalette: ColorPalette): ColorPalette[] {
+  return [
+    defaultPalette,
+    ...POPULAR_PALETTES.map((p) => ({
+      ...p,
+      subtitle: `${themeName} · 流行配色`
+    }))
+  ]
+}
+
+const RAW_THEMES: WechatTheme[] = [
+  {
+    id: 'moyu-green',
+    name: '摸鱼绿',
+    subtitle: '翡翠杂志风·高信息密度',
+    palette: {
+      id: 'default',
+      name: '默认',
+      subtitle: '摸鱼绿 · 主题原配色',
+      colors: {
+        bg: '#ffffff',
+        heading: '#111827',
+        strong: '#059669',
+        headingDecor: '#059669',
+        divider: '#A7F3D0',
+        listMarker: '#059669',
+        codeBlockBg: '#1E293B',
+        tableAccent: '#ECFDF5',
+        inlineCodeText: '#059669',
+        inlineCodeBg: '#F3F4F6',
+        blockquoteAccent: '#059669'
+      }
+    },
+    palettes: [],
+    text: '#374151',
+    textMuted: '#9CA3AF',
+    borderColor: '#E5E7EB',
+    preHeaderBg: '#0F172A'
+  },
+  {
+    id: 'red-white',
+    name: '红白风',
+    subtitle: '经典编辑风·克制点睛',
+    palette: {
+      id: 'default',
+      name: '默认',
+      subtitle: '红白风 · 主题原配色',
+      colors: {
+        bg: '#ffffff',
+        heading: '#1C1917',
+        strong: '#DC2626',
+        headingDecor: '#DC2626',
+        divider: '#FECACA',
+        listMarker: '#DC2626',
+        codeBlockBg: '#1E293B',
+        tableAccent: '#FEF2F2',
+        inlineCodeText: '#1F2937',
+        inlineCodeBg: '#F3F4F6',
+        blockquoteAccent: '#DC2626'
+      }
+    },
+    palettes: [],
+    text: '#374151',
+    textMuted: '#9CA3AF',
+    borderColor: '#FEE2E2',
+    preHeaderBg: '#0F172A'
+  },
+  {
+    id: 'olive-journal',
+    name: '橄榄手记',
+    subtitle: '内刊手记风·米白纸感',
+    palette: {
+      id: 'default',
+      name: '默认',
+      subtitle: '橄榄手记 · 主题原配色',
+      colors: {
+        bg: '#fdfdf8',
+        heading: '#23251d',
+        strong: '#23251d',
+        headingDecor: '#ed7b2f',
+        divider: '#bfc1b7',
+        listMarker: '#ed7b2f',
+        codeBlockBg: '#1E293B',
+        tableAccent: '#eeefe9',
+        inlineCodeText: '#23251d',
+        inlineCodeBg: '#eeefe9',
+        blockquoteAccent: '#ed7b2f'
+      }
+    },
+    palettes: [],
+    text: '#4d4f46',
+    textMuted: '#9ea096',
+    borderColor: '#bfc1b7',
+    codeBorder: '#b6b7af',
+    preHeaderBg: '#0F172A'
+  }
 ]
 
-export const SAMPLE_MARKDOWN = `# 在 Obsidian 中全面适配 VitePress 语法，VitePress Theme 插件史诗级更新
+export const WECHAT_THEMES: WechatTheme[] = RAW_THEMES.map((t) => ({
+  ...t,
+  palettes: buildPalettes(t.name, t.palette)
+}))
 
-> 用 VitePress 写文档或博客时，平时编辑和预览经常会在 Obsidian 和本地预览服务之间来回切。为了在 Obsidian 里直接获得接近 VitePress 站点的阅读观感，我做了 VitePress Theme for Obsidian 这个插件，最近重构了整个项目，使之功能更强，性能消耗更低。
+export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把经验变成可复用的能力
 
-这次重构把 \`VitePress\` 的常用扩展语法和排版样式做了一次比较完整的适配，主要集中在三块：
+> 通用 Agent 过去有两个老毛病：上下文容易越堆越长，以及经验难以复用与共享。Skills 的价值点，恰好对着这两个痛点打。
 
-1. **对齐 VitePress 的基础排版规范**，包括标题层级与列表、行高等阅读样式。
-2. 在阅读模式下**解析并渲染 VitePress 扩展语法**，覆盖 frontmatter 属性与徽章组件，同时适配了代码块、代码高亮以及链接增强。
-3. **优化代码块顶栏、容器和基础界面样式**，减少 Obsidian 默认主题和最终站点效果之间的割裂感。
+大家其实会明显感觉到，圈子里的关键词换得越来越快。前几年大家讲 \`Prompt\`，后来讲 \`Context Engineering\`。再后来，MCP、Tool Use、Workflow 一起上桌。到了最近，**Skills** 变成了高频词。
 
-## 功能展示
+## 从 Prompt 到 Context，再到 Skills
 
-下面按功能模块展示插件在阅读模式下的实际渲染效果。
+我观察到一个很有意思的变化：大家讨论 Skills 时，表面在聊怎么写一个 Skill，底层其实在聊**怎么把经验变成可复用的能力**。
 
-### 核心排版能力
+- **Prompt 时代**：你在写一段话，让模型配合你。
+- **Context 时代**：你在经营一个信息场，让模型更像你想要的那样工作。
+- **Skills 时代**：我们在打包一个能力包，让通用 Agent 在特定任务上稳定发挥。
 
-支持自动提取文章目录结构，生成编号导览卡片，并对行内代码、引用块与列表进行公众号内联样式兼容处理。
+## 为什么 Skills 会突然爆火？
 
-\`\`\`ts
-export function formatWechatArticle(markdown: string) {
-  const tokens = parseMarkdown(markdown)
-  return inlineStyles(tokens, {
-    theme: 'blueprint',
-    enableMotion: true
-  })
-}
+通用 Agent 过去有两个核心痛点。第一，上下文容易越堆越长；第二，经验难以复用与共享。
+
+### 三层信息分级与按需加载
+
+我们把它讲得更工程一点，核心文件其实就是 \`SKILL.md\` 这个文件，通过分层加载控制上下文体积：
+
+\`\`\`yaml
+name: gzh-design
+description: 将 Markdown 排版为符合微信公众号规范的内联 HTML
 \`\`\`
 
-### 为什么需要内联样式？
-
-| 特性 | 普通网页 CSS | 微信公众号富文本 |
+| 层级 | 触发时机 | 作用范围 |
 | :--- | :--- | :--- |
-| \`<style>\` 标签 | 原生支持 | 会被自动过滤 |
-| CSS 变量 | 原生支持 | 粘贴后失效 |
-| 行内 \`style="..."\` | 原生支持 | 完整保留 |
+| Level 1 元数据 | 常驻上下文 | 决定什么时候触发 |
+| Level 2 指令正文 | 触发后加载 | 规定 SOP 与输出规范 |
+| Level 3 资源脚本 | 按需读取 | 提供模板与校验脚本 |
 
 ---
 
-如果你也在找一款轻量、纯粹、无需折腾 AI 配置的 Markdown 公众号排版工具，欢迎直接将本文复制到公众号后台草稿箱体验。
+如果你也在找一款轻量、纯粹、无需折腾的 Markdown 公众号排版工具，欢迎直接将本文复制到公众号后台草稿箱体验。
 `
