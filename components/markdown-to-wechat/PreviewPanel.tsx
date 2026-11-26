@@ -19,12 +19,7 @@ const WIDTH_OPTIONS: { label: string; value: PreviewWidth }[] = [
   { label: '大屏 440', value: 440 }
 ]
 
-export function PreviewPanel({
-  html,
-  issues,
-  previewWidth,
-  onPreviewWidthChange
-}: PreviewPanelProps) {
+export function PreviewPanel({ html, issues, previewWidth, onPreviewWidthChange }: PreviewPanelProps) {
   const [copied, setCopied] = useState(false)
 
   const hasWarning = issues.some((i) => i.level === 'warning')
@@ -61,8 +56,7 @@ export function PreviewPanel({
           <button
             type='button'
             onClick={handleCopy}
-            className='inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3.5 py-1 text-xs font-medium text-white hover:bg-slate-800 dark:bg-[#409eff] dark:hover:bg-[#66b1ff] transition-colors cursor-pointer'
-          >
+            className='inline-flex items-center gap-1.5 rounded-full bg-slate-900 px-3.5 py-1 text-xs font-medium text-white hover:bg-slate-800 dark:bg-[#409eff] dark:hover:bg-[#66b1ff] transition-colors cursor-pointer'>
             {copied ? <Check className='h-3.5 w-3.5' /> : <Copy className='h-3.5 w-3.5' />}
             <span>{copied ? '已复制' : '复制到公众号'}</span>
           </button>
@@ -78,8 +72,7 @@ export function PreviewPanel({
                   previewWidth === opt.value
                     ? 'bg-slate-900 text-white font-semibold dark:bg-[#409eff] dark:text-white'
                     : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
+                }`}>
                 {opt.label}
               </button>
             ))}
@@ -100,13 +93,13 @@ export function PreviewPanel({
       )}
 
       {/* 居中手机预览画布 */}
-      <div className='flex-1 min-h-0 overflow-y-auto px-6 py-6 sm:px-10'>
+      <div className='flex-1 min-h-0 overflow-y-auto px-4 py-6 sm:px-8'>
         <div
-          className='mx-auto rounded-xl border border-border bg-white shadow-sm overflow-hidden transition-[width] duration-200'
+          className='mx-auto bg-white shadow-lg overflow-hidden transition-[width,padding] duration-200'
           style={
             previewWidth === 'auto'
-              ? { width: '100%', maxWidth: '402px' }
-              : { width: `${previewWidth}px`, maxWidth: '100%' }
+              ? { width: '520px', maxWidth: '100%', paddingLeft: '52px', paddingRight: '52px' }
+              : { width: `${previewWidth}px`, maxWidth: '100%', paddingLeft: '0px', paddingRight: '0px' }
           }
         >
           <div dangerouslySetInnerHTML={{ __html: html }} />
