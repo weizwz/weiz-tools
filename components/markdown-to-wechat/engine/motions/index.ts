@@ -13,18 +13,10 @@ export const MOTION_PRESETS: MotionPreset[] = [
   deepSeaTerminalMotion
 ]
 
-export const MOTION_REGISTRY = new Map<MotionId, MotionPreset>(
+const MOTION_REGISTRY = new Map<MotionId, MotionPreset>(
   MOTION_PRESETS.map((preset) => [preset.id, preset])
 )
 
 export function getMotionById(id: MotionId): MotionPreset {
   return MOTION_REGISTRY.get(id) || swissSignalMotion
-}
-
-export {
-  blueprintGridMotion,
-  botanicalNotesMotion,
-  deepSeaTerminalMotion,
-  editorialVermilionMotion,
-  swissSignalMotion
 }

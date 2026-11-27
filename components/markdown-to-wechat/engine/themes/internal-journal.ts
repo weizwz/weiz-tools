@@ -1,15 +1,12 @@
-import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba, resolveTagList } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const internalJournalTheme: LayoutTheme = {
   id: 'internal-journal',
   name: '内刊手记',
-  subtitle: '内刊手记风·植物手记动效',
-  motionId: 'botanical-notes',
   defaultPalette: {
     id: 'default',
     name: '默认',
-    subtitle: '内刊手记 · 麦芽原配色',
     colors: {
       bg: '#fdfdf8',
       heading: '#23251d',
@@ -44,9 +41,7 @@ export const internalJournalTheme: LayoutTheme = {
       const avatarHtml = avatar
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.4);flex-shrink:0;" />`
         : ''
-      const tagList = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
-      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
-      const badges = (tagList.length > 0 ? tagList : defaultTags)
+      const badges = resolveTagList(meta.tags)
         .map(
           (t) =>
             `<span style="background:#e5e7e0;color:#23251d;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:700;border:1px solid ${theme.borderColor};">${escapeHtml(t)}</span>`
@@ -145,16 +140,6 @@ export const internalJournalTheme: LayoutTheme = {
           ${content}
         </section>
       `
-    },
-
-    renderDivider(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
-    },
-
-    renderTail(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     },
 
     renderImage(href: string, text: string, ctx: RenderContext): string {

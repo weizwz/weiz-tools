@@ -25,7 +25,7 @@ export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
   { key: 'blockquoteAccent', label: '引用' }
 ]
 
-export const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
+export const POPULAR_PALETTES: ColorPalette[] = [
   {
     id: 'tech-blue',
     name: '科技蓝',
@@ -115,11 +115,11 @@ export const POPULAR_PALETTES: Omit<ColorPalette, 'subtitle'>[] = [
 
 export function getThemePalettes(theme: LayoutTheme): ColorPalette[] {
   return [
-    theme.defaultPalette,
-    ...POPULAR_PALETTES.map((p) => ({
-      ...p,
-      subtitle: `${theme.name} · 流行配色`
-    }))
+    {
+      ...theme.defaultPalette,
+      name: `默认•${theme.name}`
+    },
+    ...POPULAR_PALETTES
   ]
 }
 
@@ -151,6 +151,17 @@ export function hexToRgba(hex: string, alpha: number): string {
 
 export function escapeHtml(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
+export function resolveTagList(tags: string, limit = 3): string[] {
+  const parse = (raw: string) =>
+    raw
+      .split(/[,，]/)
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .slice(0, limit)
+  const list = parse(tags)
+  return list.length > 0 ? list : parse(DEFAULT_ARTICLE_META.tags)
 }
 
 export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把经验变成可复用的能力

@@ -1,15 +1,12 @@
-import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba, resolveTagList } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const magazineNewsTheme: LayoutTheme = {
   id: 'magazine-news',
   name: '杂志资讯',
-  subtitle: '杂志资讯风·瑞士信号动效',
-  motionId: 'swiss-signal',
   defaultPalette: {
     id: 'default',
     name: '默认',
-    subtitle: '杂志资讯 · 松青原配色',
     colors: {
       bg: '#ffffff',
       heading: '#0F172A',
@@ -39,17 +36,7 @@ export const magazineNewsTheme: LayoutTheme = {
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.5);flex-shrink:0;" />`
         : ''
       const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
-      const tagList = meta.tags
-        .split(/[,，]/)
-        .map((t) => t.trim())
-        .filter(Boolean)
-        .slice(0, 3)
-      const defaultTags = DEFAULT_ARTICLE_META.tags
-        .split(/[,，]/)
-        .map((t) => t.trim())
-        .filter(Boolean)
-        .slice(0, 3)
-      const badges = (tagList.length > 0 ? tagList : defaultTags)
+      const badges = resolveTagList(meta.tags)
         .map(
           (t) =>
             `<span style="background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;font-size:9px;color:#fff;font-weight:600;">${escapeHtml(t)}</span>`
@@ -166,16 +153,6 @@ export const magazineNewsTheme: LayoutTheme = {
           ${content}
         </section>
       `
-    },
-
-    renderDivider(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
-    },
-
-    renderTail(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     }
   }
 }

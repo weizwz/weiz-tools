@@ -242,7 +242,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       : ''
 
   const endingHtml = slots.renderEnding(ctx)
-  const tailHtml = theme.slots.renderTail ? theme.slots.renderTail(ctx) : ''
+  const tailHtml = slots.renderTail(ctx)
 
   const fullHtml = `
     <section id="wechat-article-root" style="padding:20px 18px;background-color:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;word-wrap:break-word;box-sizing:border-box;">

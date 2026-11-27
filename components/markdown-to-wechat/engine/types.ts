@@ -30,7 +30,6 @@ export type PaletteColorKey = keyof PaletteColors
 export interface ColorPalette {
   id: string
   name: string
-  subtitle: string
   colors: PaletteColors
 }
 
@@ -69,8 +68,6 @@ export interface MotionPreset {
 export interface LayoutTheme {
   id: ThemeId
   name: string
-  subtitle: string
-  motionId?: MotionId
   defaultPalette: ColorPalette
   text: string
   textMuted: string

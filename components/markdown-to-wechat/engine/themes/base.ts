@@ -32,7 +32,11 @@ export const baseSlots = {
   },
 
   renderDivider(ctx: RenderContext): string {
-    return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${ctx.colors.divider};" />`
+    return `<section style="margin:24px 0;">${ctx.motion.renderDivider(ctx.colors, ctx.animated)}</section>`
+  },
+
+  renderTail(ctx: RenderContext): string {
+    return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(ctx.colors, ctx.animated)}</section>`
   },
 
   renderImage(href: string, text: string, ctx: RenderContext): string {

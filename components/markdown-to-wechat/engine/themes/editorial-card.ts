@@ -1,15 +1,12 @@
-import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba, resolveTagList } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const editorialCardTheme: LayoutTheme = {
   id: 'editorial-card',
   name: '社论卡片',
-  subtitle: '社论卡片风·墨红社论动效',
-  motionId: 'editorial-vermilion',
   defaultPalette: {
     id: 'default',
     name: '默认',
-    subtitle: '社论卡片 · 朱砂原配色',
     colors: {
       bg: '#ffffff',
       heading: '#1C1917',
@@ -38,15 +35,7 @@ export const editorialCardTheme: LayoutTheme = {
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
         : ''
       const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
-      const parsedTags = meta.tags
-        .split(/[,，]/)
-        .map((t) => t.trim())
-        .filter(Boolean)
-      const defaultTags = DEFAULT_ARTICLE_META.tags
-        .split(/[,，]/)
-        .map((t) => t.trim())
-        .filter(Boolean)
-      const tagList = [category, ...(parsedTags.length > 0 ? parsedTags : defaultTags)].slice(0, 3)
+      const tagList = [category, ...resolveTagList(meta.tags)].slice(0, 3)
       const tagsHtml = tagList.length
         ? `<section style="display:flex;gap:5px;flex-wrap:wrap;">${tagList
             .map(
@@ -133,16 +122,6 @@ export const editorialCardTheme: LayoutTheme = {
           ${content}
         </blockquote>
       `
-    },
-
-    renderDivider(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
-    },
-
-    renderTail(ctx: RenderContext): string {
-      const { colors } = ctx
-      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     }
   }
 }

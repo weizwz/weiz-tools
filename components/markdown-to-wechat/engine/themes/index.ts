@@ -9,7 +9,7 @@ export const WECHAT_THEMES: LayoutTheme[] = [
   internalJournalTheme
 ]
 
-export const THEME_REGISTRY = new Map<ThemeId, LayoutTheme>(
+const THEME_REGISTRY = new Map<ThemeId, LayoutTheme>(
   WECHAT_THEMES.map((theme) => [theme.id, theme])
 )
 
