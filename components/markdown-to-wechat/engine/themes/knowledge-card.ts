@@ -147,8 +147,8 @@ export const knowledgeCardTheme: LayoutTheme = {
       const bg = hexToRgba(colors.blockquoteAccent, 0.05)
       const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
-        <section style="margin:18px 0;padding:12px 16px;background:${bg};border:1px solid ${hexToRgba(colors.blockquoteAccent, 0.2)};border-left:4px solid ${colors.blockquoteAccent};border-radius:8px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.75;">
-          <section style="display:flex;justify-content:flex-end;margin-bottom:4px;">${decor}</section>
+        <section style="margin:14px 0;padding:10px 14px;background:${bg};border:1px solid ${hexToRgba(colors.blockquoteAccent, 0.2)};border-left:4px solid ${colors.blockquoteAccent};border-radius:8px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.65;overflow:hidden;">
+          <section style="float:right;width:28px;margin:-2px 0 2px 8px;line-height:0;">${decor}</section>
           ${content}
         </section>
       `

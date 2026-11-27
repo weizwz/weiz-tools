@@ -130,8 +130,8 @@ export const bookNotesTheme: LayoutTheme = {
       const { theme, colors, fontSize, motion, animated } = ctx
       const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
-        <section style="margin:18px 0;padding:12px 16px 14px;background:${colors.tableAccent};border:1px dashed ${hexToRgba(colors.blockquoteAccent, 0.35)};border-left:3px solid ${colors.blockquoteAccent};border-radius:4px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.8;">
-          <section style="display:flex;justify-content:flex-end;margin-bottom:4px;">${decor}</section>
+        <section style="margin:14px 0;padding:10px 14px;background:${colors.tableAccent};border:1px dashed ${hexToRgba(colors.blockquoteAccent, 0.35)};border-left:3px solid ${colors.blockquoteAccent};border-radius:4px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.68;overflow:hidden;">
+          <section style="float:right;width:28px;margin:-2px 0 2px 8px;line-height:0;">${decor}</section>
           ${content}
         </section>
       `

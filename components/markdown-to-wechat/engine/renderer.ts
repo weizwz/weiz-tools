@@ -129,7 +129,12 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   }
 
   renderer.blockquote = function ({ tokens: innerTokens }: Tokens.Blockquote) {
-    return slots.renderBlockquote(this.parser.parse(innerTokens), ctx)
+    const raw = this.parser.parse(innerTokens).trim()
+    const compact = raw
+      .replace(/margin:0 0 18px 0;/g, 'margin:0 0 6px 0;')
+      .replace(/line-height:1\.85;/g, 'line-height:1.65;')
+      .replace(/(<p style="[^"]*margin:0 0 )6px( 0;[^"]*">)(?![\s\S]*<p )/i, '$10$2')
+    return slots.renderBlockquote(compact, ctx)
   }
 
   renderer.codespan = ({ text }: Tokens.Codespan) => {
