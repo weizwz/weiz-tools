@@ -2,35 +2,47 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { ChevronDown, Pipette, RotateCcw } from 'lucide-react'
+import { MOTION_PRESETS } from './engine/motions'
 import { WECHAT_THEMES } from './engine/themes'
-import { getThemePalettes, PALETTE_COLOR_FIELDS, resolvePaletteColors, VISUAL_LEVELS } from './engine/tokens'
-import { CustomColors, FontSizeOption, PaletteColorKey, PaletteColors, ThemeId, VisualLevel } from './engine/types'
+import { getThemePalettes, PALETTE_COLOR_FIELDS, resolvePaletteColors } from './engine/tokens'
+import {
+  CustomColors,
+  FontSizeOption,
+  MotionId,
+  PaletteColorKey,
+  PaletteColors,
+  ThemeId
+} from './engine/types'
 
 interface ThemeSelectorProps {
   themeId: ThemeId
-  visualLevel: VisualLevel
+  motionId: MotionId
+  animated: boolean
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
   onThemeChange: (id: ThemeId) => void
-  onVisualLevelChange: (level: VisualLevel) => void
+  onMotionChange: (id: MotionId) => void
+  onAnimatedChange: (animated: boolean) => void
   onPaletteChange: (paletteId: string) => void
   onCustomColorsChange: (colors: CustomColors) => void
   onFontSizeChange: (size: FontSizeOption) => void
 }
 
-type OpenMenu = 'theme' | 'level' | 'palette' | null
+type OpenMenu = 'theme' | 'motion' | 'palette' | null
 
 const FONT_SIZES: FontSizeOption[] = [14, 15, 16, 17]
 
 export function ThemeSelector({
   themeId,
-  visualLevel,
+  motionId,
+  animated,
   paletteId,
   customColors,
   fontSize,
   onThemeChange,
-  onVisualLevelChange,
+  onMotionChange,
+  onAnimatedChange,
   onPaletteChange,
   onCustomColorsChange,
   onFontSizeChange
@@ -40,7 +52,7 @@ export function ThemeSelector({
   const containerRef = useRef<HTMLDivElement>(null)
 
   const activeTheme = WECHAT_THEMES.find((t) => t.id === themeId) || WECHAT_THEMES[0]
-  const activeLevel = VISUAL_LEVELS.find((v) => v.level === visualLevel) || VISUAL_LEVELS[2]
+  const activeMotion = MOTION_PRESETS.find((m) => m.id === motionId) || MOTION_PRESETS[0]
   const themePalettes = getThemePalettes(activeTheme)
   const basePalette = themePalettes.find((p) => p.id === paletteId) || activeTheme.defaultPalette
   const resolvedColors: PaletteColors = resolvePaletteColors(activeTheme, paletteId, customColors)
@@ -82,7 +94,7 @@ export function ThemeSelector({
           type='button'
           onClick={() => toggleMenu('theme')}
           className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
-          <span className='text-muted-foreground'>基础</span>
+          <span className='text-muted-foreground'>排版</span>
           <span className='inline-block h-2.5 w-2.5 rounded-full' style={{ backgroundColor: activeTheme.defaultPalette.colors.headingDecor }} />
           <span className='font-medium text-foreground'>{activeTheme.name}</span>
           <ChevronDown className='h-3 w-3 text-muted-foreground' />
@@ -123,49 +135,41 @@ export function ThemeSelector({
         )}
       </div>
 
-      {/* 2. 视觉选项（三类） */}
+      {/* 2. 动效选择（与排版解耦） */}
       <div className='relative'>
         <button
           type='button'
-          onClick={() => toggleMenu('level')}
+          onClick={() => toggleMenu('motion')}
           className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
-          <span className='text-muted-foreground'>视觉</span>
-          <span className='inline-flex h-4 items-center rounded-sm bg-foreground px-1.5 font-mono text-[10px] font-bold text-background'>
-            {activeLevel.badge}
-          </span>
-          <span className='font-medium text-foreground'>{activeLevel.name}</span>
+          <span className='text-muted-foreground'>动效</span>
+          <span className='font-medium text-foreground'>{activeMotion.name}</span>
           <ChevronDown className='h-3 w-3 text-muted-foreground' />
         </button>
 
-        {openMenu === 'level' && (
-          <div className='absolute left-0 top-full z-50 mt-2 w-72 rounded-lg border border-border bg-popover p-2.5 shadow-xl'>
+        {openMenu === 'motion' && (
+          <div className='absolute left-0 top-full z-50 mt-2 w-64 rounded-lg border border-border bg-popover p-2.5 shadow-xl'>
             <div className='mb-2 flex items-center justify-between px-1 font-mono text-[11px] tracking-wider text-muted-foreground'>
-              <span>VISUAL MODES · 视觉效果</span>
-              <span>3 MODES</span>
+              <span>MOTION PRESETS · 动效</span>
+              <span>{MOTION_PRESETS.length} PRESETS</span>
             </div>
             <div className='space-y-1.5'>
-              {VISUAL_LEVELS.map((item) => {
-                const isSelected = item.level === visualLevel
+              {MOTION_PRESETS.map((preset) => {
+                const isSelected = preset.id === activeMotion.id
                 return (
                   <button
-                    key={item.level}
+                    key={preset.id}
                     type='button'
                     onClick={() => {
-                      onVisualLevelChange(item.level)
+                      onMotionChange(preset.id)
                       setOpenMenu(null)
                     }}
-                    className={`flex w-full items-start gap-2.5 rounded-md border p-2.5 text-left transition-colors cursor-pointer ${
+                    className={`flex w-full items-center justify-between gap-2 rounded-md border px-2.5 py-2 text-left transition-colors cursor-pointer ${
                       isSelected
-                        ? 'border-foreground bg-secondary'
+                        ? 'border-foreground bg-secondary font-semibold'
                         : 'border-border hover:border-foreground/35 hover:bg-secondary/50'
                     }`}>
-                    <span className='mt-0.5 inline-flex h-5 shrink-0 items-center justify-center rounded-sm bg-foreground px-1.5 font-mono text-[10px] font-bold text-background'>
-                      {item.badge}
-                    </span>
-                    <div className='min-w-0'>
-                      <div className='text-xs font-semibold text-foreground'>{item.name}</div>
-                      <div className='mt-0.5 text-[11px] text-muted-foreground'>{item.desc}</div>
-                    </div>
+                    <span className='text-xs text-foreground'>{preset.name}</span>
+                    <span className='font-mono text-[10px] text-muted-foreground'>{preset.id}</span>
                   </button>
                 )
               })}
@@ -302,6 +306,19 @@ export function ThemeSelector({
           ))}
         </select>
       </div>
+
+      {/* 5. 动态开关（字号后） */}
+      <label
+        className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer select-none'
+        title='选中启用 SVG 动效，取消仅保留静态 SVG 装饰'>
+        <input
+          type='checkbox'
+          checked={animated}
+          onChange={(e) => onAnimatedChange(e.target.checked)}
+          className='h-3.5 w-3.5 accent-foreground cursor-pointer'
+        />
+        <span className='font-medium text-foreground'>动态</span>
+      </label>
     </div>
   )
 }

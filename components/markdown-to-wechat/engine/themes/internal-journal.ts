@@ -1,4 +1,3 @@
-import { botanicalNotesMotion } from '../motions'
 import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
@@ -32,7 +31,7 @@ export const internalJournalTheme: LayoutTheme = {
   preHeaderBg: '#181a14',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, author, theme, dateStr, meta } = ctx
+      const { colors, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const parts = title
         .split(/[：:]/)
@@ -54,9 +53,7 @@ export const internalJournalTheme: LayoutTheme = {
         )
         .join('')
 
-      const bannerMotion = capabilities.useMotion
-        ? `<section style="margin-top:10px;">${botanicalNotesMotion.renderBannerMotion(colors, true)}</section>`
-        : ''
+      const bannerMotion = `<section style="margin-top:10px;">${ctx.motion.renderBannerMotion(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;">
@@ -90,7 +87,7 @@ export const internalJournalTheme: LayoutTheme = {
     },
 
     renderToc(headings: string[], ctx: RenderContext): string {
-      const { colors, theme, capabilities } = ctx
+      const { colors, theme } = ctx
       const items = headings
         .slice(0, 6)
         .map((text, idx) => {
@@ -104,7 +101,7 @@ export const internalJournalTheme: LayoutTheme = {
         })
         .join('')
 
-      const tocDecor = `<section style="width:62px;flex-shrink:0;">${botanicalNotesMotion.renderTocDecor(colors, capabilities.useMotion)}</section>`
+      const tocDecor = `<section style="width:62px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;">
@@ -121,12 +118,10 @@ export const internalJournalTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, capabilities, fontSize } = ctx
+      const { colors, fontSize } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
-      const rail = capabilities.useFancyDivider
-        ? `<section style="margin-top:4px;">${botanicalNotesMotion.renderSectionRail(colors, capabilities.useMotion, index)}</section>`
-        : ''
+      const rail = `<section style="margin-top:4px;">${ctx.motion.renderSectionRail(colors, ctx.animated, index)}</section>`
       return `
         <section style="margin:${marginTop} 0 18px 0;">
           <section style="display:flex;align-items:center;gap:14px;">
@@ -153,16 +148,13 @@ export const internalJournalTheme: LayoutTheme = {
     },
 
     renderDivider(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      if (!capabilities.useFancyDivider) {
-        return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
-      }
-      return `<section style="margin:24px 0;">${botanicalNotesMotion.renderDivider(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
     },
 
     renderTail(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      return `<section style="margin:28px 0 6px;">${botanicalNotesMotion.renderTail(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     },
 
     renderImage(href: string, text: string, ctx: RenderContext): string {

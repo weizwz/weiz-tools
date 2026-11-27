@@ -1,4 +1,3 @@
-import { editorialVermilionMotion } from '../motions'
 import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
@@ -31,7 +30,7 @@ export const editorialCardTheme: LayoutTheme = {
   preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, author, theme, dateStr, meta } = ctx
+      const { colors, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const shadowColor = hexToRgba(colors.headingDecor, 0.16)
       const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
@@ -39,8 +38,14 @@ export const editorialCardTheme: LayoutTheme = {
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
         : ''
       const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
-      const parsedTags = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
-      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
+      const parsedTags = meta.tags
+        .split(/[,，]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+      const defaultTags = DEFAULT_ARTICLE_META.tags
+        .split(/[,，]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
       const tagList = [category, ...(parsedTags.length > 0 ? parsedTags : defaultTags)].slice(0, 3)
       const tagsHtml = tagList.length
         ? `<section style="display:flex;gap:5px;flex-wrap:wrap;">${tagList
@@ -51,9 +56,7 @@ export const editorialCardTheme: LayoutTheme = {
             .join('')}</section>`
         : '<span></span>'
 
-      const bannerMotion = capabilities.useMotion
-        ? `<section style="margin-top:8px;">${editorialVermilionMotion.renderBannerMotion(colors, true)}</section>`
-        : ''
+      const bannerMotion = `<section style="margin-top:8px;">${ctx.motion.renderBannerMotion(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:6px 4px 26px;background:${colors.bg};border-radius:12px;box-shadow:0 4px 24px -4px ${shadowColor};border:1px solid ${colors.tableAccent};padding:24px 22px 16px;overflow:hidden;">
@@ -74,7 +77,7 @@ export const editorialCardTheme: LayoutTheme = {
     },
 
     renderToc(headings: string[], ctx: RenderContext): string {
-      const { colors, theme, capabilities } = ctx
+      const { colors, theme } = ctx
       const rows = headings
         .slice(0, 6)
         .map((text, idx) => {
@@ -88,7 +91,7 @@ export const editorialCardTheme: LayoutTheme = {
         })
         .join('')
 
-      const tocDecor = `<section style="width:62px;flex-shrink:0;">${editorialVermilionMotion.renderTocDecor(colors, capabilities.useMotion)}</section>`
+      const tocDecor = `<section style="width:62px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 24px 0;padding:16px 18px;border:1px solid ${colors.divider};border-radius:10px;background:${colors.tableAccent};">
@@ -102,12 +105,10 @@ export const editorialCardTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, capabilities, fontSize } = ctx
+      const { colors, fontSize } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
-      const rail = capabilities.useFancyDivider
-        ? `<section style="margin-top:6px;">${editorialVermilionMotion.renderSectionRail(colors, capabilities.useMotion, index)}</section>`
-        : ''
+      const rail = `<section style="margin-top:6px;">${ctx.motion.renderSectionRail(colors, ctx.animated, index)}</section>`
       return `
         <section style="margin:${marginTop} 0 18px 0;padding-bottom:10px;border-bottom:2px solid ${colors.headingDecor};">
           <section style="display:flex;align-items:center;">
@@ -135,16 +136,13 @@ export const editorialCardTheme: LayoutTheme = {
     },
 
     renderDivider(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      if (!capabilities.useFancyDivider) {
-        return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
-      }
-      return `<section style="margin:24px 0;">${editorialVermilionMotion.renderDivider(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
     },
 
     renderTail(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      return `<section style="margin:28px 0 6px;">${editorialVermilionMotion.renderTail(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     }
   }
 }

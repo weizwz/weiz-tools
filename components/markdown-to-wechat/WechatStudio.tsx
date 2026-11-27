@@ -5,16 +5,17 @@ import { EditorPanel } from './EditorPanel'
 import { PreviewPanel } from './PreviewPanel'
 import { renderWechatArticle } from './engine/renderer'
 import { DEFAULT_ARTICLE_META, SAMPLE_MARKDOWN } from './engine/tokens'
-import { ArticleMeta, CustomColors, FontSizeOption, PreviewWidth, ThemeId, VisualLevel } from './engine/types'
+import { ArticleMeta, CustomColors, FontSizeOption, MotionId, PreviewWidth, ThemeId } from './engine/types'
 import { exportHtmlFile } from './engine/wechat-inline'
 
-const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v4'
+const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v5'
 
 interface DraftState {
   markdown: string
   meta: ArticleMeta
   themeId: ThemeId
-  visualLevel: VisualLevel
+  motionId: MotionId
+  animated: boolean
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
@@ -25,7 +26,8 @@ const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
   meta: DEFAULT_ARTICLE_META,
   themeId: 'magazine-news',
-  visualLevel: 'motion',
+  motionId: 'swiss-signal',
+  animated: true,
   paletteId: 'default',
   customColors: {},
   fontSize: 15,
@@ -68,7 +70,8 @@ export function WechatStudio() {
     () =>
       renderWechatArticle(draft.markdown, {
         themeId: draft.themeId,
-        visualLevel: draft.visualLevel,
+        motionId: draft.motionId,
+        animated: draft.animated,
         paletteId: draft.paletteId,
         customColors: draft.customColors,
         fontSize: draft.fontSize,
@@ -77,7 +80,8 @@ export function WechatStudio() {
     [
       draft.markdown,
       draft.themeId,
-      draft.visualLevel,
+      draft.motionId,
+      draft.animated,
       draft.paletteId,
       draft.customColors,
       draft.fontSize,
@@ -91,7 +95,8 @@ export function WechatStudio() {
         markdown={draft.markdown}
         meta={draft.meta}
         themeId={draft.themeId}
-        visualLevel={draft.visualLevel}
+        motionId={draft.motionId}
+        animated={draft.animated}
         paletteId={draft.paletteId}
         customColors={draft.customColors}
         fontSize={draft.fontSize}
@@ -100,7 +105,8 @@ export function WechatStudio() {
         onMarkdownChange={(markdown) => setDraft((prev) => ({ ...prev, markdown }))}
         onMetaChange={(meta) => setDraft((prev) => ({ ...prev, meta }))}
         onThemeChange={(themeId) => setDraft((prev) => ({ ...prev, themeId }))}
-        onVisualLevelChange={(visualLevel) => setDraft((prev) => ({ ...prev, visualLevel }))}
+        onMotionChange={(motionId) => setDraft((prev) => ({ ...prev, motionId }))}
+        onAnimatedChange={(animated) => setDraft((prev) => ({ ...prev, animated }))}
         onPaletteChange={(paletteId) => setDraft((prev) => ({ ...prev, paletteId }))}
         onCustomColorsChange={(customColors) => setDraft((prev) => ({ ...prev, customColors }))}
         onFontSizeChange={(fontSize) => setDraft((prev) => ({ ...prev, fontSize }))}

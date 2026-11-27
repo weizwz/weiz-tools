@@ -1,4 +1,4 @@
-import { ArticleMeta, ColorPalette, CustomColors, LayoutTheme, PaletteColorKey, PaletteColors, VisualCapabilities, VisualLevel } from './types'
+import { ArticleMeta, ColorPalette, CustomColors, LayoutTheme, PaletteColorKey, PaletteColors } from './types'
 
 export const DEFAULT_ARTICLE_META: ArticleMeta = {
   avatar: '',
@@ -10,12 +10,6 @@ export const DEFAULT_ARTICLE_META: ArticleMeta = {
 
 如果觉得今天这篇有收获，欢迎点赞、在看、转发三连，我们下篇见`
 }
-
-export const VISUAL_LEVELS: { level: VisualLevel; badge: string; name: string; desc: string }[] = [
-  { level: 'basic', badge: '基础', name: '基础排版', desc: '保留主题配色、标题层级与引用/代码高亮' },
-  { level: 'decorated', badge: '增强', name: '装饰增强', desc: '开启主题首图卡、篇幅导览卡与静态分隔装饰' },
-  { level: 'motion', badge: '动效', name: '主题动效', desc: '全套卡片排版 + 主题专属 SVG 微动效' }
-]
 
 export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
   { key: 'bg', label: '正文底色' },
@@ -136,34 +130,6 @@ export function resolvePaletteColors(theme: LayoutTheme, paletteId: string, cust
     return { ...base.colors, ...customColors }
   }
   return base.colors
-}
-
-export function resolveVisualCapabilities(level: VisualLevel): VisualCapabilities {
-  if (level === 'basic') {
-    return {
-      showBanner: false,
-      showToc: false,
-      showCodeHeader: false,
-      useFancyDivider: false,
-      useMotion: false
-    }
-  }
-  if (level === 'decorated') {
-    return {
-      showBanner: true,
-      showToc: true,
-      showCodeHeader: true,
-      useFancyDivider: true,
-      useMotion: false
-    }
-  }
-  return {
-    showBanner: true,
-    showToc: true,
-    showCodeHeader: true,
-    useFancyDivider: true,
-    useMotion: true
-  }
 }
 
 export function hexToRgba(hex: string, alpha: number): string {

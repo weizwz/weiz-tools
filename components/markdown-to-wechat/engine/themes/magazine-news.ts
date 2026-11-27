@@ -1,4 +1,3 @@
-import { swissSignalMotion } from '../motions'
 import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
@@ -31,7 +30,7 @@ export const magazineNewsTheme: LayoutTheme = {
   preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
-      const { colors, capabilities, fontSize, author, dateStr, meta } = ctx
+      const { colors, fontSize, author, dateStr, meta } = ctx
       const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const borderCol = hexToRgba(colors.headingDecor, 0.28)
       const tagBg = hexToRgba(colors.headingDecor, 0.08)
@@ -40,8 +39,16 @@ export const magazineNewsTheme: LayoutTheme = {
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.5);flex-shrink:0;" />`
         : ''
       const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
-      const tagList = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
-      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
+      const tagList = meta.tags
+        .split(/[,，]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+        .slice(0, 3)
+      const defaultTags = DEFAULT_ARTICLE_META.tags
+        .split(/[,，]/)
+        .map((t) => t.trim())
+        .filter(Boolean)
+        .slice(0, 3)
       const badges = (tagList.length > 0 ? tagList : defaultTags)
         .map(
           (t) =>
@@ -49,7 +56,7 @@ export const magazineNewsTheme: LayoutTheme = {
         )
         .join('')
 
-      const bannerMotion = capabilities.useMotion ? `<section style="margin-top:8px;">${swissSignalMotion.renderBannerMotion(colors, true)}</section>` : ''
+      const bannerMotion = `<section style="margin-top:8px;">${ctx.motion.renderBannerMotion(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border-radius:16px;overflow:hidden;border:1px solid ${borderCol};box-shadow:0 4px 16px -6px ${hexToRgba(colors.headingDecor, 0.14)};">
@@ -80,7 +87,7 @@ export const magazineNewsTheme: LayoutTheme = {
     },
 
     renderToc(headings: string[], ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
+      const { colors } = ctx
       const cards = headings
         .slice(0, 6)
         .map((text, idx) => {
@@ -102,7 +109,7 @@ export const magazineNewsTheme: LayoutTheme = {
         })
         .join('')
 
-      const tocDecor = `<section style="width:56px;flex-shrink:0;">${swissSignalMotion.renderTocDecor(colors, capabilities.useMotion)}</section>`
+      const tocDecor = `<section style="width:56px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 28px 0;">
@@ -122,12 +129,10 @@ export const magazineNewsTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, capabilities, fontSize } = ctx
+      const { colors, fontSize } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
-      const rail = capabilities.useFancyDivider
-        ? `<section style="margin-top:4px;">${swissSignalMotion.renderSectionRail(colors, capabilities.useMotion, index)}</section>`
-        : ''
+      const rail = `<section style="margin-top:4px;">${ctx.motion.renderSectionRail(colors, ctx.animated, index)}</section>`
       return `
         <section style="margin:${marginTop} 0 18px 0;">
           <section style="display:flex;align-items:center;gap:14px;">
@@ -164,16 +169,13 @@ export const magazineNewsTheme: LayoutTheme = {
     },
 
     renderDivider(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      if (!capabilities.useFancyDivider) {
-        return `<hr style="margin:24px 0;border:none;border-top:1px dashed ${colors.divider};" />`
-      }
-      return `<section style="margin:24px 0;">${swissSignalMotion.renderDivider(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:24px 0;">${ctx.motion.renderDivider(colors, ctx.animated)}</section>`
     },
 
     renderTail(ctx: RenderContext): string {
-      const { colors, capabilities } = ctx
-      return `<section style="margin:28px 0 6px;">${swissSignalMotion.renderTail(colors, capabilities.useMotion)}</section>`
+      const { colors } = ctx
+      return `<section style="margin:28px 0 6px;">${ctx.motion.renderTail(colors, ctx.animated)}</section>`
     }
   }
 }

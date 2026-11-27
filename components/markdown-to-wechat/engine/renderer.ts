@@ -1,12 +1,12 @@
 import { Marked, Renderer, Tokens } from 'marked'
 import hljs from 'highlight.js'
+import { getMotionById } from './motions'
 import { getThemeById } from './themes'
 import { baseSlots } from './themes/base'
 import {
   escapeHtml,
   hexToRgba,
-  resolvePaletteColors,
-  resolveVisualCapabilities
+  resolvePaletteColors
 } from './tokens'
 import { ComplianceIssue, RenderContext, RenderOptions, RenderResult } from './types'
 
@@ -47,16 +47,17 @@ function inlineHighlightHtml(html: string): string {
 
 export function renderWechatArticle(markdown: string, options: RenderOptions): RenderResult {
   const theme = getThemeById(options.themeId)
+  const motion = getMotionById(options.motionId)
   const colors = resolvePaletteColors(theme, options.paletteId, options.customColors)
-  const capabilities = resolveVisualCapabilities(options.visualLevel)
   const now = new Date()
   const { meta } = options
   const dateStr = meta.date.trim() || `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`
 
   const ctx: RenderContext = {
     theme,
+    motion,
+    animated: options.animated,
     colors,
-    capabilities,
     fontSize: options.fontSize,
     author: meta.author,
     dateStr,
@@ -76,7 +77,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   const filteredTokens = tokens.filter((token) => {
     if (token.type === 'heading') {
       const headingToken = token as Tokens.Heading
-      if (headingToken.depth === 1 && firstH1 === null && capabilities.showBanner) {
+      if (headingToken.depth === 1 && firstH1 === null) {
         firstH1 = headingToken.text
         return false
       }
@@ -146,14 +147,12 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       })
       .join('')
 
-    const macHeader = capabilities.showCodeHeader
-      ? `<section style="display:flex;align-items:center;padding:9px 14px;background:${theme.preHeaderBg};border-bottom:1px solid rgba(255,255,255,0.06);">
+    const macHeader = `<section style="display:flex;align-items:center;padding:9px 14px;background:${theme.preHeaderBg};border-bottom:1px solid rgba(255,255,255,0.06);">
           <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FF5F56;margin-right:6px;"></span>
           <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FFBD2E;margin-right:6px;"></span>
           <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#27C93F;margin-right:10px;"></span>
           <span style="font-size:11px;color:#94A3B8;font-family:Consolas,Monaco,monospace;letter-spacing:1px;">${escapeHtml(lang || 'code')}</span>
         </section>`
-      : ''
 
     return `
       <section style="margin:18px 0;border-radius:8px;overflow:hidden;background:${colors.codeBlockBg};box-shadow:0 4px 16px -8px rgba(15,23,42,0.4);">
@@ -234,19 +233,16 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   }
 
   const bannerHtml =
-    firstH1 && capabilities.showBanner && theme.slots.renderBanner
+    firstH1 && theme.slots.renderBanner
       ? theme.slots.renderBanner(firstH1, ctx)
       : ''
   const tocHtml =
-    capabilities.showToc && h2Headings.length >= 2 && theme.slots.renderToc
+    h2Headings.length >= 2 && theme.slots.renderToc
       ? theme.slots.renderToc(h2Headings, ctx)
       : ''
 
   const endingHtml = slots.renderEnding(ctx)
-  const tailHtml =
-    (capabilities.useMotion || capabilities.useFancyDivider) && theme.slots.renderTail
-      ? theme.slots.renderTail(ctx)
-      : ''
+  const tailHtml = theme.slots.renderTail ? theme.slots.renderTail(ctx) : ''
 
   const fullHtml = `
     <section id="wechat-article-root" style="padding:20px 18px;background-color:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;word-wrap:break-word;box-sizing:border-box;">

@@ -7,8 +7,6 @@ export type MotionId =
   | 'editorial-vermilion'
   | 'swiss-signal'
 
-export type VisualLevel = 'basic' | 'decorated' | 'motion'
-
 export type PreviewWidth = 'auto' | 375 | 402 | 440
 
 export type FontSizeOption = 14 | 15 | 16 | 17
@@ -38,14 +36,6 @@ export interface ColorPalette {
 
 export type CustomColors = Partial<PaletteColors>
 
-export interface VisualCapabilities {
-  showBanner: boolean
-  showToc: boolean
-  showCodeHeader: boolean
-  useFancyDivider: boolean
-  useMotion: boolean
-}
-
 export interface ArticleMeta {
   avatar: string
   author: string
@@ -57,8 +47,9 @@ export interface ArticleMeta {
 
 export interface RenderContext {
   theme: LayoutTheme
+  motion: MotionPreset
+  animated: boolean
   colors: PaletteColors
-  capabilities: VisualCapabilities
   fontSize: FontSizeOption
   author: string
   dateStr: string
@@ -102,7 +93,8 @@ export interface LayoutTheme {
 
 export interface RenderOptions {
   themeId: ThemeId
-  visualLevel: VisualLevel
+  motionId: MotionId
+  animated: boolean
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption

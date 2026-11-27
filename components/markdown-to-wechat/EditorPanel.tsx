@@ -4,13 +4,14 @@ import { Button } from '@/components/ui/button'
 import { Download, FileText, Trash2 } from 'lucide-react'
 import { ArticleMetaPopover } from './ArticleMetaPopover'
 import { ThemeSelector } from './ThemeSelector'
-import { ArticleMeta, CustomColors, FontSizeOption, ThemeId, VisualLevel } from './engine/types'
+import { ArticleMeta, CustomColors, FontSizeOption, MotionId, ThemeId } from './engine/types'
 
 interface EditorPanelProps {
   markdown: string
   meta: ArticleMeta
   themeId: ThemeId
-  visualLevel: VisualLevel
+  motionId: MotionId
+  animated: boolean
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
@@ -19,7 +20,8 @@ interface EditorPanelProps {
   onMarkdownChange: (value: string) => void
   onMetaChange: (meta: ArticleMeta) => void
   onThemeChange: (id: ThemeId) => void
-  onVisualLevelChange: (level: VisualLevel) => void
+  onMotionChange: (id: MotionId) => void
+  onAnimatedChange: (animated: boolean) => void
   onPaletteChange: (paletteId: string) => void
   onCustomColorsChange: (colors: CustomColors) => void
   onFontSizeChange: (size: FontSizeOption) => void
@@ -32,7 +34,8 @@ export function EditorPanel({
   markdown,
   meta,
   themeId,
-  visualLevel,
+  motionId,
+  animated,
   paletteId,
   customColors,
   fontSize,
@@ -41,7 +44,8 @@ export function EditorPanel({
   onMarkdownChange,
   onMetaChange,
   onThemeChange,
-  onVisualLevelChange,
+  onMotionChange,
+  onAnimatedChange,
   onPaletteChange,
   onCustomColorsChange,
   onFontSizeChange,
@@ -59,12 +63,14 @@ export function EditorPanel({
           </span>
           <ThemeSelector
             themeId={themeId}
-            visualLevel={visualLevel}
+            motionId={motionId}
+            animated={animated}
             paletteId={paletteId}
             customColors={customColors}
             fontSize={fontSize}
             onThemeChange={onThemeChange}
-            onVisualLevelChange={onVisualLevelChange}
+            onMotionChange={onMotionChange}
+            onAnimatedChange={onAnimatedChange}
             onPaletteChange={onPaletteChange}
             onCustomColorsChange={onCustomColorsChange}
             onFontSizeChange={onFontSizeChange}
