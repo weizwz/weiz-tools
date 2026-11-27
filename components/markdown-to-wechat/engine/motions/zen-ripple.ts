@@ -124,10 +124,56 @@ export const zenRippleMotion: MotionPreset = {
   },
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
-    void colors
-    void animated
-    void index
-    return ''
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
+    const ringDurSec = 5.4 + ((index - 1) % 3) * 0.4
+    const ringDur = `${ringDurSec.toFixed(1)}s`
+    const arcDurSec = 7.2 + ((index - 1) % 3) * 0.5
+    const arcDur = `${arcDurSec.toFixed(1)}s`
+    const rings = animated
+      ? [0, 1, 2]
+          .map((i) => {
+            const begin = `${((ringDurSec / 3) * i).toFixed(2)}s`
+            const col = i === 1 ? accent : primary
+            return `<ellipse cx="320" cy="7" rx="4" ry="1.4" fill="none" stroke="${col}" stroke-width="1.1" opacity="0"><animate attributeName="rx" values="4;30" dur="${ringDur}" begin="${begin}" repeatCount="indefinite"/><animate attributeName="ry" values="1.4;5.2" dur="${ringDur}" begin="${begin}" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.74;0.34;0" keyTimes="0;0.14;0.58;1" dur="${ringDur}" begin="${begin}" repeatCount="indefinite"/></ellipse>`
+          })
+          .join('')
+      : [
+          { rx: 10, ry: 2.3, col: primary, op: 0.78 },
+          { rx: 19, ry: 3.8, col: accent, op: 0.56 },
+          { rx: 29, ry: 5.1, col: primaryMid, op: 0.38 }
+        ]
+          .map(
+            ({ rx, ry, col, op }) =>
+              `<ellipse cx="320" cy="7" rx="${rx}" ry="${ry}" fill="none" stroke="${col}" stroke-width="1.1" opacity="${op}"/>`
+          )
+          .join('')
+    const arcCount = 10
+    const arcs = animated
+      ? Array.from({ length: arcCount }, (_, i) => {
+          const begin = `${((arcDurSec / arcCount) * i).toFixed(2)}s`
+          const col = i % 2 === 1 ? accent : primary
+          return `<g opacity="0"><animate attributeName="opacity" values="0;0.58;0.28;0" keyTimes="0;0.12;0.58;1" dur="${arcDur}" begin="${begin}" repeatCount="indefinite"/><path d="M288 2.5Q283.5 7 288 11.5" fill="none" stroke="${col}" stroke-width="1.1" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0 0;-268 0" dur="${arcDur}" begin="${begin}" repeatCount="indefinite"/></path><path d="M352 2.5Q356.5 7 352 11.5" fill="none" stroke="${col}" stroke-width="1.1" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0 0;268 0" dur="${arcDur}" begin="${begin}" repeatCount="indefinite"/></path></g>`
+        }).join('')
+      : [
+          { dx: 18, col: primary, op: 0.48 },
+          { dx: 48, col: accent, op: 0.4 },
+          { dx: 82, col: primary, op: 0.34 },
+          { dx: 120, col: primaryMid, op: 0.27 },
+          { dx: 162, col: accent, op: 0.2 },
+          { dx: 206, col: primaryMid, op: 0.14 },
+          { dx: 252, col: primaryMid, op: 0.09 }
+        ]
+          .map(
+            ({ dx, col, op }) =>
+              `<g opacity="${op}"><path d="M${288 - dx} 2.5Q${283.5 - dx} 7 ${288 - dx} 11.5" fill="none" stroke="${col}" stroke-width="1.1" stroke-linecap="round"/><path d="M${352 + dx} 2.5Q${356.5 + dx} 7 ${352 + dx} 11.5" fill="none" stroke="${col}" stroke-width="1.1" stroke-linecap="round"/></g>`
+          )
+          .join('')
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 14" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+        ${rings}
+        ${arcs}
+      </svg>
+    `
   },
 
   renderImagePlaceholder(caption: string, ratio: string, colors: PaletteColors, animated: boolean): string {
@@ -136,11 +182,12 @@ export const zenRippleMotion: MotionPreset = {
 
   renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
     const { primary, accent } = resolveMotionColors(colors)
+    const wave1 = 'M2 9C8 4 14 14 20 9C26 4 30 13 34 9'
+    const wave2 = 'M2 16C8 11 14 21 20 16C26 11 30 20 34 16'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;max-width:100%;">
-        <path d="M6 12C12 7 24 7 30 12" fill="none" stroke="${primary}" stroke-width="1.2"/>
-        <path d="M10 16C14 13 22 13 26 16" fill="none" stroke="${primary}" stroke-width="1" opacity="0.55"/>
-        <circle cx="18" cy="10" r="2.2" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2.8s', animated)}</circle>
+        ${flowTrailSvg(wave1, primary, 1.35, '12 32', -44, '3.8s', animated)}
+        ${flowTrailSvg(wave2, accent, 1.25, '10 32', 42, '4.4s', animated)}
       </svg>
     `
   },
@@ -157,9 +204,13 @@ export const zenRippleMotion: MotionPreset = {
 
   renderEndingDecor(colors: PaletteColors, animated: boolean): string {
     const { primary, accent } = resolveMotionColors(colors)
+    const wave1 = 'M4 21C11 18.5 17 23.5 24 21C31 18.5 37 23.5 44 21'
+    const wave2 = 'M4 25C11 22.5 17 27.5 24 25C31 22.5 37 27.5 44 25'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28" width="48" style="display:block;height:auto;max-width:100%;">
-        ${waterDrop(24, 13, 0.72, primary, accent, animated)}
+        ${waterDrop(24, 10, 0.56, primary, accent, animated)}
+        ${flowTrailSvg(wave1, primary, 1.25, '14 42', -56, '3.8s', animated)}
+        ${flowTrailSvg(wave2, accent, 1.15, '12 42', 54, '4.4s', animated)}
       </svg>
     `
   },
@@ -197,10 +248,7 @@ export const zenRippleMotion: MotionPreset = {
     const rightSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 84" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
         <path d="M14 58H186" stroke="${primarySoft}" stroke-width="0.9"/>
-        <circle cx="116" cy="46" r="2.5" fill="${primary}" opacity="0.65"/>
-        <circle cx="134" cy="38" r="3.5" fill="${accent}"/>
-        <circle cx="152" cy="46" r="2.5" fill="${primary}" opacity="0.65"/>
-        ${waterDrop(134, 24, 0.72, primary, accent, animated)}
+        ${waterDrop(134, 36, 1.15, primary, accent, animated)}
       </svg>
     `
     const spineSvg = `

@@ -33,7 +33,7 @@ function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
       <path d="M10 27H74" stroke="${primarySoft}" stroke-width="0.9"/>
-      ${flowTrailSvg('M10 27H32L38 23H74', primary, 1.45, '16 100', -116, '3.6s', animated)}
+      ${flowTrailSvg('M10 27H74', primary, 1.45, '16 100', -116, '3.6s', animated)}
       ${terminalPrompt(42, 14, 0.76, primary, primaryMid, accent, animated)}
     </svg>
   `
@@ -110,12 +110,24 @@ export const glowTerminalMotion: MotionPreset = {
   },
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
-    const { primary, accent } = resolveMotionColors(colors)
-    const dur = `${(3.6 + ((index - 1) % 3) * 0.35).toFixed(2)}s`
+    const { primary, primarySoft, accent } = resolveMotionColors(colors)
+    const durSec = 11.2 + ((index - 1) % 3) * 1.2
+    const dur = `${durSec.toFixed(1)}s`
+    const count = 48
+    const step = durSec / count
+    const blocks = Array.from({ length: count }, (_, i) => {
+      const x = (6 + i * 13.2).toFixed(1)
+      const col = i % 2 === 0 ? accent : primary
+      const begin = `${(i * step).toFixed(2)}s`
+      const anim = animated
+        ? `<animate attributeName="opacity" values="0.16;0.52;0.78;0.16;0.16" keyTimes="0;0.018;0.04;0.08;1" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>`
+        : ''
+      return `<rect x="${x}" y="2" width="2.4" height="8" rx="0.7" fill="${col}" opacity="${animated ? 0.16 : 0.36}">${anim}</rect>`
+    }).join('')
     return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 10" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        ${flowTrailSvg('M4 5H160', primary, 1.5, '24 140', -164, dur, animated)}
-        <rect x="166" y="3" width="6" height="4" fill="${accent}">${pulseAnim('opacity', '1;0.2;1', '1.8s', animated)}</rect>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 12" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+        <path d="M2 6H638" stroke="${primarySoft}" stroke-width="1" stroke-dasharray="2 2"/>
+        ${blocks}
       </svg>
     `
   },

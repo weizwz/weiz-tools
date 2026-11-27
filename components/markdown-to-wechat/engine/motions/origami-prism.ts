@@ -118,8 +118,8 @@ export const origamiPrismMotion: MotionPreset = {
     const { primary, accent } = resolveMotionColors(colors)
     const lineSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
-        <path d="M0 9L24 3L48 9L72 3L96 9L120 3L144 9L168 3L178 6" fill="none" stroke="${primary}" stroke-width="1.1" opacity="0.62"/>
-        <polygon points="6,3 10,6 6,9 2,6" fill="${accent}"/>
+        <path d="M0 6L22 9L45 3L67 9L89 6L111 3L133 9L156 3L178 6" fill="none" stroke="${primary}" stroke-width="1.1" opacity="0.62"/>
+        <polygon points="89,2.5 93,6 89,9.5 85,6" fill="${accent}"/>
       </svg>
     `
     return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated, lineSvg)

@@ -12,13 +12,14 @@ export type HeadingNumbering = 'numeric' | 'none'
 
 export type MotionId =
   | 'meridian-grid'
-  | 'abyssal-leap'
+  | 'lotus-leap'
   | 'precision-gear'
   | 'glow-terminal'
   | 'acoustic-wave'
   | 'celestial-orbit'
   | 'origami-prism'
   | 'zen-ripple'
+  | 'falling-leaves'
 
 export type PreviewWidth = 'auto' | 375 | 402 | 440
 

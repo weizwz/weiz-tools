@@ -108,7 +108,7 @@ export const acousticWaveMotion: MotionPreset = {
     const lineSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
         <path d="M0 6C15 1 30 11 45 6C60 1 75 11 90 6C105 1 120 11 135 6C150 1 165 11 178 6" fill="none" stroke="${primary}" stroke-width="1.15" opacity="0.65"/>
-        <circle cx="6" cy="6" r="2.2" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2.4s', animated)}</circle>
+        <circle cx="90" cy="6" r="2.4" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2.4s', animated)}</circle>
       </svg>
     `
     return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated, lineSvg)
@@ -116,14 +116,28 @@ export const acousticWaveMotion: MotionPreset = {
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
     const { primary, primaryMid, accent } = resolveMotionColors(colors)
-    const dur = `${(4.0 + ((index - 1) % 3) * 0.4).toFixed(1)}s`
-    const rail1 = 'M4 8C110 2 210 14 320 8C430 2 530 14 636 8'
-    const rail2 = 'M4 8C110 14 210 2 320 8C430 14 530 2 636 8'
+    const pattern = [6, 11, 15, 9, 13, 7, 14, 10, 16, 8, 12, 6]
+    const count = 52
+    const cy = 10
+    const durSec = 7.2 + ((index - 1) % 3) * 0.6
+    const dur = `${durSec.toFixed(1)}s`
+    const step = durSec / count
+    const baseOffset = (index - 1) % 4
+    const bars = Array.from({ length: count }, (_, i) => {
+      const baseH = pattern[(i + baseOffset) % pattern.length]
+      const minH = Math.max(4, Math.round(baseH * 0.5))
+      const peakH = Math.min(18, baseH + 4)
+      const x = (6 + i * 12.2).toFixed(1)
+      const col = i % 5 === 2 ? accent : i % 2 === 0 ? primary : primaryMid
+      const begin = `${(i * step).toFixed(2)}s`
+      const anim = animated
+        ? `<animate attributeName="height" values="${minH};${peakH};${baseH};${minH};${minH}" keyTimes="0;0.05;0.12;0.22;1" dur="${dur}" begin="${begin}" repeatCount="indefinite"/><animate attributeName="y" values="${cy - minH / 2};${cy - peakH / 2};${cy - baseH / 2};${cy - minH / 2};${cy - minH / 2}" keyTimes="0;0.05;0.12;0.22;1" dur="${dur}" begin="${begin}" repeatCount="indefinite"/><animate attributeName="opacity" values="0.32;0.96;0.65;0.32;0.32" keyTimes="0;0.05;0.12;0.22;1" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>`
+        : ''
+      return `<rect x="${x}" y="${animated ? cy - minH / 2 : cy - baseH / 2}" width="3" height="${animated ? minH : baseH}" rx="1.5" fill="${col}" opacity="${animated ? 0.32 : 0.78}">${anim}</rect>`
+    }).join('')
     return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 16" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        ${flowTrailSvg(rail1, primary, 1.55, '84 740', -824, dur, animated)}
-        <path d="${rail2}" fill="none" stroke="${primaryMid}" stroke-width="0.9" stroke-dasharray="3 4"/>
-        ${flowTrailSvg(rail2, accent, 1.3, '56 740', 796, '4.8s', animated)}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 20" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+        ${bars}
       </svg>
     `
   },
