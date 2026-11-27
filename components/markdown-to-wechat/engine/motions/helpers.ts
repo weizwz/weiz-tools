@@ -185,7 +185,7 @@ export function sectionBadgeHtml(
     </svg>
   `
   return `
-    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+    <section style="display:flex;align-items:center;flex:1;min-width:52px;">
       ${lineSvg ?? defaultLine}
       <section style="width:52px;flex-shrink:0;">${badgeSvg}</section>
     </section>

@@ -112,8 +112,8 @@ export const travelPostcardTheme: LayoutTheme = {
         <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;">
           <section style="display:flex;align-items:center;gap:10px;">
             ${prefix}
-            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.4;min-width:0;word-break:break-word;">${content}</h2>
-            ${badge}
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.4;flex:0 1 auto;min-width:0;word-break:break-word;overflow-wrap:anywhere;">${content}</h2>
+            <section style="flex:1;min-width:52px;display:flex;align-items:center;">${badge}</section>
           </section>
           ${rail}
         </section>

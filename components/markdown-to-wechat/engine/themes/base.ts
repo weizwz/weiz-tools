@@ -17,10 +17,10 @@ export const baseSlots = {
       <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;box-sizing:border-box;">
         <section style="display:flex;align-items:center;gap:10px;">
           ${prefix}
-          <h2 style="margin:0;font-size:${fontSize + 2}px;line-height:1.4;font-weight:800;color:${colors.heading};min-width:0;word-break:break-word;">
+          <h2 style="margin:0;font-size:${fontSize + 2}px;line-height:1.4;font-weight:800;color:${colors.heading};flex:0 1 auto;min-width:0;word-break:break-word;overflow-wrap:anywhere;">
             ${content}
           </h2>
-          ${badge}
+          <section style="flex:1;min-width:52px;display:flex;align-items:center;">${badge}</section>
         </section>
         ${rail}
       </section>
