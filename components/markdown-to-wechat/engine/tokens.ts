@@ -168,7 +168,9 @@ export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把�
 
 > 通用 Agent 过去有两个老毛病：上下文容易越堆越长，以及经验难以复用与共享。Skills 的价值点，恰好对着这两个痛点打。
 
-大家其实会明显感觉到，圈子里的关键词换得越来越快。前几年大家讲 \`Prompt\`，后来讲 \`Context Engineering\`。再后来，MCP、Tool Use、Workflow 一起上桌。到了最近，**Skills** 变成了高频词。
+大家其实会明显感觉到，圈子里的关键词换得越来越快。前几年大家讲 \`Prompt\`，后来讲 \`Context Engineering\`。再后来，MCP、Tool Use、Workflow 一起上桌。到了最近，**Skills** 变成了高频词，而过去那种*一次性复制粘贴*的做法正在被~~淘汰~~升级为工程化沉淀。
+
+![封面示意：从 Prompt 到 Skills 的演进路径]()
 
 ## 从 Prompt 到 Context，再到 Skills
 
@@ -186,9 +188,16 @@ export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把�
 
 我们把它讲得更工程一点，核心文件其实就是 \`SKILL.md\` 这个文件，通过分层加载控制上下文体积：
 
+1. **Metadata（元数据层）**：仅保留 \`name\` 与 \`description\`，常驻上下文用于意图匹配。
+2. **Instructions（指令层）**：命中后按需加载，约束执行步骤与输出格式。
+3. **Resources（资源层）**：按需读取模板、脚本与参考文档，避免冗余占用。
+
+#### 最小可用 Skill 配置示例
+
 \`\`\`yaml
 name: gzh-design
 description: 将 Markdown 排版为符合微信公众号规范的内联 HTML
+version: 1.0.0
 \`\`\`
 
 | 层级 | 触发时机 | 作用范围 |
@@ -199,5 +208,5 @@ description: 将 Markdown 排版为符合微信公众号规范的内联 HTML
 
 ---
 
-如果你也在找一款轻量、纯粹、无需折腾的 Markdown 公众号排版工具，欢迎直接将本文复制到公众号后台草稿箱体验。
+如果你也在找一款轻量、纯粹、无需折腾的 Markdown 公众号排版工具，可以参考 [Markdown 语法指南](https://markdown.com.cn)，或直接将本文复制到公众号后台草稿箱体验。
 `
