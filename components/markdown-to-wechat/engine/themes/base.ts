@@ -113,7 +113,7 @@ export const baseSlots = {
           </section>
           <section style="flex-shrink:0;">${endingDecor}</section>
         </section>
-        <p style="margin:0;font-size:13px;line-height:1.75;color:${theme.text};">${escapeHtml(ending)}</p>
+        <p style="margin:0;font-size:13px;line-height:1.75;color:${theme.text};">${escapeHtml(ending).replace(/\r?\n/g, '<br />')}</p>
       </section>
     `
   }

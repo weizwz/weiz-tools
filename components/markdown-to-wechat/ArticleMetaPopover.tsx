@@ -119,22 +119,42 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
             <div className='grid grid-cols-2 gap-2'>
               <div className='space-y-1'>
                 <label className='text-[11px] font-medium text-muted-foreground block'>作者</label>
-                <Input value={meta.author} onChange={(e) => updateField('author', e.target.value)} placeholder={DEFAULT_ARTICLE_META.author} className='h-7 text-xs!' />
+                <Input
+                  value={meta.author}
+                  onChange={(e) => updateField('author', e.target.value)}
+                  placeholder={DEFAULT_ARTICLE_META.author}
+                  className='h-7 text-xs!'
+                />
               </div>
               <div className='space-y-1'>
                 <label className='text-[11px] font-medium text-muted-foreground block'>日期</label>
-                <Input value={meta.date} onChange={(e) => updateField('date', e.target.value)} placeholder={DEFAULT_ARTICLE_META.date} className='h-7 text-xs!' />
+                <Input
+                  value={meta.date}
+                  onChange={(e) => updateField('date', e.target.value)}
+                  placeholder={DEFAULT_ARTICLE_META.date}
+                  className='h-7 text-xs!'
+                />
               </div>
             </div>
 
             <div className='grid grid-cols-2 gap-2'>
               <div className='space-y-1'>
                 <label className='text-[11px] font-medium text-muted-foreground block'>分类</label>
-                <Input value={meta.category} onChange={(e) => updateField('category', e.target.value)} placeholder={DEFAULT_ARTICLE_META.category} className='h-7 text-xs!' />
+                <Input
+                  value={meta.category}
+                  onChange={(e) => updateField('category', e.target.value)}
+                  placeholder={DEFAULT_ARTICLE_META.category}
+                  className='h-7 text-xs!'
+                />
               </div>
               <div className='space-y-1'>
                 <label className='text-[11px] font-medium text-muted-foreground block'>标签（逗号分隔）</label>
-                <Input value={meta.tags} onChange={(e) => updateField('tags', e.target.value)} placeholder={DEFAULT_ARTICLE_META.tags} className='h-7 text-xs!' />
+                <Input
+                  value={meta.tags}
+                  onChange={(e) => updateField('tags', e.target.value)}
+                  placeholder={DEFAULT_ARTICLE_META.tags}
+                  className='h-7 text-xs!'
+                />
               </div>
             </div>
 
@@ -143,7 +163,7 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
               <textarea
                 value={meta.ending}
                 onChange={(e) => updateField('ending', e.target.value)}
-                rows={4}
+                rows={3}
                 placeholder={DEFAULT_ARTICLE_META.ending}
                 className='w-full resize-none rounded-md border border-input bg-transparent px-2.5 py-1.5 text-xs leading-relaxed outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-1'
               />

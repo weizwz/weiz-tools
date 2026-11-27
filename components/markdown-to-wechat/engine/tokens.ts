@@ -7,8 +7,7 @@ export const DEFAULT_ARTICLE_META: ArticleMeta = {
   category: 'KEEP SHARE • 资源',
   tags: ' 实战经验,Skill',
   ending: `我是 唯知AI，持续分享一线实践与长期观察
-
-如果觉得今天这篇有收获，欢迎点赞、在看、转发三连，我们下篇见`
+如果觉得今天这篇有收获，欢迎关注、点赞、转发，我们下篇见`
 }
 
 export const PALETTE_COLOR_FIELDS: { key: PaletteColorKey; label: string }[] = [
