@@ -96,7 +96,7 @@ export const knowledgeCardTheme: LayoutTheme = {
 
       return `
         <section style="margin:0 0 26px 0;max-width:100%;overflow:hidden;">
-          <section style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
             <p style="font-size:10px;color:${ctx.theme.textMuted};margin:0;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;">KNOWLEDGE MAP · ${headings.length} 张知识卡</p>
             ${tocDecor}
           </section>

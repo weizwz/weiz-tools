@@ -31,31 +31,17 @@ function gridCrosshair(
   `
 }
 
-function caliperRuler(
-  cx: number,
-  cy: number,
-  primary: string,
-  primaryMid: string,
-  accent: string,
-  animated: boolean
-): string {
-  const slide = translateAnim('0 0;10 0;0 0', '4.8s', animated)
-  return `
-    <g transform="translate(${cx} ${cy})">
-      <path d="M-24 6H24M-20 0V6M-10 2V6M0 -2V6M10 2V6M20 0V6" stroke="${primaryMid}" stroke-width="1.1"/>
-      <rect x="-12" y="-7" width="8" height="5" fill="${accent}" opacity="0.88">${slide}</rect>
-      <circle cx="20" cy="-4" r="2" fill="${primary}"/>
-    </g>
-  `
-}
-
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M8 14H76M8 30H76M8 46H76M22 6V54M42 6V54M62 6V54" fill="none" stroke="${primarySoft}" stroke-width="0.85"/>
-      ${flowTrailSvg('M10 46H32L42 30H74', primary, 1.55, '18 110', -128, '4.2s', animated)}
-      ${gridCrosshair(42, 30, 18, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M8 8H76M8 16H76M8 24H76M22 3V29M42 3V29M62 3V29" fill="none" stroke="${primarySoft}" stroke-width="0.85"/>
+      ${flowTrailSvg('M10 24H30L42 16H74', primary, 1.5, '18 110', -128, '4.2s', animated)}
+      <g transform="translate(42 16)">
+        <rect x="-6" y="-6" width="12" height="12" fill="none" stroke="${primaryMid}" stroke-width="1.1"/>
+        <path d="M-10 0H10M0 -10V10" fill="none" stroke="${primary}" stroke-width="0.9" opacity="0.8"/>
+        <circle cx="0" cy="0" r="2.2" fill="${accent}">${pulseAnim('r', '1.8;2.8;1.8', '2.8s', animated)}</circle>
+      </g>
     </svg>
   `
 }
@@ -64,8 +50,12 @@ function renderBadgeSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 40" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M6 12H50M6 28H50M18 4V36M38 4V36" fill="none" stroke="${primarySoft}" stroke-width="0.8"/>
-      ${gridCrosshair(28, 20, 14, primary, primaryMid, accent, animated)}
+      <path d="M6 10H50M6 30H50M14 4V36M42 4V36" fill="none" stroke="${primarySoft}" stroke-width="0.8"/>
+      <g transform="translate(28 20)">
+        <rect x="-8" y="-8" width="16" height="16" fill="none" stroke="${primaryMid}" stroke-width="1.2"/>
+        <path d="M-12 0H12M0 -12V12" fill="none" stroke="${primary}" stroke-width="0.95" opacity="0.8"/>
+        <circle cx="0" cy="0" r="2.4" fill="${accent}">${pulseAnim('r', '2;3;2', '2.8s', animated)}</circle>
+      </g>
     </svg>
   `
 }
@@ -98,7 +88,6 @@ export const meridianGridMotion: MotionPreset = {
         <path d="${bottomLine}" fill="none" stroke="${primaryMid}" stroke-width="1" stroke-dasharray="4 4"/>
         ${flowTrailSvg(bottomLine, accent, 1.5, '64 840', 904, '4.8s', animated)}
         ${gridCrosshair(120, 42, 20, primary, primaryMid, accent, animated)}
-        ${caliperRuler(626, 42, primary, primaryMid, accent, animated)}
         <rect x="371" y="38" width="8" height="8" fill="${accent}" opacity="0.88"/>
       </svg>
     `
@@ -151,12 +140,14 @@ export const meridianGridMotion: MotionPreset = {
   },
 
   renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
-    const { primary, primaryMid, accent } = resolveMotionColors(colors)
+    const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
     return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;max-width:100%;">
-        <path d="M4 16H32M8 10V16M16 12V16M24 10V16" stroke="${primaryMid}" stroke-width="1"/>
-        <rect x="6" y="4" width="8" height="4" fill="${accent}">${translateAnim('0 0;16 0;0 0', '4.4s', animated)}</rect>
-        <circle cx="30" cy="7" r="2" fill="${primary}"/>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 18" width="36" style="display:block;height:auto;max-width:100%;">
+        <path d="M2 9H34M11 2V16M25 2V16" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+        <path d="M16 9H32" fill="none" stroke="${primaryMid}" stroke-width="1"/>
+        <rect x="6.5" y="4.5" width="9" height="9" fill="none" stroke="${primary}" stroke-width="1.15"/>
+        <circle cx="11" cy="9" r="2" fill="${accent}">${pulseAnim('r', '1.6;2.4;1.6', '2.8s', animated)}</circle>
+        <rect x="23" y="7" width="4" height="4" fill="${primary}">${pulseAnim('opacity', '0.9;0.35;0.9', '2.8s', animated)}</rect>
       </svg>
     `
   },
@@ -176,7 +167,7 @@ export const meridianGridMotion: MotionPreset = {
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28" width="48" style="display:block;height:auto;max-width:100%;">
         <path d="M4 14H44M24 3V25" stroke="${primaryMid}" stroke-width="0.9"/>
-        <circle cx="24" cy="14" r="8" fill="none" stroke="${primary}" stroke-width="1.2"/>
+        <rect x="16" y="6" width="16" height="16" fill="none" stroke="${primary}" stroke-width="1.2"/>
         <circle cx="24" cy="14" r="2.5" fill="${accent}">${pulseAnim('r', '2.2;3.2;2.2', '2.8s', animated)}</circle>
       </svg>
     `
