@@ -1,12 +1,22 @@
 import { LayoutTheme, ThemeId } from '../types'
-import { editorialCardTheme } from './editorial-card'
-import { internalJournalTheme } from './internal-journal'
-import { magazineNewsTheme } from './magazine-news'
+import { bookNotesTheme } from './book-notes'
+import { editorialJournalTheme } from './editorial-journal'
+import { hackerTerminalTheme } from './hacker-terminal'
+import { inkLandscapeTheme } from './ink-landscape'
+import { knowledgeCardTheme } from './knowledge-card'
+import { socialFeedTheme } from './social-feed'
+import { techBriefTheme } from './tech-brief'
+import { travelPostcardTheme } from './travel-postcard'
 
 export const WECHAT_THEMES: LayoutTheme[] = [
-  magazineNewsTheme,
-  editorialCardTheme,
-  internalJournalTheme
+  knowledgeCardTheme,
+  bookNotesTheme,
+  techBriefTheme,
+  socialFeedTheme,
+  editorialJournalTheme,
+  travelPostcardTheme,
+  hackerTerminalTheme,
+  inkLandscapeTheme
 ]
 
 const THEME_REGISTRY = new Map<ThemeId, LayoutTheme>(

@@ -4,19 +4,21 @@ import { useEffect, useRef, useState } from 'react'
 import { Check, ChevronDown } from 'lucide-react'
 import { MOTION_PRESETS } from './engine/motions'
 import { WECHAT_THEMES } from './engine/themes'
-import { CustomColors, FontSizeOption, MotionId, ThemeId } from './engine/types'
+import { CustomColors, FontSizeOption, HeadingNumbering, MotionId, ThemeId } from './engine/types'
 import { PaletteMenu } from './PaletteMenu'
 
 interface ThemeSelectorProps {
   themeId: ThemeId
   motionId: MotionId
   animated: boolean
+  headingNumbering: HeadingNumbering
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
   onThemeChange: (id: ThemeId) => void
   onMotionChange: (id: MotionId) => void
   onAnimatedChange: (animated: boolean) => void
+  onHeadingNumberingChange: (mode: HeadingNumbering) => void
   onPaletteChange: (paletteId: string) => void
   onCustomColorsChange: (colors: CustomColors) => void
   onFontSizeChange: (size: FontSizeOption) => void
@@ -30,12 +32,14 @@ export function ThemeSelector({
   themeId,
   motionId,
   animated,
+  headingNumbering,
   paletteId,
   customColors,
   fontSize,
   onThemeChange,
   onMotionChange,
   onAnimatedChange,
+  onHeadingNumberingChange,
   onPaletteChange,
   onCustomColorsChange,
   onFontSizeChange
@@ -200,7 +204,20 @@ export function ThemeSelector({
         )}
       </div>
 
-      {/* 5. 动态开关 */}
+      {/* 5. 章节编号开关 */}
+      <label
+        className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer select-none'
+        title='切换二级/三级标题自动数字编号或无编号指示符'>
+        <input
+          type='checkbox'
+          checked={headingNumbering === 'numeric'}
+          onChange={(e) => onHeadingNumberingChange(e.target.checked ? 'numeric' : 'none')}
+          className='h-3.5 w-3.5 accent-foreground cursor-pointer'
+        />
+        <span className='font-medium text-foreground'>编号</span>
+      </label>
+
+      {/* 6. 动态开关 */}
       <label
         className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer select-none'
         title='选中启用 SVG 动效，取消仅保留静态 SVG 装饰'>

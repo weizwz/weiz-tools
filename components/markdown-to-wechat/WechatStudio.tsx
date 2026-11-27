@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { EditorPanel } from './EditorPanel'
 import { PreviewPanel } from './PreviewPanel'
 import { renderWechatArticle } from './engine/renderer'
+import { WECHAT_THEMES } from './engine/themes'
 import { DEFAULT_ARTICLE_META, SAMPLE_MARKDOWN } from './engine/tokens'
-import { ArticleMeta, CustomColors, FontSizeOption, MotionId, PreviewWidth, ThemeId } from './engine/types'
+import { ArticleMeta, CustomColors, FontSizeOption, HeadingNumbering, MotionId, PreviewWidth, ThemeId } from './engine/types'
 import { exportHtmlFile } from './engine/wechat-inline'
 
 const STORAGE_KEY = 'weiz-tools:wechat-layout-draft-v5'
@@ -16,6 +17,7 @@ interface DraftState {
   themeId: ThemeId
   motionId: MotionId
   animated: boolean
+  headingNumbering: HeadingNumbering
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
@@ -25,9 +27,10 @@ interface DraftState {
 const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
   meta: DEFAULT_ARTICLE_META,
-  themeId: 'magazine-news',
+  themeId: 'knowledge-card',
   motionId: 'meridian-grid',
   animated: true,
+  headingNumbering: 'numeric',
   paletteId: 'default',
   customColors: {},
   fontSize: 15,
@@ -48,7 +51,16 @@ export function WechatStudio() {
           ...(parsed.meta || {}),
           ...(parsed.author && !parsed.meta?.author ? { author: parsed.author } : {})
         }
-        setDraft((prev) => ({ ...prev, ...parsed, meta: mergedMeta }))
+        const validThemeId = WECHAT_THEMES.some((t) => t.id === parsed.themeId)
+          ? parsed.themeId
+          : DEFAULT_DRAFT.themeId
+        setDraft((prev) => ({
+          ...prev,
+          ...parsed,
+          themeId: validThemeId as ThemeId,
+          headingNumbering: parsed.headingNumbering || DEFAULT_DRAFT.headingNumbering,
+          meta: mergedMeta
+        }))
       }
     } catch {
       // ignore storage errors
@@ -72,6 +84,7 @@ export function WechatStudio() {
         themeId: draft.themeId,
         motionId: draft.motionId,
         animated: draft.animated,
+        headingNumbering: draft.headingNumbering,
         paletteId: draft.paletteId,
         customColors: draft.customColors,
         fontSize: draft.fontSize,
@@ -82,6 +95,7 @@ export function WechatStudio() {
       draft.themeId,
       draft.motionId,
       draft.animated,
+      draft.headingNumbering,
       draft.paletteId,
       draft.customColors,
       draft.fontSize,
@@ -97,6 +111,7 @@ export function WechatStudio() {
         themeId={draft.themeId}
         motionId={draft.motionId}
         animated={draft.animated}
+        headingNumbering={draft.headingNumbering}
         paletteId={draft.paletteId}
         customColors={draft.customColors}
         fontSize={draft.fontSize}
@@ -107,6 +122,9 @@ export function WechatStudio() {
         onThemeChange={(themeId) => setDraft((prev) => ({ ...prev, themeId }))}
         onMotionChange={(motionId) => setDraft((prev) => ({ ...prev, motionId }))}
         onAnimatedChange={(animated) => setDraft((prev) => ({ ...prev, animated }))}
+        onHeadingNumberingChange={(headingNumbering) =>
+          setDraft((prev) => ({ ...prev, headingNumbering }))
+        }
         onPaletteChange={(paletteId) => setDraft((prev) => ({ ...prev, paletteId }))}
         onCustomColorsChange={(customColors) => setDraft((prev) => ({ ...prev, customColors }))}
         onFontSizeChange={(fontSize) => setDraft((prev) => ({ ...prev, fontSize }))}

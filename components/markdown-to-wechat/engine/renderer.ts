@@ -57,6 +57,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
     theme,
     motion,
     animated: options.animated,
+    headingNumbering: options.headingNumbering || 'numeric',
     colors,
     fontSize: options.fontSize,
     author: meta.author,
@@ -70,6 +71,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   let firstH1: string | null = null
   let externalLinkCount = 0
   let h2Index = 0
+  let h3Index = 0
 
   const marked = new Marked({ gfm: true, breaks: true })
   const tokens = marked.lexer(markdown)
@@ -102,9 +104,14 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
     }
     if (depth === 2) {
       h2Index++
+      h3Index = 0
       return slots.renderH2(content, h2Index, ctx)
     }
-    return slots.renderH3(content, ctx)
+    if (depth === 3) {
+      h3Index++
+      return slots.renderH3(content, h2Index, h3Index, ctx)
+    }
+    return slots.renderH4(content, ctx)
   }
 
   renderer.paragraph = function ({ tokens: innerTokens }: Tokens.Paragraph) {
@@ -249,7 +256,7 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
   const tailHtml = slots.renderTail(ctx)
 
   const fullHtml = `
-    <section id="wechat-article-root" style="padding:20px 18px;background-color:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;word-wrap:break-word;box-sizing:border-box;">
+    <section id="wechat-article-root" style="padding:20px 18px;background-color:${colors.bg};font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;word-wrap:break-word;max-width:100%;overflow:hidden;box-sizing:border-box;">
       ${bannerHtml}
       ${tocHtml}
       ${bodyHtml}

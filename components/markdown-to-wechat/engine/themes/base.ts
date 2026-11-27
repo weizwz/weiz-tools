@@ -4,14 +4,20 @@ import { RenderContext } from '../types'
 
 export const baseSlots = {
   renderH2(content: string, index: number, ctx: RenderContext): string {
-    const { colors, fontSize, motion, animated } = ctx
-    const marginTop = index === 1 ? '18px' : '32px'
-    const badge = motion.renderSectionBadge(colors, animated, index)
-    const rail = `<section style="margin-top:6px;">${motion.renderSectionRail(colors, animated, index)}</section>`
+    const { colors, fontSize, motion, animated, headingNumbering } = ctx
+    const marginTop = index === 1 ? '18px' : '28px'
+    const num = String(index).padStart(2, '0')
+    const badge = `<section style="width:46px;flex-shrink:0;">${motion.renderSectionBadge(colors, animated, index)}</section>`
+    const rail = `<section style="margin-top:2px;">${motion.renderSectionRail(colors, animated, index)}</section>`
+    const prefix =
+      headingNumbering === 'numeric'
+        ? `<span style="font-size:${fontSize + 4}px;font-weight:900;color:${colors.headingDecor};font-family:Menlo,Monaco,Consolas,monospace;line-height:1;flex-shrink:0;">${num}</span>`
+        : `<span style="width:4px;height:18px;border-radius:2px;background:${colors.headingDecor};flex-shrink:0;display:inline-block;"></span>`
     return `
-      <section style="margin:${marginTop} 0 16px 0;">
-        <section style="display:flex;align-items:center;gap:10px;padding-left:10px;border-left:4px solid ${colors.headingDecor};">
-          <h2 style="margin:0;font-size:${fontSize + 3}px;line-height:1.4;font-weight:800;color:${colors.heading};flex-shrink:0;">
+      <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;box-sizing:border-box;">
+        <section style="display:flex;align-items:center;gap:10px;">
+          ${prefix}
+          <h2 style="margin:0;font-size:${fontSize + 2}px;line-height:1.4;font-weight:800;color:${colors.heading};flex:1;min-width:0;word-break:break-word;">
             ${content}
           </h2>
           ${badge}
@@ -21,13 +27,26 @@ export const baseSlots = {
     `
   },
 
-  renderH3(content: string, ctx: RenderContext): string {
-    const { colors, fontSize, motion, animated } = ctx
-    const marker = motion.renderH3Marker(colors, animated)
+  renderH3(content: string, h2Index: number, h3Index: number, ctx: RenderContext): string {
+    const { colors, fontSize, motion, animated, headingNumbering } = ctx
+    const prefix =
+      headingNumbering === 'numeric' && h2Index > 0
+        ? `<span style="flex-shrink:0;font-family:Menlo,Monaco,Consolas,monospace;font-size:${Math.max(12, fontSize - 1)}px;font-weight:700;color:${colors.headingDecor};">${h2Index}.${h3Index}</span>`
+        : `<span style="flex-shrink:0;display:inline-flex;align-items:center;">${motion.renderH3Marker(colors, animated)}</span>`
     return `
-      <section style="margin:22px 0 10px 0;display:flex;align-items:center;gap:8px;">
-        <span style="flex-shrink:0;display:inline-flex;align-items:center;">${marker}</span>
-        <h3 style="margin:0;font-size:${fontSize + 1}px;line-height:1.45;font-weight:800;color:${colors.heading};">${content}</h3>
+      <section style="margin:22px 0 10px 0;display:flex;align-items:center;gap:8px;max-width:100%;">
+        ${prefix}
+        <h3 style="margin:0;font-size:${fontSize + 1}px;line-height:1.45;font-weight:700;color:${colors.heading};flex:1;min-width:0;word-break:break-word;">${content}</h3>
+      </section>
+    `
+  },
+
+  renderH4(content: string, ctx: RenderContext): string {
+    const { colors, fontSize } = ctx
+    return `
+      <section style="margin:16px 0 6px 0;display:flex;align-items:center;gap:7px;max-width:100%;">
+        <span style="width:2px;height:13px;border-radius:1px;background:${hexToRgba(colors.headingDecor, 0.55)};flex-shrink:0;display:inline-block;"></span>
+        <h4 style="margin:0;font-size:${fontSize}px;line-height:1.45;font-weight:700;color:${colors.heading};flex:1;min-width:0;word-break:break-word;">${content}</h4>
       </section>
     `
   },

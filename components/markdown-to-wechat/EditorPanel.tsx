@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Download, FileText, Trash2 } from 'lucide-react'
 import { ArticleMetaPopover } from './ArticleMetaPopover'
 import { ThemeSelector } from './ThemeSelector'
-import { ArticleMeta, CustomColors, FontSizeOption, MotionId, ThemeId } from './engine/types'
+import { ArticleMeta, CustomColors, FontSizeOption, HeadingNumbering, MotionId, ThemeId } from './engine/types'
 
 interface EditorPanelProps {
   markdown: string
@@ -12,6 +12,7 @@ interface EditorPanelProps {
   themeId: ThemeId
   motionId: MotionId
   animated: boolean
+  headingNumbering: HeadingNumbering
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
@@ -22,6 +23,7 @@ interface EditorPanelProps {
   onThemeChange: (id: ThemeId) => void
   onMotionChange: (id: MotionId) => void
   onAnimatedChange: (animated: boolean) => void
+  onHeadingNumberingChange: (mode: HeadingNumbering) => void
   onPaletteChange: (paletteId: string) => void
   onCustomColorsChange: (colors: CustomColors) => void
   onFontSizeChange: (size: FontSizeOption) => void
@@ -36,6 +38,7 @@ export function EditorPanel({
   themeId,
   motionId,
   animated,
+  headingNumbering,
   paletteId,
   customColors,
   fontSize,
@@ -46,6 +49,7 @@ export function EditorPanel({
   onThemeChange,
   onMotionChange,
   onAnimatedChange,
+  onHeadingNumberingChange,
   onPaletteChange,
   onCustomColorsChange,
   onFontSizeChange,
@@ -65,12 +69,14 @@ export function EditorPanel({
             themeId={themeId}
             motionId={motionId}
             animated={animated}
+            headingNumbering={headingNumbering}
             paletteId={paletteId}
             customColors={customColors}
             fontSize={fontSize}
             onThemeChange={onThemeChange}
             onMotionChange={onMotionChange}
             onAnimatedChange={onAnimatedChange}
+            onHeadingNumberingChange={onHeadingNumberingChange}
             onPaletteChange={onPaletteChange}
             onCustomColorsChange={onCustomColorsChange}
             onFontSizeChange={onFontSizeChange}

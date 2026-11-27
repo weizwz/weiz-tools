@@ -1,4 +1,14 @@
-export type ThemeId = 'magazine-news' | 'editorial-card' | 'internal-journal'
+export type ThemeId =
+  | 'knowledge-card'
+  | 'book-notes'
+  | 'tech-brief'
+  | 'social-feed'
+  | 'editorial-journal'
+  | 'travel-postcard'
+  | 'hacker-terminal'
+  | 'ink-landscape'
+
+export type HeadingNumbering = 'numeric' | 'none'
 
 export type MotionId =
   | 'meridian-grid'
@@ -51,6 +61,7 @@ export interface RenderContext {
   theme: LayoutTheme
   motion: MotionPreset
   animated: boolean
+  headingNumbering: HeadingNumbering
   colors: PaletteColors
   fontSize: FontSizeOption
   author: string
@@ -101,7 +112,8 @@ export interface LayoutTheme {
     renderBanner?: (title: string, ctx: RenderContext) => string
     renderToc?: (headings: string[], ctx: RenderContext) => string
     renderH2?: (content: string, index: number, ctx: RenderContext) => string
-    renderH3?: (content: string, ctx: RenderContext) => string
+    renderH3?: (content: string, h2Index: number, h3Index: number, ctx: RenderContext) => string
+    renderH4?: (content: string, ctx: RenderContext) => string
     renderStrong?: (content: string, ctx: RenderContext) => string
     renderBlockquote?: (content: string, ctx: RenderContext) => string
     renderDivider?: (ctx: RenderContext) => string
@@ -115,6 +127,7 @@ export interface RenderOptions {
   themeId: ThemeId
   motionId: MotionId
   animated: boolean
+  headingNumbering?: HeadingNumbering
   paletteId: string
   customColors: CustomColors
   fontSize: FontSizeOption
