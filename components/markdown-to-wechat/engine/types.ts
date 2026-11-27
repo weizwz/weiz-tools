@@ -31,7 +31,6 @@ export interface PaletteColors {
   headingDecor: string // 标题装饰
   divider: string // 分割线
   listMarker: string // 列表标记
-  codeBlockBg: string // 代码块
   tableAccent: string // 表格
   inlineCodeText: string // 行内代码文字
   inlineCodeBg: string // 行内代码底色/阴影
@@ -107,7 +106,6 @@ export interface LayoutTheme {
   textMuted: string
   borderColor: string
   codeBorder?: string
-  preHeaderBg: string
   slots: {
     renderBanner?: (title: string, ctx: RenderContext) => string
     renderToc?: (headings: string[], ctx: RenderContext) => string

@@ -14,7 +14,6 @@ export const editorialJournalTheme: LayoutTheme = {
       headingDecor: '#BE123C',
       divider: '#FECDD3',
       listMarker: '#BE123C',
-      codeBlockBg: '#1E293B',
       tableAccent: '#FFF1F2',
       inlineCodeText: '#9F1239',
       inlineCodeBg: '#FFF1F2',
@@ -24,7 +23,6 @@ export const editorialJournalTheme: LayoutTheme = {
   text: '#374151',
   textMuted: '#9CA3AF',
   borderColor: '#FFE4E6',
-  preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx

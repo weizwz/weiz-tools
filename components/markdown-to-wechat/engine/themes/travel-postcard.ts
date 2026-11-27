@@ -15,7 +15,6 @@ export const travelPostcardTheme: LayoutTheme = {
       headingDecor: '#15803D',
       divider: '#BBF7D0',
       listMarker: '#15803D',
-      codeBlockBg: '#143326',
       tableAccent: '#F0FDF4',
       inlineCodeText: '#166534',
       inlineCodeBg: '#DCFCE7',
@@ -25,7 +24,6 @@ export const travelPostcardTheme: LayoutTheme = {
   text: '#374151',
   textMuted: '#6B7280',
   borderColor: '#D1FAE5',
-  preHeaderBg: '#0B2017',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, dateStr, meta } = ctx

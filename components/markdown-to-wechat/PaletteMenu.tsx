@@ -152,7 +152,7 @@ export function PaletteMenu({
             </div>
           </div>
 
-          <div className='mt-2 border-t border-border pt-2 text-[10px] text-muted-foreground'>主题自带原配色 + 5 套流行配色 + 11 项全自定义。</div>
+          <div className='mt-2 border-t border-border pt-2 text-[10px] text-muted-foreground'>主题自带原配色 + 5 套流行配色 + 10 项全自定义。</div>
         </div>
       )}
     </div>

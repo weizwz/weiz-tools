@@ -14,7 +14,6 @@ export const hackerTerminalTheme: LayoutTheme = {
       headingDecor: '#059669',
       divider: '#A7F3D0',
       listMarker: '#059669',
-      codeBlockBg: '#0B0F19',
       tableAccent: '#ECFDF5',
       inlineCodeText: '#047857',
       inlineCodeBg: '#D1FAE5',
@@ -25,7 +24,6 @@ export const hackerTerminalTheme: LayoutTheme = {
   textMuted: '#64748B',
   borderColor: '#CBD5E1',
   codeBorder: '#A7F3D0',
-  preHeaderBg: '#020617',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, dateStr, meta } = ctx

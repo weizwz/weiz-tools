@@ -8,37 +8,40 @@ import {
   hexToRgba,
   resolvePaletteColors
 } from './tokens'
-import { ComplianceIssue, RenderContext, RenderOptions, RenderResult } from './types'
+import { ComplianceIssue, PaletteColors, RenderContext, RenderOptions, RenderResult } from './types'
 
-const HLJS_INLINE_COLORS: Record<string, string> = {
-  'hljs-comment': 'color:#64748b;font-style:italic;',
-  'hljs-quote': 'color:#64748b;font-style:italic;',
-  'hljs-keyword': 'color:#c084fc;font-weight:600;',
-  'hljs-selector-tag': 'color:#c084fc;font-weight:600;',
-  'hljs-literal': 'color:#f472b6;',
-  'hljs-number': 'color:#fb923c;',
-  'hljs-string': 'color:#4ade80;',
-  'hljs-regexp': 'color:#4ade80;',
-  'hljs-title': 'color:#60a5fa;font-weight:600;',
-  'hljs-section': 'color:#60a5fa;font-weight:600;',
-  'hljs-function': 'color:#60a5fa;',
-  'hljs-built_in': 'color:#38bdf8;',
-  'hljs-type': 'color:#38bdf8;',
-  'hljs-attr': 'color:#fbbf24;',
-  'hljs-attribute': 'color:#fbbf24;',
-  'hljs-variable': 'color:#f87171;',
-  'hljs-params': 'color:#e2e8f0;',
-  'hljs-meta': 'color:#94a3b8;',
-  'hljs-tag': 'color:#94a3b8;',
-  'hljs-name': 'color:#f472b6;',
-  'hljs-punctuation': 'color:#94a3b8;'
+function buildHljsInlineColors(colors: PaletteColors): Record<string, string> {
+  return {
+    'hljs-comment': `color:${hexToRgba(colors.heading, 0.5)};font-style:italic;`,
+    'hljs-quote': `color:${hexToRgba(colors.heading, 0.5)};font-style:italic;`,
+    'hljs-keyword': `color:${colors.strong};font-weight:600;`,
+    'hljs-selector-tag': `color:${colors.strong};font-weight:600;`,
+    'hljs-literal': 'color:#be185d;',
+    'hljs-number': 'color:#c2410c;',
+    'hljs-string': 'color:#15803d;',
+    'hljs-regexp': 'color:#15803d;',
+    'hljs-title': `color:${colors.headingDecor};font-weight:600;`,
+    'hljs-section': `color:${colors.headingDecor};font-weight:600;`,
+    'hljs-function': `color:${colors.headingDecor};`,
+    'hljs-built_in': `color:${colors.inlineCodeText};`,
+    'hljs-type': `color:${colors.inlineCodeText};`,
+    'hljs-attr': 'color:#b45309;',
+    'hljs-attribute': 'color:#b45309;',
+    'hljs-variable': 'color:#dc2626;',
+    'hljs-params': `color:${colors.heading};`,
+    'hljs-meta': `color:${hexToRgba(colors.heading, 0.65)};`,
+    'hljs-tag': `color:${hexToRgba(colors.heading, 0.65)};`,
+    'hljs-name': 'color:#be185d;',
+    'hljs-punctuation': `color:${hexToRgba(colors.heading, 0.65)};`
+  }
 }
 
-function inlineHighlightHtml(html: string): string {
+function inlineHighlightHtml(html: string, colors: PaletteColors): string {
+  const colorMap = buildHljsInlineColors(colors)
   return html.replace(/<span class="([^"]+)">/g, (_, classNames: string) => {
     const styles = classNames
       .split(/\s+/)
-      .map((cls) => HLJS_INLINE_COLORS[cls] || '')
+      .map((cls) => colorMap[cls] || '')
       .filter(Boolean)
       .join('')
     return styles ? `<span style="${styles}">` : '<span>'
@@ -148,30 +151,30 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
     const highlighted = language
       ? hljs.highlight(text, { language }).value
       : hljs.highlightAuto(text).value
-    const inlined = inlineHighlightHtml(highlighted)
+    const inlined = inlineHighlightHtml(highlighted, colors)
 
     const lines = inlined
       .split('\n')
       .map((line) => {
         const safeLine =
           line.replace(/^ +/g, (spaces) => '　'.repeat(Math.ceil(spaces.length / 2))) || '&nbsp;'
-        return `<p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:12.5px;line-height:1.6;color:#E2E8F0;word-break:break-all;">${safeLine}</p>`
+        return `<p style="margin:0;font-family:'SF Mono',Consolas,Monaco,monospace;font-size:12.5px;line-height:1.6;color:${colors.heading};word-break:break-all;">${safeLine}</p>`
       })
       .join('')
 
     const codeBadge = motion.renderCodeBadge(colors, options.animated)
-    const macHeader = `<section style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:${theme.preHeaderBg};border-bottom:1px solid rgba(255,255,255,0.06);">
+    const macHeader = `<section style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:${hexToRgba(colors.headingDecor, 0.08)};border-bottom:1px solid ${hexToRgba(colors.headingDecor, 0.14)};">
           <section style="display:flex;align-items:center;">
             <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FF5F56;margin-right:6px;"></span>
             <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FFBD2E;margin-right:6px;"></span>
             <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#27C93F;margin-right:10px;"></span>
-            <span style="font-size:11px;color:#94A3B8;font-family:Consolas,Monaco,monospace;letter-spacing:1px;">${escapeHtml(lang || 'code')}</span>
+            <span style="font-size:11px;color:${hexToRgba(colors.inlineCodeText, 0.85)};font-family:Consolas,Monaco,monospace;letter-spacing:1px;">${escapeHtml(lang || 'code')}</span>
           </section>
           <section style="flex-shrink:0;">${codeBadge}</section>
         </section>`
 
     return `
-      <section style="margin:18px 0;border-radius:8px;overflow:hidden;background:${colors.codeBlockBg};box-shadow:0 4px 16px -8px rgba(15,23,42,0.4);">
+      <section style="margin:18px 0;border-radius:8px;overflow:hidden;background:${colors.inlineCodeBg};border:1px solid ${hexToRgba(colors.headingDecor, 0.2)};box-shadow:0 4px 16px -8px ${hexToRgba(colors.inlineCodeText, 0.16)};">
         ${macHeader}
         <section style="padding:12px 14px;">${lines}</section>
       </section>

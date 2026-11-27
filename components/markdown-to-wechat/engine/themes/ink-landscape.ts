@@ -14,7 +14,6 @@ export const inkLandscapeTheme: LayoutTheme = {
       headingDecor: '#2D5A4C',
       divider: '#CBD5CE',
       listMarker: '#2D5A4C',
-      codeBlockBg: '#1F2D27',
       tableAccent: '#F2F5F3',
       inlineCodeText: '#23473C',
       inlineCodeBg: '#EDF2EF',
@@ -24,7 +23,6 @@ export const inkLandscapeTheme: LayoutTheme = {
   text: '#3B443F',
   textMuted: '#8B9690',
   borderColor: '#DCE3DF',
-  preHeaderBg: '#15201B',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx

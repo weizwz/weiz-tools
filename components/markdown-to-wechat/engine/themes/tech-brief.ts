@@ -14,7 +14,6 @@ export const techBriefTheme: LayoutTheme = {
       headingDecor: '#0284C7',
       divider: '#BAE6FD',
       listMarker: '#0284C7',
-      codeBlockBg: '#0F172A',
       tableAccent: '#F0F9FF',
       inlineCodeText: '#0369A1',
       inlineCodeBg: '#F0F9FF',
@@ -24,7 +23,6 @@ export const techBriefTheme: LayoutTheme = {
   text: '#374151',
   textMuted: '#6B7280',
   borderColor: '#E5E7EB',
-  preHeaderBg: '#0B1120',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx

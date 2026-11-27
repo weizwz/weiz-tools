@@ -15,7 +15,6 @@ export const bookNotesTheme: LayoutTheme = {
       headingDecor: '#B45309',
       divider: '#D6D3CD',
       listMarker: '#B45309',
-      codeBlockBg: '#292524',
       tableAccent: '#F3EFE6',
       inlineCodeText: '#92400E',
       inlineCodeBg: '#F3EFE6',
@@ -26,7 +25,6 @@ export const bookNotesTheme: LayoutTheme = {
   textMuted: '#A8A29E',
   borderColor: '#E7E2D8',
   codeBorder: '#D6CFC2',
-  preHeaderBg: '#1C1917',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx

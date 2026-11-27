@@ -14,7 +14,6 @@ export const socialFeedTheme: LayoutTheme = {
       headingDecor: '#6366F1',
       divider: '#C7D2FE',
       listMarker: '#6366F1',
-      codeBlockBg: '#18181B',
       tableAccent: '#EEF2FF',
       inlineCodeText: '#4F46E5',
       inlineCodeBg: '#EEF2FF',
@@ -24,7 +23,6 @@ export const socialFeedTheme: LayoutTheme = {
   text: '#27272A',
   textMuted: '#71717A',
   borderColor: '#E4E4E7',
-  preHeaderBg: '#09090B',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx

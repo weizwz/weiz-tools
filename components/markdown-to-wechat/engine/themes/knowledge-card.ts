@@ -14,7 +14,6 @@ export const knowledgeCardTheme: LayoutTheme = {
       headingDecor: '#2563EB',
       divider: '#BFDBFE',
       listMarker: '#2563EB',
-      codeBlockBg: '#0F172A',
       tableAccent: '#EFF6FF',
       inlineCodeText: '#1D4ED8',
       inlineCodeBg: '#EFF6FF',
@@ -24,7 +23,6 @@ export const knowledgeCardTheme: LayoutTheme = {
   text: '#334155',
   textMuted: '#94A3B8',
   borderColor: '#E2E8F0',
-  preHeaderBg: '#0F172A',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, dateStr, meta } = ctx
