@@ -1,16 +1,22 @@
 import { MotionId, MotionPreset } from '../types'
-import { blueprintGridMotion } from './blueprint-grid'
-import { botanicalNotesMotion } from './botanical-notes'
-import { deepSeaTerminalMotion } from './deep-sea-terminal'
-import { editorialVermilionMotion } from './editorial-vermilion'
-import { swissSignalMotion } from './swiss-signal'
+import { abyssalLeapMotion } from './abyssal-leap'
+import { acousticWaveMotion } from './acoustic-wave'
+import { celestialOrbitMotion } from './celestial-orbit'
+import { glowTerminalMotion } from './glow-terminal'
+import { meridianGridMotion } from './meridian-grid'
+import { origamiPrismMotion } from './origami-prism'
+import { precisionGearMotion } from './precision-gear'
+import { zenRippleMotion } from './zen-ripple'
 
 export const MOTION_PRESETS: MotionPreset[] = [
-  swissSignalMotion,
-  botanicalNotesMotion,
-  editorialVermilionMotion,
-  blueprintGridMotion,
-  deepSeaTerminalMotion
+  meridianGridMotion,
+  abyssalLeapMotion,
+  precisionGearMotion,
+  glowTerminalMotion,
+  acousticWaveMotion,
+  celestialOrbitMotion,
+  origamiPrismMotion,
+  zenRippleMotion
 ]
 
 const MOTION_REGISTRY = new Map<MotionId, MotionPreset>(
@@ -18,5 +24,5 @@ const MOTION_REGISTRY = new Map<MotionId, MotionPreset>(
 )
 
 export function getMotionById(id: MotionId): MotionPreset {
-  return MOTION_REGISTRY.get(id) || swissSignalMotion
+  return MOTION_REGISTRY.get(id) || meridianGridMotion
 }

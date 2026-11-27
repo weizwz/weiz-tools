@@ -1,11 +1,14 @@
 export type ThemeId = 'magazine-news' | 'editorial-card' | 'internal-journal'
 
 export type MotionId =
-  | 'blueprint-grid'
-  | 'botanical-notes'
-  | 'deep-sea-terminal'
-  | 'editorial-vermilion'
-  | 'swiss-signal'
+  | 'meridian-grid'
+  | 'abyssal-leap'
+  | 'precision-gear'
+  | 'glow-terminal'
+  | 'acoustic-wave'
+  | 'celestial-orbit'
+  | 'origami-prism'
+  | 'zen-ripple'
 
 export type PreviewWidth = 'auto' | 375 | 402 | 440
 

@@ -47,7 +47,7 @@ export function flowTrailSvg(
   animated: boolean,
   begin = '0s'
 ): string {
-  const base = `<path d="${d}" fill="none" stroke="${color}" stroke-width="${Math.max(0.8, strokeWidth - 1)}" stroke-linecap="round" stroke-linejoin="round" opacity="0.34"/>`
+  const base = `<path d="${d}" fill="none" stroke="${color}" stroke-width="${Math.max(0.85, strokeWidth - 0.8)}" stroke-linecap="round" stroke-linejoin="round" opacity="0.48"/>`
   if (!animated) return base
   return `${base}<path d="${d}" fill="none" stroke="${color}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round" opacity="0.94" stroke-dasharray="${dashArray}"><animate attributeName="stroke-dashoffset" from="0" to="${dashOffsetTo}" dur="${dur}" begin="${begin}" repeatCount="indefinite"/></path>`
 }
@@ -82,6 +82,26 @@ export function pulseAnim(
 ): string {
   if (!animated) return ''
   return `<animate attributeName="${attr}" values="${values}" dur="${dur}" begin="${begin}" repeatCount="indefinite"/>`
+}
+
+export function translateAnim(
+  values: string,
+  dur: string,
+  animated: boolean,
+  begin = '0s'
+): string {
+  if (!animated) return ''
+  return `<animateTransform attributeName="transform" type="translate" values="${values}" dur="${dur}" begin="${begin}" repeatCount="indefinite" additive="sum"/>`
+}
+
+export function scaleAnim(
+  values: string,
+  dur: string,
+  animated: boolean,
+  begin = '0s'
+): string {
+  if (!animated) return ''
+  return `<animateTransform attributeName="transform" type="scale" values="${values}" dur="${dur}" begin="${begin}" repeatCount="indefinite" additive="sum"/>`
 }
 
 export function bannerFrameHtml(
@@ -153,15 +173,15 @@ export function sectionBadgeHtml(
 ): string {
   const { primary, accent } = resolveMotionColors(colors)
   const pulse = animated
-    ? `<animate attributeName="opacity" values="0.9;0.45;0.9" dur="2.6s" repeatCount="indefinite"/>`
+    ? `<animate attributeName="opacity" values="0.92;0.48;0.92" dur="2.6s" repeatCount="indefinite"/>`
     : ''
   return `
-    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:48px;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:24px;height:12px;">
-        <rect x="0" y="4" width="20" height="4" fill="${accent}">${pulse}</rect>
-        <line x1="26" y1="6" x2="178" y2="6" stroke="${primary}" stroke-width="1.2" opacity="0.85"/>
+    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;width:100%;height:12px;">
+        <rect x="0" y="4" width="18" height="4" fill="${accent}">${pulse}</rect>
+        <line x1="24" y1="6" x2="178" y2="6" stroke="${primary}" stroke-width="1.2" opacity="0.85"/>
       </svg>
-      <section style="width:52px;flex-shrink:0;">${badgeSvg}</section>
+      <section style="width:48px;flex-shrink:0;">${badgeSvg}</section>
     </section>
   `
 }

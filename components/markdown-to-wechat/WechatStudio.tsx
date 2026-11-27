@@ -26,7 +26,7 @@ const DEFAULT_DRAFT: DraftState = {
   markdown: SAMPLE_MARKDOWN,
   meta: DEFAULT_ARTICLE_META,
   themeId: 'magazine-news',
-  motionId: 'swiss-signal',
+  motionId: 'meridian-grid',
   animated: true,
   paletteId: 'default',
   customColors: {},
