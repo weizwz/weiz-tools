@@ -28,7 +28,7 @@
 | 层级 | 字号与字重（基于 `baseFont`） | 留白节奏（上/下） | 动效介入 | 视觉表现 |
 | :--- | :--- | :--- | :--- | :--- |
 | **H1（Banner）** | `baseFont + 5px` / `800-900` | 独立头图区 | **重度**（`renderBannerFrame`） | 动效画框包裹「文章分类 + 主标题」 |
-| **H2** | `baseFont + 2~3px` / `800-900` | `32px / 18px` | **中度**（`renderSectionBadge` + `renderSectionRail`） | 大序号/竖条 + 标题 + 右侧延伸线 + 下方轨道 |
+| **H2** | `baseFont + 2~3px` / `800-900` | `28px / 14px` | **中度**（`renderSectionBadge` + `renderSectionRail`） | 大序号/竖条 + 可折行标题 + 右侧固定徽章 + 紧贴底部的轨道 |
 | **H3** | `baseFont + 1px` / `700` | `22px / 10px` | **轻度**（无编号时显示 `renderH3Marker`） | `2.1` 小序号或微图标 + 加粗标题，无底线轨道 |
 | **H4** | `baseFont` / `700` | `16px / 6px` | **无动效** | 2px 浅色短竖线或极浅底色胶囊标签（如 `图解`），轻量紧凑 |
 
@@ -48,3 +48,17 @@
 - **TOC 导览**：标题行右侧固定预留右上角挂载槽，放置 `renderTocDecor`。
 - **图片与占位**：有效图片渲染卡片外框 + `<figcaption>`；空地址、占位关键字或加载失败图片由动效 `renderImagePlaceholder` 接管。
 - **引用块 / 代码块 / 作者名片**：在右上角或顶栏右侧预留固定尺寸锚点，挂载轻量动效角标，不改变正文行高与内边距。
+
+---
+
+## 6. 边界场景与防错规范（必检项）
+
+1. **长标题折行防溢出（H2 / H1）**
+   - **H2 严禁 `flex-shrink: 0`**：标题文本容器必须设为 `flex: 1; min-width: 0; word-break: break-word;`，允许长标题自然折行；右侧延伸线不设 `min-width`，空间不足时自动收缩至隐藏，右侧动效徽章保持固定宽度（`44px~52px`, `flex-shrink: 0`），绝不挤出容器右边界。
+   - **H2 下方轨道紧贴标题**：`rail` 容器不加多余 `margin-top`（控制在 `0~2px`），与数字块/标题底边保持紧凑视觉关联。
+   - **375px 窄屏安全**：Banner 左右动效侧栏总宽控制在 `<= 56px`，所有外层容器加 `max-width: 100%; overflow: hidden; box-sizing: border-box;`，杜绝横向滚动条。
+2. **微信编辑器粘贴兼容**
+   - 全程使用 **Inline CSS + Flexbox + 原生 SVG**，禁止依赖 `position: absolute` 叠层或 CSS Grid，防止微信公众号后台过滤或错位。
+3. **缺省内容兜底**
+   - 无 H1 不渲染 Banner；H2 少于 2 个不渲染 TOC；超过 6 个 H2 时 TOC 截断展示（避免卡片过长）。
+   - 分类为空时，Banner 顶部 `eyebrow` 隐藏或兜底 `ARTICLE`；图片 `alt` 为空时，占位卡自动显示 `${motion.name} · 图片待补充`。

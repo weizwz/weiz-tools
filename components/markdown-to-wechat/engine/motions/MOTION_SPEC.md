@@ -28,8 +28,8 @@
    - 用途：固定放置于 TOC 导览、引言卡片**右上角**（与标题行对齐）。
 
 3. **二级标题组合装饰（`renderSectionBadge` + `renderSectionRail`）**
-   - `renderSectionBadge(colors, animated, index)`：置于 H2 标题右侧，短色块 + 自适应延伸细线 + 右侧紧凑动效徽章（标题需 `flex-shrink: 0`）。
-   - `renderSectionRail(colors, animated, index)`：置于 H2 标题下方，贯穿左右的流动轨道线与节点圆点。
+   - `renderSectionBadge(colors, animated, index)`：置于 H2 标题右侧。**延长线禁止设置 `min-width`**，窄空间或长标题折行时自动压缩/隐藏，仅保留右侧紧凑徽章（固定 `44~52px`），严禁将徽章挤出容器。
+   - `renderSectionRail(colors, animated, index)`：置于 H2 标题下方，贯穿左右的流动轨道线与节点圆点。**SVG `viewBox` 顶部留白须紧凑（主轨道贴近顶部 `y=4~8`）**，确保线条紧贴标题底部，不产生过大空白间距。
 
 4. **空白 / 无效图片占位装饰（`renderImagePlaceholder`）**
    - 用途：当图片地址为空、为占位关键字（`placeholder`、`待补充`、`example.com`、相对文件名等）或实际加载失败（`error` 回退）时，渲染居中主题插画 + `VISUAL SLOT / 16:9` + 提示文案。
@@ -48,7 +48,8 @@
 
 ---
 
-## 3. 配色与密度规范
-- **调色盘联动**：所有动效严格通过 `resolveMotionColors(colors)` 消费 `PaletteColors` 的 5 个语义色（`headingDecor` 主轨、`strong` 强调点、`divider` 辅助刻度、`heading` 深色墨线、`bg` 挖空底色），不硬编码色值。
+## 3. 配色、密度与工程边界规范
+- **调色盘联动与最低对比度**：所有动效严格通过 `resolveMotionColors(colors)` 消费 `PaletteColors` 的 5 个语义色（`headingDecor` 主轨、`strong` 强调点、`divider` 辅助刻度、`heading` 深色墨线、`bg` 挖空底色），不硬编码色值。浅色调色盘下底轨透明度不低于 `0.45`，避免轨道线在白底上“消失”。
 - **视觉密度阶梯**：Banner / Tail（重度收束） → TOC / H2 / 占位图（中度节奏） → H3 / 引用 / 代码 / 名片（极轻点缀） → H4（无动效）。
-- **双态支持**：`animated === false` 时必须输出纯静态 SVG（不包含 `<animate>` / `<animateTransform>`）。
+- **静态首帧完整性（微信兼容）**：`animated === false` 时必须输出纯静态 SVG（不包含 `<animate>` / `<animateTransform>`）；且动态 SVG 的首帧静态构图必须完整美观，兼容不支持 SMIL 动画的微信客户端版本。
+- **自适应防裁切**：Banner 包裹框左右侧栏需随大标题折行高度自适应拉伸；所有 SVG 根元素统一设置 `display:block;width:100%;height:auto;max-width:100%;`。
