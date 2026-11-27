@@ -1,5 +1,5 @@
 import { botanicalNotesMotion } from '../motions'
-import { escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const internalJournalTheme: LayoutTheme = {
@@ -33,19 +33,21 @@ export const internalJournalTheme: LayoutTheme = {
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, capabilities, author, theme, dateStr, meta } = ctx
-      const authorLabel = author.trim() || '内刊手记'
+      const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const parts = title
         .split(/[：:]/)
         .map((s) => s.trim())
         .filter(Boolean)
       const mainTitle = parts[0] || title
       const emphasis = parts[1] || ''
-      const categoryLabel = meta.category.trim() ? `内刊手记 · ${meta.category.trim()}` : '内刊手记 · 专栏观察'
-      const avatarHtml = meta.avatar
-        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.4);flex-shrink:0;" />`
+      const categoryLabel = meta.category.trim() || DEFAULT_ARTICLE_META.category
+      const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
+      const avatarHtml = avatar
+        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.4);flex-shrink:0;" />`
         : ''
       const tagList = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
-      const badges = (tagList.length > 0 ? tagList : ['JOURNAL', 'NOTES'])
+      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
+      const badges = (tagList.length > 0 ? tagList : defaultTags)
         .map(
           (t) =>
             `<span style="background:#e5e7e0;color:#23251d;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:700;border:1px solid ${theme.borderColor};">${escapeHtml(t)}</span>`

@@ -1,5 +1,5 @@
 import { editorialVermilionMotion } from '../motions'
-import { escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const editorialCardTheme: LayoutTheme = {
@@ -32,15 +32,16 @@ export const editorialCardTheme: LayoutTheme = {
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, capabilities, author, theme, dateStr, meta } = ctx
-      const authorLabel = author.trim() || '社论卡片'
+      const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const shadowColor = hexToRgba(colors.headingDecor, 0.16)
-      const avatarHtml = meta.avatar
-        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
+      const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
+      const avatarHtml = avatar
+        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
         : ''
-      const tagList = [
-        ...(meta.category.trim() ? [meta.category.trim()] : []),
-        ...meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
-      ].slice(0, 3)
+      const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
+      const parsedTags = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
+      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
+      const tagList = [category, ...(parsedTags.length > 0 ? parsedTags : defaultTags)].slice(0, 3)
       const tagsHtml = tagList.length
         ? `<section style="display:flex;gap:5px;flex-wrap:wrap;">${tagList
             .map(

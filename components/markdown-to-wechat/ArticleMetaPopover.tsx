@@ -43,7 +43,8 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
     e.target.value = ''
   }
 
-  const displayAuthor = meta.author.trim() || '未署名'
+  const displayAuthor = meta.author.trim() || DEFAULT_ARTICLE_META.author
+  const displayAvatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
 
   return (
     <div ref={containerRef} className='relative'>
@@ -52,9 +53,9 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
         onClick={() => setOpen((prev) => !prev)}
         className='inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs hover:border-foreground/40 transition-colors cursor-pointer'>
         <span className='text-muted-foreground'>信息</span>
-        {meta.avatar ? (
+        {displayAvatar ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={meta.avatar} alt={displayAuthor} className='h-4 w-4 rounded-full object-cover border border-border' />
+          <img src={displayAvatar} alt={displayAuthor} className='h-4 w-4 rounded-full object-cover border border-border' />
         ) : (
           <User className='h-3.5 w-3.5 text-muted-foreground' />
         )}
@@ -78,8 +79,8 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
 
           <div className='space-y-2.5 text-xs'>
             <div className='space-y-1'>
-              <label className='text-[11px] font-medium text-muted-foreground'>头像（本地上传或 URL）</label>
-              <div className='flex items-center gap-2'>
+              <label className='text-[11px] font-medium text-muted-foreground block'>头像（本地上传或 URL）</label>
+              <div className='flex items-center gap-1'>
                 <div className='relative h-8 w-8 shrink-0 rounded-full border border-border bg-muted/40 flex items-center justify-center overflow-hidden'>
                   {meta.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -92,13 +93,13 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
                   value={meta.avatar.startsWith('data:') ? '' : meta.avatar}
                   onChange={(e) => updateField('avatar', e.target.value)}
                   placeholder={meta.avatar.startsWith('data:') ? '已上传本地图片' : 'https://...'}
-                  className='h-7 flex-1 text-xs'
+                  className='h-7 flex-1 text-xs!'
                 />
                 <input ref={fileInputRef} type='file' accept='image/*' onChange={handleAvatarUpload} className='hidden' />
                 <button
                   type='button'
                   onClick={() => fileInputRef.current?.click()}
-                  className='inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2 text-[11px] hover:bg-muted cursor-pointer shrink-0'
+                  className='inline-flex h-7 items-center gap-1 rounded-md border border-border bg-background px-2 text-xs! hover:bg-muted cursor-pointer shrink-0'
                   title='本地上传头像'>
                   <ImagePlus className='h-3.5 w-3.5' />
                   <span>上传</span>
@@ -117,34 +118,34 @@ export function ArticleMetaPopover({ meta, onChange }: ArticleMetaPopoverProps) 
 
             <div className='grid grid-cols-2 gap-2'>
               <div className='space-y-1'>
-                <label className='text-[11px] font-medium text-muted-foreground'>作者</label>
-                <Input value={meta.author} onChange={(e) => updateField('author', e.target.value)} placeholder='公众号名称 / 作者' className='h-7 text-xs' />
+                <label className='text-[11px] font-medium text-muted-foreground block'>作者</label>
+                <Input value={meta.author} onChange={(e) => updateField('author', e.target.value)} placeholder='公众号名称 / 作者' className='h-7 text-xs!' />
               </div>
               <div className='space-y-1'>
-                <label className='text-[11px] font-medium text-muted-foreground'>日期</label>
-                <Input value={meta.date} onChange={(e) => updateField('date', e.target.value)} placeholder='留空取当月' className='h-7 text-xs' />
+                <label className='text-[11px] font-medium text-muted-foreground block'>日期</label>
+                <Input value={meta.date} onChange={(e) => updateField('date', e.target.value)} placeholder='留空取当月' className='h-7 text-xs!' />
               </div>
             </div>
 
             <div className='grid grid-cols-2 gap-2'>
               <div className='space-y-1'>
-                <label className='text-[11px] font-medium text-muted-foreground'>分类</label>
-                <Input value={meta.category} onChange={(e) => updateField('category', e.target.value)} placeholder='如：工具' className='h-7 text-xs' />
+                <label className='text-[11px] font-medium text-muted-foreground block'>分类</label>
+                <Input value={meta.category} onChange={(e) => updateField('category', e.target.value)} placeholder='如：工具' className='h-7 text-xs!' />
               </div>
               <div className='space-y-1'>
-                <label className='text-[11px] font-medium text-muted-foreground'>标签（逗号分隔）</label>
-                <Input value={meta.tags} onChange={(e) => updateField('tags', e.target.value)} placeholder='Obsidian, VitePress' className='h-7 text-xs' />
+                <label className='text-[11px] font-medium text-muted-foreground block'>标签（逗号分隔）</label>
+                <Input value={meta.tags} onChange={(e) => updateField('tags', e.target.value)} placeholder='Obsidian, VitePress' className='h-7 text-xs!' />
               </div>
             </div>
 
             <div className='space-y-1'>
-              <label className='text-[11px] font-medium text-muted-foreground'>结束语（留空则不显示）</label>
+              <label className='text-[11px] font-medium text-muted-foreground block'>结束语（留空则不显示）</label>
               <textarea
                 value={meta.ending}
                 onChange={(e) => updateField('ending', e.target.value)}
-                rows={3}
+                rows={4}
                 placeholder='我是 xxx，请多多点赞关注，我将持续分享优秀内容。'
-                className='w-full resize-none rounded-md border border-input bg-transparent px-2.5 py-1.5 text-xs leading-relaxed outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]'
+                className='w-full resize-none rounded-md border border-input bg-transparent px-2.5 py-1.5 text-xs leading-relaxed outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-1'
               />
             </div>
           </div>

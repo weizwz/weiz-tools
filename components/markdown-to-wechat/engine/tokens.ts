@@ -1,21 +1,14 @@
-import {
-  ArticleMeta,
-  ColorPalette,
-  CustomColors,
-  LayoutTheme,
-  PaletteColorKey,
-  PaletteColors,
-  VisualCapabilities,
-  VisualLevel
-} from './types'
+import { ArticleMeta, ColorPalette, CustomColors, LayoutTheme, PaletteColorKey, PaletteColors, VisualCapabilities, VisualLevel } from './types'
 
 export const DEFAULT_ARTICLE_META: ArticleMeta = {
   avatar: '',
   author: '唯知AI',
-  date: '',
-  category: '',
-  tags: '',
-  ending: '我是 唯知AI，请多多点赞关注，我将持续分享优秀内容。'
+  date: new Date().toISOString().slice(0, 7),
+  category: 'KEEP SHARE • 资源',
+  tags: ' 实战经验,Skill',
+  ending: `我是 唯知AI，持续分享一线实践与长期观察
+
+如果觉得今天这篇有收获，欢迎点赞、在看、转发三连，我们下篇见`
 }
 
 export const VISUAL_LEVELS: { level: VisualLevel; badge: string; name: string; desc: string }[] = [
@@ -136,11 +129,7 @@ export function getThemePalettes(theme: LayoutTheme): ColorPalette[] {
   ]
 }
 
-export function resolvePaletteColors(
-  theme: LayoutTheme,
-  paletteId: string,
-  customColors: CustomColors
-): PaletteColors {
+export function resolvePaletteColors(theme: LayoutTheme, paletteId: string, customColors: CustomColors): PaletteColors {
   const palettes = getThemePalettes(theme)
   const base = palettes.find((p) => p.id === paletteId) || theme.defaultPalette
   if (paletteId === 'custom') {
@@ -195,12 +184,7 @@ export function hexToRgba(hex: string, alpha: number): string {
 }
 
 export function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 }
 
 export const SAMPLE_MARKDOWN = `# 从 Prompt 到 Context，再到 Skills：把经验变成可复用的能力

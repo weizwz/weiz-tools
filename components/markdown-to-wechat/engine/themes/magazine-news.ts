@@ -1,5 +1,5 @@
 import { swissSignalMotion } from '../motions'
-import { escapeHtml, hexToRgba } from '../tokens'
+import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
 export const magazineNewsTheme: LayoutTheme = {
@@ -32,17 +32,17 @@ export const magazineNewsTheme: LayoutTheme = {
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, capabilities, fontSize, author, dateStr, meta } = ctx
-      const authorLabel = author.trim() || '杂志资讯'
+      const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
       const borderCol = hexToRgba(colors.headingDecor, 0.28)
       const tagBg = hexToRgba(colors.headingDecor, 0.08)
-      const avatarHtml = meta.avatar
-        ? `<img src="${escapeHtml(meta.avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.5);flex-shrink:0;" />`
+      const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
+      const avatarHtml = avatar
+        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.5);flex-shrink:0;" />`
         : ''
-      const tagList = [
-        ...(meta.category.trim() ? [meta.category.trim()] : []),
-        ...meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean)
-      ].slice(0, 3)
-      const badges = (tagList.length > 0 ? tagList : ['深度解析', '推荐'])
+      const category = meta.category.trim() || DEFAULT_ARTICLE_META.category
+      const tagList = meta.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
+      const defaultTags = DEFAULT_ARTICLE_META.tags.split(/[,，]/).map((t) => t.trim()).filter(Boolean).slice(0, 3)
+      const badges = (tagList.length > 0 ? tagList : defaultTags)
         .map(
           (t) =>
             `<span style="background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;font-size:9px;color:#fff;font-weight:600;">${escapeHtml(t)}</span>`
@@ -56,7 +56,7 @@ export const magazineNewsTheme: LayoutTheme = {
           <section style="padding:24px 22px 12px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
             <section style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
               <span style="width:7px;height:7px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
-              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">KEEP SHARE · 持续分享</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">${escapeHtml(category)}</span>
               <span style="flex:1;height:1px;background:linear-gradient(to right,${borderCol},transparent);display:inline-block;"><span leaf="">&nbsp;</span></span>
               <span style="font-size:10px;color:${ctx.theme.textMuted};font-weight:500;">${escapeHtml(dateStr)}</span>
             </section>
