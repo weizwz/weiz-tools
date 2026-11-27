@@ -10,15 +10,15 @@ export const magazineNewsTheme: LayoutTheme = {
     colors: {
       bg: '#ffffff',
       heading: '#0F172A',
-      strong: '#0D9488',
-      headingDecor: '#0D9488',
-      divider: '#99F6E4',
-      listMarker: '#0D9488',
+      strong: '#4A6E8A',
+      headingDecor: '#4A6E8A',
+      divider: '#B8C9D9',
+      listMarker: '#4A6E8A',
       codeBlockBg: '#1E293B',
-      tableAccent: '#F0FDFA',
-      inlineCodeText: '#0F766E',
-      inlineCodeBg: '#F0FDFA',
-      blockquoteAccent: '#0D9488'
+      tableAccent: '#F2F6FA',
+      inlineCodeText: '#3B5870',
+      inlineCodeBg: '#F2F6FA',
+      blockquoteAccent: '#4A6E8A'
     }
   },
   text: '#374151',
