@@ -80,7 +80,12 @@
 ---
 
 ## 4. 配色、密度与工程边界规范
-- **调色盘联动与最低对比度**：所有动效严格通过 `resolveMotionColors(colors)` 消费 `PaletteColors` 的 5 个语义色（`headingDecor` 主轨、`strong` 强调点、`divider` 辅助刻度、`heading` 深色墨线、`bg` 挖空底色），不硬编码色值。浅色调色盘下底轨透明度不低于 `0.45`，避免轨道线在白底上“消失”。
+- **调色盘联动与主色分层**：所有动效严格通过 `resolveMotionColors(colors)` 消费 `PaletteColors`，装饰外框与辅助线条均使用主色调 `headingDecor` 及其透明分层（`primaryMid` / `primarySoft`）与强调色 `strong`，禁止在浅色主题下使用突兀的纯黑线。
+- **中心母题与槽位分工铁律**：
+  - **Banner 右上角徽章**：必须放置该动效的**唯一中心主图元**（如星轨用双椭圆星轨、鱼跃用优雅游鱼、齿轮用主齿轮）。
+  - **H2 延长线与底轨差异化**：各预设的 H2 延长线与 `renderSectionRail` 需在形态（直线/双反向流线/虚线/波浪/锯齿/无底轨留白）上明确区分。
+  - **Banner 底部与 Tail 非对称收束**：左右图形采用同主题非对称呼应（如星轨左日右月），Tail 右侧禁止出现跨主题雷同图形（如通用柱状图）。
+  - **轨道粒子贴合路径**：沿椭圆或曲线轨道运行的粒子必须使用 `<animateMotion>` 贴合路径运动，严禁使用圆周 `rotate` 替代椭圆轨道导致脱轨。
 - **视觉密度阶梯**：Banner / Tail（重度收束） → TOC / H2 / 占位图（中度节奏） → H3 / 引用 / 代码 / 名片（极轻点缀） → H4（无动效）。
 - **静态首帧完整性（微信兼容）**：`animated === false` 时必须输出纯静态 SVG（不包含 `<animate>` / `<animateTransform>`）；且动态 SVG 的首帧静态构图必须完整美观，兼容不支持 SMIL 动画的微信客户端版本。
 - **自适应防裁切**：Banner 包裹框左右侧栏需随大标题折行高度自适应拉伸；所有 SVG 根元素统一设置 `display:block;width:100%;height:auto;max-width:100%;`。

@@ -28,11 +28,14 @@ export function isPlaceholderImageSrc(href: string): boolean {
 }
 
 export function resolveMotionColors(colors: PaletteColors) {
+  const primary = colors.headingDecor
   return {
-    primary: colors.headingDecor,
+    primary,
+    primarySoft: hexToRgba(primary, 0.28),
+    primaryMid: hexToRgba(primary, 0.58),
     accent: colors.strong,
-    muted: colors.divider,
-    ink: colors.heading,
+    muted: hexToRgba(primary, 0.45),
+    ink: primary,
     bg: colors.bg
   }
 }
@@ -111,45 +114,44 @@ export function bannerFrameHtml(
   bottomMotionSvg: string,
   animated: boolean
 ): string {
-  const { primary, accent, muted, ink } = resolveMotionColors(colors)
+  const { primary, primaryMid, accent } = resolveMotionColors(colors)
   const topBarSvg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 36" width="100%" style="display:block;width:100%;height:auto;">
-      <path d="M22 18H40M31 9V27" stroke="${muted}" stroke-width="1.2"/>
+      <path d="M22 18H40M31 9V27" stroke="${primaryMid}" stroke-width="1.2"/>
       <circle cx="31" cy="18" r="2.8" fill="${accent}"/>
       <rect x="38" y="10" width="6" height="2.5" fill="${primary}"/>
-      <line x1="62" y1="18" x2="318" y2="18" stroke="${ink}" stroke-width="1.4" opacity="0.85"/>
-      <rect x="332" y="10" width="34" height="14" fill="${accent}" opacity="0.9"/>
-      <rect x="376" y="10" width="34" height="14" fill="${primary}"/>
-      <line x1="424" y1="18" x2="720" y2="18" stroke="${ink}" stroke-width="1.4" opacity="0.85"/>
+      <line x1="62" y1="18" x2="318" y2="18" stroke="${primaryMid}" stroke-width="1.35"/>
+      <rect x="332" y="10" width="34" height="14" fill="${accent}" opacity="0.88"/>
+      <rect x="376" y="10" width="34" height="14" fill="${primary}" opacity="0.85"/>
+      <line x1="424" y1="18" x2="720" y2="18" stroke="${primaryMid}" stroke-width="1.35"/>
     </svg>
   `
   const sideRailLeft = `
     <section style="width:18px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;padding:4px 0;">
       <section style="display:flex;align-items:flex-start;gap:6px;">
-        <span style="display:inline-block;width:1.5px;height:68px;background:${ink};opacity:0.85;"></span>
+        <span style="display:inline-block;width:1.5px;height:68px;background:${primaryMid};"></span>
         <span style="display:inline-block;width:3px;height:62px;background:${primary};margin-top:6px;"></span>
       </section>
-      <section style="width:14px;height:24px;border-left:1.5px solid ${ink};border-bottom:1.5px solid ${ink};opacity:0.85;"></section>
+      <section style="width:14px;height:24px;border-left:1.5px solid ${primaryMid};border-bottom:1.5px solid ${primaryMid};"></section>
     </section>
   `
   const dotGrid = [0, 1, 2, 3, 4, 5]
     .map(
       (i) =>
-        `<circle cx="${10 + (i % 3) * 14}" cy="${10 + Math.floor(i / 3) * 14}" r="2.6" fill="${primary}" opacity="${i % 2 === 0 ? '0.35' : '0.2'}"/>`
+        `<circle cx="${10 + (i % 3) * 14}" cy="${10 + Math.floor(i / 3) * 14}" r="2.6" fill="${primary}" opacity="${i % 2 === 0 ? '0.4' : '0.2'}"/>`
     )
     .join('')
   const sideRailRight = `
     <section style="width:52px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;padding:2px 0;">
       <section style="display:flex;align-items:flex-start;gap:4px;">
         <section style="width:44px;">${topRightBadgeSvg}</section>
-        <span style="display:inline-block;width:1.5px;height:44px;background:${ink};opacity:0.85;margin-top:4px;"></span>
+        <span style="display:inline-block;width:1.5px;height:44px;background:${primaryMid};margin-top:4px;"></span>
       </section>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 34" width="44" style="display:block;height:auto;margin-right:4px;">${dotGrid}</svg>
-      <section style="width:16px;height:24px;border-right:1.5px solid ${ink};border-bottom:1.5px solid ${ink};opacity:0.85;"></section>
+      <section style="width:16px;height:24px;border-right:1.5px solid ${primaryMid};border-bottom:1.5px solid ${primaryMid};"></section>
     </section>
   `
-  const pulseAttr = animated ? '' : ''
-  void pulseAttr
+  void animated
 
   return `
     <section style="padding:6px 4px 2px;">
@@ -169,19 +171,23 @@ export function bannerFrameHtml(
 export function sectionBadgeHtml(
   badgeSvg: string,
   colors: PaletteColors,
-  animated: boolean
+  animated: boolean,
+  lineSvg?: string
 ): string {
   const { primary, accent } = resolveMotionColors(colors)
   const pulse = animated
     ? `<animate attributeName="opacity" values="0.92;0.48;0.92" dur="2.6s" repeatCount="indefinite"/>`
     : ''
+  const defaultLine = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
+      <rect x="0" y="4" width="18" height="4" fill="${accent}">${pulse}</rect>
+      <line x1="24" y1="6" x2="178" y2="6" stroke="${primary}" stroke-width="1.2" opacity="0.65"/>
+    </svg>
+  `
   return `
-    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:48px;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
-        <rect x="0" y="4" width="18" height="4" fill="${accent}">${pulse}</rect>
-        <line x1="24" y1="6" x2="178" y2="6" stroke="${primary}" stroke-width="1.2" opacity="0.85"/>
-      </svg>
-      <section style="width:48px;flex-shrink:0;">${badgeSvg}</section>
+    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+      ${lineSvg ?? defaultLine}
+      <section style="width:52px;flex-shrink:0;">${badgeSvg}</section>
     </section>
   `
 }

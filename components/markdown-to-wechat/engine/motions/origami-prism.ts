@@ -15,17 +15,17 @@ function prismMotif(
   cy: number,
   scale: number,
   primary: string,
+  primaryMid: string,
   accent: string,
-  ink: string,
   animated: boolean
 ): string {
   const breathe = scaleAnim('1 1;1.07 1.07;1 1', '4s', animated)
   return `
     <g transform="translate(${cx} ${cy}) scale(${scale})">
       <g>
-        <polygon points="0,-18 16,0 0,18 -16,0" fill="none" stroke="${ink}" stroke-width="1.3" stroke-linejoin="round"/>
-        <path d="M0 -18V18M-16 0H16" stroke="${primary}" stroke-width="1" opacity="0.8"/>
-        <polygon points="0,-18 16,0 0,0" fill="${accent}" opacity="0.26"/>
+        <polygon points="0,-18 16,0 0,18 -16,0" fill="none" stroke="${primary}" stroke-width="1.3" stroke-linejoin="round"/>
+        <path d="M0 -18V18M-16 0H16" stroke="${primaryMid}" stroke-width="1"/>
+        <polygon points="0,-18 16,0 0,0" fill="${accent}" opacity="0.28"/>
         ${breathe}
       </g>
       <circle cx="0" cy="0" r="2.2" fill="${accent}"/>
@@ -33,32 +33,51 @@ function prismMotif(
   `
 }
 
+function foldedWing(
+  cx: number,
+  cy: number,
+  scale: number,
+  primary: string,
+  primaryMid: string,
+  accent: string,
+  animated: boolean
+): string {
+  return `
+    <g transform="translate(${cx} ${cy}) scale(${scale})">
+      <polygon points="-16,6 0,-12 16,6 0,0" fill="none" stroke="${primary}" stroke-width="1.25" stroke-linejoin="round"/>
+      <polygon points="0,-12 16,6 0,0" fill="${accent}" opacity="0.26"/>
+      <line x1="0" y1="-12" x2="0" y2="8" stroke="${primaryMid}" stroke-width="0.95"/>
+      <circle cx="0" cy="-12" r="2" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2.8s', animated)}</circle>
+    </g>
+  `
+}
+
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
-  const { primary, accent, muted, ink } = resolveMotionColors(colors)
+  const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 46L30 30L54 30L74 46" fill="none" stroke="${muted}" stroke-width="0.9" opacity="0.58"/>
-      ${prismMotif(42, 28, 0.96, primary, accent, ink, animated)}
+      <path d="M10 46L30 30L54 30L74 46" fill="none" stroke="${primarySoft}" stroke-width="0.95"/>
+      ${prismMotif(42, 28, 0.96, primary, primaryMid, accent, animated)}
     </svg>
   `
 }
 
 function renderBadgeSvg(colors: PaletteColors, animated: boolean): string {
-  const { primary, accent, ink } = resolveMotionColors(colors)
+  const { primary, primaryMid, accent } = resolveMotionColors(colors)
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 40" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      ${prismMotif(28, 20, 0.86, primary, accent, ink, animated)}
+      ${foldedWing(28, 22, 1.05, primary, primaryMid, accent, animated)}
     </svg>
   `
 }
 
 function renderPlaceholderSvg(colors: PaletteColors, animated: boolean): string {
-  const { primary, accent, muted, ink } = resolveMotionColors(colors)
+  const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 110" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M18 82L54 54H106L142 82" fill="none" stroke="${muted}" stroke-width="0.9" opacity="0.55"/>
+      <path d="M18 82L54 54H106L142 82" fill="none" stroke="${primarySoft}" stroke-width="0.95"/>
       ${flowTrailSvg('M18 82L54 54H106L142 82', primary, 1.65, '24 150', -174, '4.4s', animated)}
-      ${prismMotif(80, 50, 1.45, primary, accent, ink, animated)}
+      ${prismMotif(80, 50, 1.45, primary, primaryMid, accent, animated)}
     </svg>
   `
 }
@@ -68,24 +87,24 @@ export const origamiPrismMotion: MotionPreset = {
   name: '折纸棱镜',
 
   renderBannerMotion(colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, muted, ink } = resolveMotionColors(colors)
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
     const spine = 'M30 56L190 42L240 56L510 56L560 42L720 56'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 84" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        <path d="M30 64H720" stroke="${muted}" stroke-width="0.85" opacity="0.5"/>
-        ${flowTrailSvg(spine, primary, 1.85, '92 840', -932, '4.4s', animated)}
-        ${prismMotif(118, 42, 0.95, primary, accent, ink, animated)}
-        ${prismMotif(632, 42, 0.95, primary, accent, ink, animated)}
+        <path d="M30 64H720" stroke="${primaryMid}" stroke-width="0.9" stroke-dasharray="5 4"/>
+        ${flowTrailSvg(spine, primary, 1.8, '92 840', -932, '4.4s', animated)}
+        ${prismMotif(118, 42, 0.95, primary, primaryMid, accent, animated)}
+        ${foldedWing(626, 44, 1.1, primary, primaryMid, accent, animated)}
         <polygon points="375,44 385,52 375,60 365,52" fill="${accent}" opacity="0.85"/>
       </svg>
     `
   },
 
   renderBannerFrame(innerHtml: string, colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, ink } = resolveMotionColors(colors)
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
     const badge = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        ${prismMotif(28, 28, 1.05, primary, accent, ink, animated)}
+        ${prismMotif(28, 28, 1.05, primary, primaryMid, accent, animated)}
       </svg>
     `
     return bannerFrameHtml(innerHtml, colors, badge, this.renderBannerMotion(colors, animated), animated)
@@ -96,18 +115,25 @@ export const origamiPrismMotion: MotionPreset = {
   },
 
   renderSectionBadge(colors: PaletteColors, animated: boolean): string {
-    return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated)
+    const { primary, accent } = resolveMotionColors(colors)
+    const lineSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
+        <path d="M0 9L24 3L48 9L72 3L96 9L120 3L144 9L168 3L178 6" fill="none" stroke="${primary}" stroke-width="1.1" opacity="0.62"/>
+        <polygon points="6,3 10,6 6,9 2,6" fill="${accent}"/>
+      </svg>
+    `
+    return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated, lineSvg)
   },
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
-    const { primary, accent, muted } = resolveMotionColors(colors)
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
     const dur = `${(4.2 + ((index - 1) % 3) * 0.4).toFixed(1)}s`
-    const rail = 'M4 9L240 9L264 3L376 3L400 9L636 9'
+    const rail = 'M4 9L160 9L180 3L200 9L440 9L460 3L480 9L636 9'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 14" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        <path d="M120 12H520" stroke="${muted}" stroke-width="0.8" opacity="0.48"/>
-        ${flowTrailSvg(rail, primary, 1.65, '80 720', -800, dur, animated)}
-        <polygon points="320,1 325,5 320,9 315,5" fill="${accent}"/>
+        <path d="M4 11H636" stroke="${primaryMid}" stroke-width="0.8" stroke-dasharray="4 4"/>
+        ${flowTrailSvg(rail, primary, 1.55, '80 720', -800, dur, animated)}
+        <polygon points="320,2 325,6 320,10 315,6" fill="${accent}"/>
       </svg>
     `
   },
@@ -117,10 +143,11 @@ export const origamiPrismMotion: MotionPreset = {
   },
 
   renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, ink } = resolveMotionColors(colors)
+    const { primary, accent } = resolveMotionColors(colors)
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;max-width:100%;">
-        ${prismMotif(18, 12, 0.56, primary, accent, ink, animated)}
+        <polygon points="10,4 26,4 18,18" fill="none" stroke="${primary}" stroke-width="1.2" stroke-linejoin="round"/>
+        <polygon points="18,4 26,4 18,18" fill="${accent}" opacity="0.32">${pulseAnim('opacity', '0.2;0.55;0.2', '2.8s', animated)}</polygon>
       </svg>
     `
   },
@@ -136,10 +163,10 @@ export const origamiPrismMotion: MotionPreset = {
   },
 
   renderEndingDecor(colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, ink } = resolveMotionColors(colors)
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28" width="48" style="display:block;height:auto;max-width:100%;">
-        ${prismMotif(24, 14, 0.68, primary, accent, ink, animated)}
+        ${foldedWing(24, 15, 0.85, primary, primaryMid, accent, animated)}
       </svg>
     `
   },
@@ -155,37 +182,36 @@ export const origamiPrismMotion: MotionPreset = {
   },
 
   renderDivider(colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, muted } = resolveMotionColors(colors)
+    const { primary, primaryMid, accent } = resolveMotionColors(colors)
     const d = 'M20 9L240 9L264 4L376 4L400 9L620 9'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 16" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        <path d="M180 12H460" stroke="${muted}" stroke-width="0.8" opacity="0.48"/>
-        ${flowTrailSvg(d, primary, 1.7, '76 700', -776, '4.4s', animated)}
+        <path d="M180 12H460" stroke="${primaryMid}" stroke-width="0.85" stroke-dasharray="4 4"/>
+        ${flowTrailSvg(d, primary, 1.65, '76 700', -776, '4.4s', animated)}
         <polygon points="320,1 325,5 320,9 315,5" fill="${accent}"/>
       </svg>
     `
   },
 
   renderTail(colors: PaletteColors, animated: boolean, label = 'END · 继续阅读'): string {
-    const { primary, accent, muted, ink } = resolveMotionColors(colors)
+    const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
     const leftSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 84" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        <path d="M14 58L74 42H186" fill="none" stroke="${muted}" stroke-width="0.9" opacity="0.55"/>
-        ${prismMotif(68, 42, 1.1, primary, accent, ink, animated)}
-        <line x1="92" y1="42" x2="186" y2="42" stroke="${ink}" stroke-width="1.25"/>
+        <path d="M14 58L74 42H186" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+        ${prismMotif(68, 42, 1.15, primary, primaryMid, accent, animated)}
       </svg>
     `
     const rightSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 84" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        <path d="M14 42H126L186 58" fill="none" stroke="${muted}" stroke-width="0.9" opacity="0.55"/>
-        <line x1="14" y1="42" x2="108" y2="42" stroke="${ink}" stroke-width="1.25"/>
-        ${prismMotif(132, 42, 1.1, primary, accent, ink, animated)}
+        <path d="M14 58H186" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+        ${foldedWing(118, 46, 0.9, primary, primaryMid, accent, animated)}
+        ${foldedWing(152, 36, 1.05, primary, primaryMid, accent, animated)}
       </svg>
     `
-    const spine = 'M30 14L220 14L250 6L500 6L530 14L720 14'
     const spineSvg = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 24" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-        ${flowTrailSvg(spine, primary, 1.8, '96 840', -936, '4.4s', animated)}
+        <path d="M30 17H720" stroke="${primaryMid}" stroke-width="0.85" stroke-dasharray="5 4"/>
+        ${flowTrailSvg('M30 12L220 12L250 5L500 5L530 12L720 12', primary, 1.75, '96 840', -936, '4.4s', animated)}
       </svg>
     `
     return tailFrameHtml(leftSvg, rightSvg, spineSvg, label, colors)
