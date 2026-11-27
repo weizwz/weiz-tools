@@ -55,9 +55,9 @@ function foldedWing(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 46L30 30L54 30L74 46" fill="none" stroke="${primarySoft}" stroke-width="0.95"/>
-      ${prismMotif(42, 28, 0.96, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M10 27L30 16L54 16L74 27" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${prismMotif(42, 16, 0.64, primary, primaryMid, accent, animated)}
     </svg>
   `
 }

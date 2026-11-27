@@ -58,10 +58,10 @@ function bubbleCluster(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <ellipse cx="42" cy="44" rx="28" ry="6" fill="none" stroke="${primarySoft}" stroke-width="0.95"/>
-      ${flowTrailSvg('M10 44C26 36 58 36 74 44', primary, 1.5, '16 90', -106, '4s', animated)}
-      ${leapingFish(42, 26, 0.9, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <ellipse cx="42" cy="26" rx="28" ry="3.5" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${flowTrailSvg('M10 26C26 21 58 21 74 26', primary, 1.45, '16 90', -106, '4s', animated)}
+      ${leapingFish(42, 14, 0.72, primary, primaryMid, accent, animated)}
     </svg>
   `
 }

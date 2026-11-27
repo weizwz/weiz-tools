@@ -42,11 +42,11 @@ function gearWheel(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 48H74" stroke="${primarySoft}" stroke-width="1"/>
-      ${flowTrailSvg('M10 48H74', primary, 1.5, '12 80', -92, '4.5s', animated)}
-      ${gearWheel(34, 28, 12, primary, primaryMid, accent, true, animated)}
-      ${gearWheel(55, 34, 8, primary, primaryMid, accent, false, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M10 28H74" stroke="${primarySoft}" stroke-width="0.95"/>
+      ${flowTrailSvg('M10 28H74', primary, 1.45, '12 80', -92, '4.5s', animated)}
+      ${gearWheel(34, 15, 8.5, primary, primaryMid, accent, true, animated)}
+      ${gearWheel(53, 18, 5.5, primary, primaryMid, accent, false, animated)}
     </svg>
   `
 }

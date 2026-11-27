@@ -142,12 +142,12 @@ export const meridianGridMotion: MotionPreset = {
   renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
     const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
     return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 18" width="36" style="display:block;height:auto;max-width:100%;">
-        <path d="M2 9H34M11 2V16M25 2V16" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
-        <path d="M16 9H32" fill="none" stroke="${primaryMid}" stroke-width="1"/>
-        <rect x="6.5" y="4.5" width="9" height="9" fill="none" stroke="${primary}" stroke-width="1.15"/>
-        <circle cx="11" cy="9" r="2" fill="${accent}">${pulseAnim('r', '1.6;2.4;1.6', '2.8s', animated)}</circle>
-        <rect x="23" y="7" width="4" height="4" fill="${primary}">${pulseAnim('opacity', '0.9;0.35;0.9', '2.8s', animated)}</rect>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;max-width:100%;">
+        <path d="M2 12H34M11 4V20M25 4V20" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+        <path d="M16 12H32" fill="none" stroke="${primaryMid}" stroke-width="1"/>
+        <rect x="6.5" y="7.5" width="9" height="9" fill="none" stroke="${primary}" stroke-width="1.15"/>
+        <circle cx="11" cy="12" r="2" fill="${accent}">${pulseAnim('r', '1.6;2.4;1.6', '2.8s', animated)}</circle>
+        <rect x="23" y="10" width="4" height="4" fill="${primary}">${pulseAnim('opacity', '0.9;0.35;0.9', '2.8s', animated)}</rect>
       </svg>
     `
   },

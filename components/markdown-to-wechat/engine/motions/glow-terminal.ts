@@ -31,10 +31,10 @@ function terminalPrompt(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 46H74" stroke="${primarySoft}" stroke-width="0.9"/>
-      ${flowTrailSvg('M10 46H32L38 40H74', primary, 1.55, '16 100', -116, '3.6s', animated)}
-      ${terminalPrompt(42, 24, 1, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M10 27H74" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${flowTrailSvg('M10 27H32L38 23H74', primary, 1.45, '16 100', -116, '3.6s', animated)}
+      ${terminalPrompt(42, 14, 0.76, primary, primaryMid, accent, animated)}
     </svg>
   `
 }

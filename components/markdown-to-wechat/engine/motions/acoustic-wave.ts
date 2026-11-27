@@ -35,10 +35,10 @@ function waveBars(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M8 30H76" stroke="${primarySoft}" stroke-width="0.9"/>
-      ${flowTrailSvg('M8 30C22 18 32 42 42 30C52 18 62 42 76 30', primary, 1.5, '16 100', -116, '4.2s', animated)}
-      ${waveBars(42, 30, 0.9, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M8 16H76" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${flowTrailSvg('M8 16C22 7 32 25 42 16C52 7 62 25 76 16', primary, 1.45, '16 100', -116, '4.2s', animated)}
+      ${waveBars(42, 16, 0.68, primary, primaryMid, accent, animated)}
     </svg>
   `
 }

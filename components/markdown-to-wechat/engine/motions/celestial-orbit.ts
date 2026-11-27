@@ -81,9 +81,9 @@ function orbitSystem(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 48Q42 36 74 48" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
-      ${orbitSystem(42, 26, 0.96, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M10 27Q42 20 74 27" fill="none" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${orbitSystem(42, 15, 0.78, primary, primaryMid, accent, animated)}
     </svg>
   `
 }

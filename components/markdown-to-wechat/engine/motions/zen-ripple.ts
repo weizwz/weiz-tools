@@ -52,9 +52,9 @@ function waterDrop(
 function renderTocSvg(colors: PaletteColors, animated: boolean): string {
   const { primary, primarySoft, primaryMid, accent } = resolveMotionColors(colors)
   return `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 60" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
-      <path d="M10 46H74" stroke="${primarySoft}" stroke-width="0.9"/>
-      ${rippleRings(42, 28, 1.05, primary, primaryMid, accent, animated)}
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 84 32" width="100%" style="display:block;width:100%;height:auto;max-width:100%;">
+      <path d="M10 27H74" stroke="${primarySoft}" stroke-width="0.9"/>
+      ${rippleRings(42, 15, 0.68, primary, primaryMid, accent, animated)}
     </svg>
   `
 }
