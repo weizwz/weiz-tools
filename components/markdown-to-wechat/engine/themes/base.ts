@@ -1,20 +1,35 @@
+import { isPlaceholderImageSrc } from '../motions/helpers'
 import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba } from '../tokens'
 import { RenderContext } from '../types'
 
 export const baseSlots = {
   renderH2(content: string, index: number, ctx: RenderContext): string {
-    const { colors, fontSize } = ctx
+    const { colors, fontSize, motion, animated } = ctx
     const marginTop = index === 1 ? '18px' : '32px'
+    const badge = motion.renderSectionBadge(colors, animated, index)
+    const rail = `<section style="margin-top:6px;">${motion.renderSectionRail(colors, animated, index)}</section>`
     return `
-      <h2 style="margin:${marginTop} 0 14px 0;padding:0 0 8px 10px;border-left:4px solid ${colors.headingDecor};border-bottom:1px solid ${colors.divider};font-size:${fontSize + 3}px;line-height:1.4;font-weight:800;color:${colors.heading};">
-        ${content}
-      </h2>
+      <section style="margin:${marginTop} 0 16px 0;">
+        <section style="display:flex;align-items:center;gap:10px;padding-left:10px;border-left:4px solid ${colors.headingDecor};">
+          <h2 style="margin:0;font-size:${fontSize + 3}px;line-height:1.4;font-weight:800;color:${colors.heading};flex-shrink:0;">
+            ${content}
+          </h2>
+          ${badge}
+        </section>
+        ${rail}
+      </section>
     `
   },
 
   renderH3(content: string, ctx: RenderContext): string {
-    const { colors, fontSize } = ctx
-    return `<h3 style="margin:22px 0 10px 0;font-size:${fontSize + 1}px;line-height:1.45;font-weight:800;color:${colors.heading};">${content}</h3>`
+    const { colors, fontSize, motion, animated } = ctx
+    const marker = motion.renderH3Marker(colors, animated)
+    return `
+      <section style="margin:22px 0 10px 0;display:flex;align-items:center;gap:8px;">
+        <span style="flex-shrink:0;display:inline-flex;align-items:center;">${marker}</span>
+        <h3 style="margin:0;font-size:${fontSize + 1}px;line-height:1.45;font-weight:800;color:${colors.heading};">${content}</h3>
+      </section>
+    `
   },
 
   renderStrong(content: string, ctx: RenderContext): string {
@@ -22,10 +37,12 @@ export const baseSlots = {
   },
 
   renderBlockquote(content: string, ctx: RenderContext): string {
-    const { theme, colors, fontSize } = ctx
+    const { theme, colors, fontSize, motion, animated } = ctx
     const bg = hexToRgba(colors.blockquoteAccent, 0.06)
+    const decor = motion.renderBlockquoteDecor(colors, animated)
     return `
-      <blockquote style="margin:18px 0;padding:14px 16px;border-left:4px solid ${colors.blockquoteAccent};background:${bg};border-radius:0 8px 8px 0;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.75;">
+      <blockquote style="margin:18px 0;padding:12px 16px 14px;border-left:4px solid ${colors.blockquoteAccent};background:${bg};border-radius:0 8px 8px 0;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.75;">
+        <section style="display:flex;justify-content:flex-end;margin-bottom:4px;">${decor}</section>
         ${content}
       </blockquote>
     `
@@ -40,9 +57,13 @@ export const baseSlots = {
   },
 
   renderImage(href: string, text: string, ctx: RenderContext): string {
-    const { theme } = ctx
+    const { theme, motion, colors, animated } = ctx
+    const placeholderHtml = motion.renderImagePlaceholder(text, '16:9', colors, animated)
+    if (isPlaceholderImageSrc(href)) {
+      return placeholderHtml
+    }
     return `
-      <figure style="margin:18px 0;text-align:center;">
+      <figure data-placeholder="${escapeHtml(encodeURIComponent(placeholderHtml))}" style="margin:18px 0;text-align:center;">
         <section style="background:#FFF;border-radius:12px;padding:6px;border:1px solid #E5E7EB;box-shadow:0 4px 12px -2px rgba(0,0,0,0.08);">
           <img src="${escapeHtml(href)}" alt="${escapeHtml(text)}" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;" />
         </section>
@@ -52,7 +73,7 @@ export const baseSlots = {
   },
 
   renderEnding(ctx: RenderContext): string {
-    const { meta, colors, theme, author, dateStr } = ctx
+    const { meta, colors, theme, author, dateStr, motion, animated } = ctx
     const ending = meta.ending.trim()
     if (!ending) return ''
     const authorName = author.trim() || DEFAULT_ARTICLE_META.author
@@ -61,6 +82,7 @@ export const baseSlots = {
     const avatarHtml = avatar
       ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorName)}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.35)};flex-shrink:0;" />`
       : ''
+    const endingDecor = motion.renderEndingDecor(colors, animated)
 
     return `
       <section style="margin:28px 0 8px 0;padding:14px 16px;background:${colors.tableAccent};border:1px solid ${hexToRgba(colors.headingDecor, 0.22)};border-radius:12px;">
@@ -70,6 +92,7 @@ export const baseSlots = {
             <p style="margin:0;font-size:13.5px;font-weight:800;color:${colors.heading};line-height:1.3;">${escapeHtml(authorName)}</p>
             <p style="margin:2px 0 0;font-size:11px;color:${theme.textMuted};line-height:1.2;">${escapeHtml(dateStr)}${category ? ` · ${escapeHtml(category)}` : ''}</p>
           </section>
+          <section style="flex-shrink:0;">${endingDecor}</section>
         </section>
         <p style="margin:0;font-size:13px;line-height:1.75;color:${theme.text};">${escapeHtml(ending)}</p>
       </section>

@@ -1,5 +1,14 @@
 import { MotionPreset, PaletteColors } from '../types'
-import { flowTrailSvg, pulseAnim, resolveMotionColors, swayAnim } from './helpers'
+import {
+  bannerFrameHtml,
+  flowTrailSvg,
+  imagePlaceholderHtml,
+  pulseAnim,
+  resolveMotionColors,
+  sectionBadgeHtml,
+  swayAnim,
+  tailFrameHtml
+} from './helpers'
 
 function reedCluster(
   primary: string,
@@ -36,13 +45,38 @@ function folioIcon(primary: string, muted: string, ink: string, transform: strin
   `
 }
 
+function renderBadgeSvg(colors: PaletteColors, animated: boolean): string {
+  const { primary, muted, ink } = resolveMotionColors(colors)
+  const spine =
+    'M22 153C64.5 146 88.1 157 116.4 153C147.1 148 173.0 158 201.4 153C225.0 149 241.5 155 258 152'
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" width="100%" style="display:block;width:100%;height:auto;">
+      ${flowTrailSvg(spine, primary, 1.9, '44.8 360', -404.8, '3.8s', animated)}
+      <g transform="translate(46 30) scale(0.67)">
+        <circle cx="138" cy="86" r="46" fill="${primary}" opacity="0.12"/>
+        <circle cx="138" cy="86" r="30" fill="none" stroke="${primary}" stroke-width="1.8"/>
+        <path d="M30 42H108M30 50H78M168 122H250M198 130H250" fill="none" stroke="${ink}" stroke-width="1.4"/>
+        <path d="M138 22V150M74 86H202" fill="none" stroke="${muted}" stroke-width="1"/>
+        <circle cx="202" cy="86" r="7" fill="${primary}"/>
+        <rect x="44" y="116" width="30" height="8" fill="${ink}"/>
+      </g>
+      <g transform="translate(140 153) scale(0.48 0.48)">
+        <circle cx="-35" cy="-72" r="15" fill="${primary}" opacity="0.75"/>
+        ${folioIcon(primary, muted, ink, 'translate(-8 -75) rotate(-4) scale(0.85)')}
+        ${reedCluster(primary, muted, 'translate(-55 0) scale(0.68)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
+      </g>
+    </svg>
+  `
+}
+
 export const editorialVermilionMotion: MotionPreset = {
   id: 'editorial-vermilion',
   name: '墨红社论',
 
   renderBannerMotion(colors: PaletteColors, animated: boolean): string {
     const { primary, muted, ink } = resolveMotionColors(colors)
-    const spine = 'M30 82C154.2 75 223.2 86 306.0 82C395.7 77 471.6 87 554.4 82C623.4 78 671.7 84 720 81'
+    const spine =
+      'M30 82C154.2 75 223.2 86 306.0 82C395.7 77 471.6 87 554.4 82C623.4 78 671.7 84 720 81'
     return `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 104" width="100%" style="display:block;width:100%;height:auto;">
         ${flowTrailSvg(spine, primary, 1.9, '120 942', -1062, '3.8s', animated)}
@@ -61,27 +95,30 @@ export const editorialVermilionMotion: MotionPreset = {
     `
   },
 
-  renderTocDecor(colors: PaletteColors, animated: boolean): string {
-    const { primary, muted, ink } = resolveMotionColors(colors)
-    const spine = 'M22 153C64.5 146 88.1 157 116.4 153C147.1 148 173.0 158 201.4 153C225.0 149 241.5 155 258 152'
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" width="100%" style="display:block;width:100%;height:auto;">
-        ${flowTrailSvg(spine, primary, 1.9, '44.8 360', -404.8, '3.8s', animated)}
-        <g transform="translate(46 30) scale(0.67)">
-          <circle cx="138" cy="86" r="46" fill="${primary}" opacity="0.12"/>
-          <circle cx="138" cy="86" r="30" fill="none" stroke="${primary}" stroke-width="1.8"/>
-          <path d="M30 42H108M30 50H78M168 122H250M198 130H250" fill="none" stroke="${ink}" stroke-width="1.4"/>
-          <path d="M138 22V150M74 86H202" fill="none" stroke="${muted}" stroke-width="1"/>
-          <circle cx="202" cy="86" r="7" fill="${primary}"/>
-          <rect x="44" y="116" width="30" height="8" fill="${ink}"/>
-        </g>
-        <g transform="translate(140 153) scale(0.48 0.48)">
-          <circle cx="-35" cy="-72" r="15" fill="${primary}" opacity="0.75"/>
-          ${folioIcon(primary, muted, ink, 'translate(-8 -75) rotate(-4) scale(0.85)')}
-          ${reedCluster(primary, muted, 'translate(-55 0) scale(0.68)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
-        </g>
+  renderBannerFrame(innerHtml: string, colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    const sealBadge = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" style="display:block;width:100%;height:auto;">
+        <circle cx="32" cy="32" r="22" fill="${primary}" opacity="0.14"/>
+        <circle cx="32" cy="32" r="15" fill="none" stroke="${primary}" stroke-width="2"/>
+        <circle cx="32" cy="32" r="6" fill="${accent}">${pulseAnim('r', '5;7;5', '2.8s', animated)}</circle>
       </svg>
     `
+    return bannerFrameHtml(
+      innerHtml,
+      colors,
+      sealBadge,
+      this.renderBannerMotion(colors, animated),
+      animated
+    )
+  },
+
+  renderTocDecor(colors: PaletteColors, animated: boolean): string {
+    return renderBadgeSvg(colors, animated)
+  },
+
+  renderSectionBadge(colors: PaletteColors, animated: boolean): string {
+    return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated)
   },
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
@@ -92,6 +129,64 @@ export const editorialVermilionMotion: MotionPreset = {
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 20" width="100%" style="display:block;width:100%;height:auto;overflow:visible;">
         ${flowTrailSvg(rail, muted, 1.72, '102.4 803.84', -906.24, flowDur, animated)}
         <circle cx="594" cy="10" r="2.8" fill="${primary}" opacity="0.85">${pulseAnim('opacity', '0.85;0.25;0.85', '2.2s', animated)}</circle>
+      </svg>
+    `
+  },
+
+  renderImagePlaceholder(
+    caption: string,
+    ratio: string,
+    colors: PaletteColors,
+    animated: boolean
+  ): string {
+    return imagePlaceholderHtml(
+      renderBadgeSvg(colors, animated),
+      this.name,
+      caption,
+      ratio,
+      colors
+    )
+  },
+
+  renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;">
+        <circle cx="14" cy="12" r="8" fill="${primary}" opacity="0.16"/>
+        <circle cx="14" cy="12" r="3" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2.6s', animated)}</circle>
+        <line x1="25" y1="8" x2="34" y2="8" stroke="${primary}" stroke-width="1.5"/>
+        <line x1="25" y1="14" x2="31" y2="14" stroke="${accent}" stroke-width="1.5"/>
+      </svg>
+    `
+  },
+
+  renderH3Marker(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" style="display:block;height:auto;">
+        <circle cx="7" cy="7" r="4.5" fill="none" stroke="${primary}" stroke-width="1.4"/>
+        <circle cx="7" cy="7" r="2" fill="${accent}">${pulseAnim('r', '1.8;2.6;1.8', '2.4s', animated)}</circle>
+      </svg>
+    `
+  },
+
+  renderEndingDecor(colors: PaletteColors, animated: boolean): string {
+    const { primary, muted, ink } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28" width="48" style="display:block;height:auto;">
+        <circle cx="14" cy="14" r="9" fill="${primary}" opacity="0.2">${pulseAnim('opacity', '0.2;0.45;0.2', '3s', animated)}</circle>
+        <circle cx="14" cy="14" r="4.5" fill="${primary}"/>
+        ${folioIcon(primary, muted, ink, 'translate(26 3) scale(0.3)')}
+      </svg>
+    `
+  },
+
+  renderCodeBadge(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 14" width="28" style="display:block;height:auto;">
+        <rect x="4" y="5" width="8" height="4" fill="${primary}"/>
+        <circle cx="20" cy="7" r="2.8" fill="${accent}">${pulseAnim('opacity', '1;0.3;1', '2s', animated)}</circle>
       </svg>
     `
   },
@@ -108,22 +203,32 @@ export const editorialVermilionMotion: MotionPreset = {
     `
   },
 
-  renderTail(colors: PaletteColors, animated: boolean): string {
+  renderTail(colors: PaletteColors, animated: boolean, label = 'END · 继续阅读'): string {
     const { primary, muted, ink } = resolveMotionColors(colors)
-    const leftHorizon = 'M30 136C75 126 112 127 148 137C184 147 214 137 246 124'
-    const rightHorizon = 'M504 133C540 125 570 127 598 137C627 147 664 136 716 115'
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 160" width="100%" style="display:block;width:100%;height:auto;">
-        <path d="M30 151C154.2 144 223.2 155 306.0 151C395.7 146 471.6 156 554.4 151C623.4 147 671.7 153 720 150" fill="none" stroke="${primary}" stroke-width="0.9" opacity="0.9"/>
-        <circle cx="82" cy="49" r="18" fill="${primary}" opacity="0.18">${pulseAnim('r', '15;21;15', '3.2s', animated)}</circle>
-        <circle cx="82" cy="49" r="9" fill="${primary}" opacity="0.9"/>
-        ${folioIcon(primary, muted, ink, 'translate(108 57) rotate(-4) scale(0.72)')}
-        ${reedCluster(primary, muted, 'translate(48 132) scale(0.82)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
-        ${flowTrailSvg(leftHorizon, primary, 2.15, '120 942', -1062, '3.8s', animated)}
-        ${flowTrailSvg(rightHorizon, primary, 2.15, '120 942', -1062, '3.8s', animated, '0.22s')}
-        ${reedCluster(primary, muted, 'translate(688 134) scale(0.68)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
-        <path d="M504 146H564M180 148H246" fill="none" stroke="${muted}" stroke-width="0.75" opacity="0.9"/>
+    const leftHorizon = 'M16 96C61 86 98 87 134 97C170 107 200 97 232 84'
+    const rightHorizon = 'M16 94C52 86 82 88 110 98C139 108 176 97 228 76'
+    const leftSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 110" width="100%" style="display:block;width:100%;height:auto;">
+        <circle cx="68" cy="34" r="18" fill="${primary}" opacity="0.18">${pulseAnim('r', '15;21;15', '3.2s', animated)}</circle>
+        <circle cx="68" cy="34" r="9" fill="${primary}" opacity="0.9"/>
+        ${folioIcon(primary, muted, ink, 'translate(94 36) rotate(-4) scale(0.72)')}
+        ${reedCluster(primary, muted, 'translate(34 96) scale(0.82)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
+        ${flowTrailSvg(leftHorizon, primary, 2.0, '120 942', -1062, '3.8s', animated)}
       </svg>
     `
+    const rightSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 110" width="100%" style="display:block;width:100%;height:auto;">
+        ${flowTrailSvg(rightHorizon, primary, 2.0, '120 942', -1062, '3.8s', animated, '0.22s')}
+        ${reedCluster(primary, muted, 'translate(188 98) scale(0.68)', '0 0 0;5.8 0 0;0 0 0;-4.6 0 0;0 0 0', animated)}
+      </svg>
+    `
+    const spine =
+      'M30 14C154.2 7 223.2 18 306.0 14C395.7 9 471.6 19 554.4 14C623.4 10 671.7 16 720 13'
+    const spineSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 28" width="100%" style="display:block;width:100%;height:auto;">
+        ${flowTrailSvg(spine, primary, 1.9, '120 942', -1062, '3.8s', animated)}
+      </svg>
+    `
+    return tailFrameHtml(leftSvg, rightSvg, spineSvg, label, colors)
   }
 }

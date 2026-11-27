@@ -43,22 +43,26 @@ export const magazineNewsTheme: LayoutTheme = {
         )
         .join('')
 
-      const bannerMotion = `<section style="margin-top:8px;">${ctx.motion.renderBannerMotion(colors, ctx.animated)}</section>`
+      const titleCore = `
+        <section style="text-align:center;">
+          <p style="font-size:10px;font-weight:800;letter-spacing:2.2px;color:${colors.headingDecor};margin:0 0 10px;text-transform:uppercase;">FULL ARTICLE / ${escapeHtml(ctx.motion.name)}</p>
+          <p style="font-size:${fontSize + 5}px;font-weight:900;color:${colors.heading};margin:0;line-height:1.38;letter-spacing:-0.4px;">
+            ${escapeHtml(title)}
+          </p>
+        </section>
+      `
+      const bannerFrame = ctx.motion.renderBannerFrame(titleCore, colors, ctx.animated)
 
       return `
         <section style="margin:0 0 24px 0;background:${colors.bg};border-radius:16px;overflow:hidden;border:1px solid ${borderCol};box-shadow:0 4px 16px -6px ${hexToRgba(colors.headingDecor, 0.14)};">
-          <section style="padding:24px 22px 12px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
-            <section style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
+          <section style="padding:14px 14px 8px;background:linear-gradient(135deg,${tagBg} 0%,${colors.bg} 70%);">
+            <section style="display:flex;align-items:center;gap:6px;margin-bottom:6px;padding:0 6px;">
               <span style="width:7px;height:7px;background:${colors.headingDecor};border-radius:50%;display:inline-block;"><span leaf="">&nbsp;</span></span>
               <span style="font-size:10px;font-weight:700;letter-spacing:2px;color:${colors.headingDecor};">${escapeHtml(category)}</span>
               <span style="flex:1;height:1px;background:linear-gradient(to right,${borderCol},transparent);display:inline-block;"><span leaf="">&nbsp;</span></span>
               <span style="font-size:10px;color:${ctx.theme.textMuted};font-weight:500;">${escapeHtml(dateStr)}</span>
             </section>
-            <p style="font-size:${fontSize + 5}px;font-weight:900;color:${colors.heading};margin:0 0 12px;line-height:1.35;letter-spacing:-0.4px;">
-              ${escapeHtml(title)}
-            </p>
-            <section style="width:48px;height:3px;background:linear-gradient(to right,${colors.headingDecor},${colors.strong});border-radius:2px;"><span leaf="">&nbsp;</span></section>
-            ${bannerMotion}
+            ${bannerFrame}
           </section>
           <section style="background:${colors.headingDecor};padding:11px 22px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
             <section style="display:flex;align-items:center;gap:7px;">
@@ -96,7 +100,7 @@ export const magazineNewsTheme: LayoutTheme = {
         })
         .join('')
 
-      const tocDecor = `<section style="width:56px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
+      const tocDecor = `<section style="width:74px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 28px 0;">
@@ -116,19 +120,21 @@ export const magazineNewsTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, fontSize } = ctx
+      const { colors, fontSize, motion, animated } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
-      const rail = `<section style="margin-top:4px;">${ctx.motion.renderSectionRail(colors, ctx.animated, index)}</section>`
+      const badge = motion.renderSectionBadge(colors, animated, index)
+      const rail = `<section style="margin-top:4px;">${motion.renderSectionRail(colors, animated, index)}</section>`
       return `
         <section style="margin:${marginTop} 0 18px 0;">
-          <section style="display:flex;align-items:center;gap:14px;">
+          <section style="display:flex;align-items:center;gap:12px;">
             <section style="text-align:center;flex-shrink:0;">
               <p style="margin:0;font-size:26px;font-weight:900;color:${colors.headingDecor};line-height:1;letter-spacing:-1.5px;">${num}</p>
               <p style="margin:2px 0 0;font-size:8px;font-weight:700;color:${colors.divider};letter-spacing:2px;">PART</p>
             </section>
             <span style="width:1px;height:32px;background:${colors.divider};flex-shrink:0;display:inline-block;"></span>
-            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:900;color:${colors.heading};line-height:1.35;letter-spacing:0.3px;">${content}</h2>
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:900;color:${colors.heading};line-height:1.35;letter-spacing:0.3px;flex-shrink:0;">${content}</h2>
+            ${badge}
           </section>
           ${rail}
         </section>
@@ -136,20 +142,23 @@ export const magazineNewsTheme: LayoutTheme = {
     },
 
     renderH3(content: string, ctx: RenderContext): string {
-      const { colors, fontSize } = ctx
+      const { colors, fontSize, motion, animated } = ctx
+      const marker = motion.renderH3Marker(colors, animated)
       return `
         <section style="margin:24px 0 12px 0;display:flex;align-items:center;gap:8px;">
-          <span style="display:inline-block;width:3px;height:14px;border-radius:2px;background:${colors.headingDecor};flex-shrink:0;"></span>
+          <span style="flex-shrink:0;display:inline-flex;align-items:center;">${marker}</span>
           <h3 style="margin:0;font-size:${fontSize + 1}px;font-weight:700;color:${colors.heading};line-height:1.4;">${content}</h3>
         </section>
       `
     },
 
     renderBlockquote(content: string, ctx: RenderContext): string {
-      const { theme, colors, fontSize } = ctx
+      const { theme, colors, fontSize, motion, animated } = ctx
       const bg = hexToRgba(colors.blockquoteAccent, 0.06)
+      const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
         <section style="margin:18px 0;padding:12px 16px;background:${bg};border:1px dashed ${hexToRgba(colors.blockquoteAccent, 0.35)};border-radius:8px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.7;">
+          <section style="display:flex;justify-content:flex-end;margin-bottom:4px;">${decor}</section>
           ${content}
         </section>
       `

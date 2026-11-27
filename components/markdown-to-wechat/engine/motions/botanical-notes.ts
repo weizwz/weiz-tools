@@ -1,5 +1,14 @@
 import { MotionPreset, PaletteColors } from '../types'
-import { flowTrailSvg, resolveMotionColors, swayAnim } from './helpers'
+import {
+  bannerFrameHtml,
+  flowTrailSvg,
+  imagePlaceholderHtml,
+  pulseAnim,
+  resolveMotionColors,
+  sectionBadgeHtml,
+  swayAnim,
+  tailFrameHtml
+} from './helpers'
 
 function sprigSvg(
   primary: string,
@@ -60,6 +69,27 @@ function fivePetalFlower(primary: string, accent: string, muted: string, transfo
   return `<g transform="${transform}">${petals}<circle cx="0" cy="0" r="2.8" fill="${accent}" stroke="${primary}" stroke-width="0.5"/></g>`
 }
 
+function renderBadgeSvg(colors: PaletteColors, animated: boolean): string {
+  const { primary, accent, muted, ink } = resolveMotionColors(colors)
+  const spine =
+    'M22 153C64.5 146 88.1 157 116.4 153C147.1 148 173.0 158 201.4 153C225.0 149 241.5 155 258 152'
+  return `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" width="100%" style="display:block;width:100%;height:auto;">
+      ${flowTrailSvg(spine, primary, 1.9, '44.8 360', -404.8, '3.8s', animated)}
+      <g transform="translate(46 30) scale(0.67)">
+        <path d="M72 154C116 116 144 70 154 18" fill="none" stroke="${primary}" stroke-width="2"/>
+        <path d="M140 72C104 74 80 58 68 32C104 30 130 44 140 72ZM132 104C98 116 70 108 48 84C82 72 110 80 132 104ZM150 48C140 24 148 12 168 10C180 32 174 44 150 48Z" fill="${primary}" opacity="0.78"/>
+        <circle cx="178" cy="72" r="7" fill="${accent}"/><circle cx="204" cy="52" r="4" fill="${accent}"/><circle cx="216" cy="84" r="5" fill="${accent}"/>
+        <path d="M188 126H252M202 136H238" fill="none" stroke="${ink}" stroke-width="1.1"/>
+      </g>
+      <g transform="translate(140 153) scale(0.48 0.48)">
+        ${sprigSvg(primary, accent, muted, 'translate(-24 0) scale(0.78)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated)}
+        ${fivePetalFlower(primary, accent, muted, 'translate(30 -42) scale(0.68)')}
+      </g>
+    </svg>
+  `
+}
+
 export const botanicalNotesMotion: MotionPreset = {
   id: 'botanical-notes',
   name: '植物手记',
@@ -88,24 +118,28 @@ export const botanicalNotesMotion: MotionPreset = {
     `
   },
 
-  renderTocDecor(colors: PaletteColors, animated: boolean): string {
-    const { primary, accent, muted, ink } = resolveMotionColors(colors)
-    const spine = 'M22 153C64.5 146 88.1 157 116.4 153C147.1 148 173.0 158 201.4 153C225.0 149 241.5 155 258 152'
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 180" width="100%" style="display:block;width:100%;height:auto;">
-        ${flowTrailSvg(spine, primary, 1.9, '44.8 360', -404.8, '3.8s', animated)}
-        <g transform="translate(46 30) scale(0.67)">
-          <path d="M72 154C116 116 144 70 154 18" fill="none" stroke="${primary}" stroke-width="2"/>
-          <path d="M140 72C104 74 80 58 68 32C104 30 130 44 140 72ZM132 104C98 116 70 108 48 84C82 72 110 80 132 104ZM150 48C140 24 148 12 168 10C180 32 174 44 150 48Z" fill="${primary}" opacity="0.78"/>
-          <circle cx="178" cy="72" r="7" fill="${accent}"/><circle cx="204" cy="52" r="4" fill="${accent}"/><circle cx="216" cy="84" r="5" fill="${accent}"/>
-          <path d="M188 126H252M202 136H238" fill="none" stroke="${ink}" stroke-width="1.1"/>
-        </g>
-        <g transform="translate(140 153) scale(0.48 0.48)">
-          ${sprigSvg(primary, accent, muted, 'translate(-24 0) scale(0.78)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated)}
-          ${fivePetalFlower(primary, accent, muted, 'translate(30 -42) scale(0.68)')}
-        </g>
+  renderBannerFrame(innerHtml: string, colors: PaletteColors, animated: boolean): string {
+    const { primary, accent, muted } = resolveMotionColors(colors)
+    const flowerBadge = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="100%" style="display:block;width:100%;height:auto;">
+        ${fivePetalFlower(primary, accent, muted, 'translate(32 32) scale(1.85)')}
       </svg>
     `
+    return bannerFrameHtml(
+      innerHtml,
+      colors,
+      flowerBadge,
+      this.renderBannerMotion(colors, animated),
+      animated
+    )
+  },
+
+  renderTocDecor(colors: PaletteColors, animated: boolean): string {
+    return renderBadgeSvg(colors, animated)
+  },
+
+  renderSectionBadge(colors: PaletteColors, animated: boolean): string {
+    return sectionBadgeHtml(renderBadgeSvg(colors, animated), colors, animated)
   },
 
   renderSectionRail(colors: PaletteColors, animated: boolean, index: number): string {
@@ -128,6 +162,62 @@ export const botanicalNotesMotion: MotionPreset = {
     `
   },
 
+  renderImagePlaceholder(
+    caption: string,
+    ratio: string,
+    colors: PaletteColors,
+    animated: boolean
+  ): string {
+    return imagePlaceholderHtml(
+      renderBadgeSvg(colors, animated),
+      this.name,
+      caption,
+      ratio,
+      colors
+    )
+  },
+
+  renderBlockquoteDecor(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent, muted } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24" width="36" style="display:block;height:auto;">
+        ${fivePetalFlower(primary, accent, muted, 'translate(18 12) scale(0.7)')}
+        <circle cx="18" cy="12" r="2" fill="${accent}">${pulseAnim('opacity', '1;0.4;1', '2.8s', animated)}</circle>
+      </svg>
+    `
+  },
+
+  renderH3Marker(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" width="14" style="display:block;height:auto;">
+        <path d="M3 11C3 5 7 3 11 3C11 7 9 11 3 11Z" fill="${primary}" opacity="0.85"/>
+        <circle cx="10.5" cy="3.5" r="1.8" fill="${accent}">${pulseAnim('opacity', '1;0.4;1', '2.6s', animated)}</circle>
+      </svg>
+    `
+  },
+
+  renderEndingDecor(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent, muted } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 28" width="48" style="display:block;height:auto;">
+        ${fivePetalFlower(primary, accent, muted, 'translate(16 14) scale(0.8)')}
+        <path d="M28 20C34 14 38 10 44 6" stroke="${primary}" stroke-width="1.2" fill="none"/>
+        <circle cx="44" cy="6" r="2.2" fill="${accent}">${pulseAnim('opacity', '1;0.4;1', '2.4s', animated)}</circle>
+      </svg>
+    `
+  },
+
+  renderCodeBadge(colors: PaletteColors, animated: boolean): string {
+    const { primary, accent } = resolveMotionColors(colors)
+    return `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 14" width="28" style="display:block;height:auto;">
+        <path d="M4 10C4 5 8 4 12 4C12 8 9 10 4 10Z" fill="${primary}"/>
+        <circle cx="20" cy="7" r="2.6" fill="${accent}">${pulseAnim('opacity', '1;0.35;1', '2s', animated)}</circle>
+      </svg>
+    `
+  },
+
   renderDivider(colors: PaletteColors, animated: boolean): string {
     const { primary, accent, muted } = resolveMotionColors(colors)
     const wave = 'M24 12C110 6 196 18 282 12C368 6 454 18 540 12C574 9 598 13 616 11'
@@ -139,23 +229,31 @@ export const botanicalNotesMotion: MotionPreset = {
     `
   },
 
-  renderTail(colors: PaletteColors, animated: boolean): string {
+  renderTail(colors: PaletteColors, animated: boolean, label = 'END · 继续阅读'): string {
     const { primary, accent, muted } = resolveMotionColors(colors)
-    const spine = 'M30 151C154.2 144 223.2 155 306.0 151C395.7 146 471.6 156 554.4 151C623.4 147 671.7 153 720 150'
-    return `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 160" width="100%" style="display:block;width:100%;height:auto;">
-        ${flowTrailSvg(spine, primary, 1.9, '120 942', -1062, '3.8s', animated)}
-        <path d="M57.6 159C188.7 155 257.7 161 347.4 158" fill="none" stroke="${accent}" stroke-width="0.55" opacity="0.62"/>
-        ${sprigSvg(primary, accent, muted, 'translate(70 148) scale(0.92)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated)}
-        ${sprigSvg(primary, accent, muted, 'translate(182 151) scale(0.62)', true, '0 0 0;-4.8 0 0;0 0 0;5.2 0 0;0 0 0', '4.8s', animated, '0.35s', true)}
-        ${fivePetalFlower(primary, accent, muted, 'translate(108 104) scale(0.7)')}
-        ${fivePetalFlower(primary, accent, muted, 'translate(151 130) rotate(18) scale(0.5)')}
-        <path d="M30 151C88 142 143 145 198 154C216 157 232 154 246 148" fill="none" stroke="${primary}" stroke-width="0.95"/>
-        ${sprigSvg(primary, accent, muted, 'translate(690 152) scale(0.86)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated, '0.7s', true)}
-        ${sprigSvg(primary, accent, muted, 'translate(574 151) scale(0.55)', true, '0 0 0;-4.8 0 0;0 0 0;5.2 0 0;0 0 0', '4.8s', animated, '1.05s')}
-        ${fivePetalFlower(primary, accent, muted, 'translate(637 110) rotate(-12) scale(0.66)')}
-        <path d="M504 149C548 142 588 145 624 153C656 160 686 156 718 145" fill="none" stroke="${primary}" stroke-width="0.95"/>
+    const leftSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 110" width="100%" style="display:block;width:100%;height:auto;">
+        ${sprigSvg(primary, accent, muted, 'translate(66 100) scale(0.84)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated)}
+        ${sprigSvg(primary, accent, muted, 'translate(172 102) scale(0.56)', true, '0 0 0;-4.8 0 0;0 0 0;5.2 0 0;0 0 0', '4.8s', animated, '0.35s', true)}
+        ${fivePetalFlower(primary, accent, muted, 'translate(108 58) scale(0.7)')}
+        ${fivePetalFlower(primary, accent, muted, 'translate(150 82) rotate(18) scale(0.5)')}
       </svg>
     `
+    const rightSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 110" width="100%" style="display:block;width:100%;height:auto;">
+        ${sprigSvg(primary, accent, muted, 'translate(184 100) scale(0.8)', false, '0 0 0;5.6 0 0;0 0 0;-4.5 0 0;0 0 0', '4.8s', animated, '0.7s', true)}
+        ${sprigSvg(primary, accent, muted, 'translate(76 100) scale(0.52)', true, '0 0 0;-4.8 0 0;0 0 0;5.2 0 0;0 0 0', '4.8s', animated, '1.05s')}
+        ${fivePetalFlower(primary, accent, muted, 'translate(132 62) rotate(-12) scale(0.66)')}
+      </svg>
+    `
+    const spine =
+      'M30 14C154.2 7 223.2 18 306.0 14C395.7 9 471.6 19 554.4 14C623.4 10 671.7 16 720 13'
+    const spineSvg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 28" width="100%" style="display:block;width:100%;height:auto;">
+        ${flowTrailSvg(spine, primary, 1.9, '120 942', -1062, '3.8s', animated)}
+        <path d="M57.6 22C188.7 18 257.7 24 347.4 21" fill="none" stroke="${accent}" stroke-width="0.65" opacity="0.62"/>
+      </svg>
+    `
+    return tailFrameHtml(leftSvg, rightSvg, spineSvg, label, colors)
   }
 }

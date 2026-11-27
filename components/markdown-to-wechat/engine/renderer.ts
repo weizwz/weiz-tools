@@ -147,11 +147,15 @@ export function renderWechatArticle(markdown: string, options: RenderOptions): R
       })
       .join('')
 
-    const macHeader = `<section style="display:flex;align-items:center;padding:9px 14px;background:${theme.preHeaderBg};border-bottom:1px solid rgba(255,255,255,0.06);">
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FF5F56;margin-right:6px;"></span>
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FFBD2E;margin-right:6px;"></span>
-          <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#27C93F;margin-right:10px;"></span>
-          <span style="font-size:11px;color:#94A3B8;font-family:Consolas,Monaco,monospace;letter-spacing:1px;">${escapeHtml(lang || 'code')}</span>
+    const codeBadge = motion.renderCodeBadge(colors, options.animated)
+    const macHeader = `<section style="display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:${theme.preHeaderBg};border-bottom:1px solid rgba(255,255,255,0.06);">
+          <section style="display:flex;align-items:center;">
+            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FF5F56;margin-right:6px;"></span>
+            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#FFBD2E;margin-right:6px;"></span>
+            <span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#27C93F;margin-right:10px;"></span>
+            <span style="font-size:11px;color:#94A3B8;font-family:Consolas,Monaco,monospace;letter-spacing:1px;">${escapeHtml(lang || 'code')}</span>
+          </section>
+          <section style="flex-shrink:0;">${codeBadge}</section>
         </section>`
 
     return `

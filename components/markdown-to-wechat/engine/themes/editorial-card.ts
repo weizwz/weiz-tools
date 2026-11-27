@@ -45,15 +45,19 @@ export const editorialCardTheme: LayoutTheme = {
             .join('')}</section>`
         : '<span></span>'
 
-      const bannerMotion = `<section style="margin-top:8px;">${ctx.motion.renderBannerMotion(colors, ctx.animated)}</section>`
-
-      return `
-        <section style="margin:6px 4px 26px;background:${colors.bg};border-radius:12px;box-shadow:0 4px 24px -4px ${shadowColor};border:1px solid ${colors.tableAccent};padding:24px 22px 16px;overflow:hidden;">
-          <p style="font-size:36px;color:${colors.headingDecor};font-weight:900;margin:0;line-height:0.6;">“</p>
-          <p style="font-size:17px;font-weight:800;color:${colors.heading};margin:12px 0 6px;line-height:1.65;">
+      const titleCore = `
+        <section style="text-align:center;">
+          <p style="font-size:10px;font-weight:800;letter-spacing:2.2px;color:${colors.headingDecor};margin:0 0 8px;text-transform:uppercase;">EDITORIAL / ${escapeHtml(ctx.motion.name)}</p>
+          <p style="font-size:18px;font-weight:800;color:${colors.heading};margin:0;line-height:1.55;">
             ${escapeHtml(title)}
           </p>
-          ${bannerMotion}
+        </section>
+      `
+      const bannerFrame = ctx.motion.renderBannerFrame(titleCore, colors, ctx.animated)
+
+      return `
+        <section style="margin:6px 4px 26px;background:${colors.bg};border-radius:12px;box-shadow:0 4px 24px -4px ${shadowColor};border:1px solid ${colors.tableAccent};padding:16px 14px 14px;overflow:hidden;">
+          ${bannerFrame}
           <section style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px;">
             ${tagsHtml}
             <section style="display:flex;align-items:center;gap:6px;">
@@ -80,7 +84,7 @@ export const editorialCardTheme: LayoutTheme = {
         })
         .join('')
 
-      const tocDecor = `<section style="width:62px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
+      const tocDecor = `<section style="width:74px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
         <section style="margin:0 0 24px 0;padding:16px 18px;border:1px solid ${colors.divider};border-radius:10px;background:${colors.tableAccent};">
@@ -94,15 +98,17 @@ export const editorialCardTheme: LayoutTheme = {
     },
 
     renderH2(content: string, index: number, ctx: RenderContext): string {
-      const { colors, fontSize } = ctx
+      const { colors, fontSize, motion, animated } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '34px'
-      const rail = `<section style="margin-top:6px;">${ctx.motion.renderSectionRail(colors, ctx.animated, index)}</section>`
+      const badge = motion.renderSectionBadge(colors, animated, index)
+      const rail = `<section style="margin-top:6px;">${motion.renderSectionRail(colors, animated, index)}</section>`
       return `
         <section style="margin:${marginTop} 0 18px 0;padding-bottom:10px;border-bottom:2px solid ${colors.headingDecor};">
-          <section style="display:flex;align-items:center;">
-            <span style="display:inline-block;background:${colors.headingDecor};color:#FFFFFF;font-size:16px;font-weight:900;padding:3px 12px;border-radius:6px;margin-right:12px;line-height:1.3;">${num}</span>
-            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.35;letter-spacing:0.4px;">${content}</h2>
+          <section style="display:flex;align-items:center;gap:10px;">
+            <span style="display:inline-block;background:${colors.headingDecor};color:#FFFFFF;font-size:16px;font-weight:900;padding:3px 12px;border-radius:6px;line-height:1.3;flex-shrink:0;">${num}</span>
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.35;letter-spacing:0.4px;flex-shrink:0;">${content}</h2>
+            ${badge}
           </section>
           ${rail}
         </section>
@@ -115,10 +121,12 @@ export const editorialCardTheme: LayoutTheme = {
     },
 
     renderBlockquote(content: string, ctx: RenderContext): string {
-      const { theme, colors, fontSize } = ctx
+      const { theme, colors, fontSize, motion, animated } = ctx
       const bg = hexToRgba(colors.blockquoteAccent, 0.06)
+      const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
-        <blockquote style="margin:18px 0;padding:14px 18px;border-left:4px solid ${colors.blockquoteAccent};background:${bg};border-radius:0 10px 10px 0;color:${theme.text};font-size:${fontSize}px;line-height:1.8;">
+        <blockquote style="margin:18px 0;padding:12px 18px 14px;border-left:4px solid ${colors.blockquoteAccent};background:${bg};border-radius:0 10px 10px 0;color:${theme.text};font-size:${fontSize}px;line-height:1.8;">
+          <section style="display:flex;justify-content:flex-end;margin-bottom:4px;">${decor}</section>
           ${content}
         </blockquote>
       `

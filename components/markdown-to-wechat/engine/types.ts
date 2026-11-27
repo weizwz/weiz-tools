@@ -59,10 +59,30 @@ export interface MotionPreset {
   id: MotionId
   name: string
   renderBannerMotion: (colors: PaletteColors, animated: boolean) => string
+  renderBannerFrame: (
+    innerHtml: string,
+    colors: PaletteColors,
+    animated: boolean
+  ) => string
   renderTocDecor: (colors: PaletteColors, animated: boolean) => string
+  renderSectionBadge: (
+    colors: PaletteColors,
+    animated: boolean,
+    index: number
+  ) => string
   renderSectionRail: (colors: PaletteColors, animated: boolean, index: number) => string
+  renderImagePlaceholder: (
+    caption: string,
+    ratio: string,
+    colors: PaletteColors,
+    animated: boolean
+  ) => string
+  renderBlockquoteDecor: (colors: PaletteColors, animated: boolean) => string
+  renderH3Marker: (colors: PaletteColors, animated: boolean) => string
+  renderEndingDecor: (colors: PaletteColors, animated: boolean) => string
+  renderCodeBadge: (colors: PaletteColors, animated: boolean) => string
   renderDivider: (colors: PaletteColors, animated: boolean) => string
-  renderTail: (colors: PaletteColors, animated: boolean) => string
+  renderTail: (colors: PaletteColors, animated: boolean, label?: string) => string
 }
 
 export interface LayoutTheme {

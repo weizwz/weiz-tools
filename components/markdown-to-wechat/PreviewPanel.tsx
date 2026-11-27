@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AlertTriangle, Check, CheckCircle2, Copy, Info } from 'lucide-react'
 import { ComplianceIssue, PreviewWidth } from './engine/types'
 import { copyWechatHtml } from './engine/wechat-inline'
@@ -21,6 +21,41 @@ const WIDTH_OPTIONS: { label: string; value: PreviewWidth }[] = [
 
 export function PreviewPanel({ html, issues, previewWidth, onPreviewWidthChange }: PreviewPanelProps) {
   const [copied, setCopied] = useState(false)
+  const previewRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = previewRef.current
+    if (!container) return
+
+    const replaceBrokenFigure = (img: HTMLImageElement) => {
+      const figure = img.closest('figure[data-placeholder]')
+      const encoded = figure?.getAttribute('data-placeholder')
+      if (!figure || !encoded) return
+      try {
+        figure.outerHTML = decodeURIComponent(encoded)
+      } catch {
+        // ignore decode error
+      }
+    }
+
+    const handleError = (e: Event) => {
+      const target = e.target
+      if (target instanceof HTMLImageElement) {
+        replaceBrokenFigure(target)
+      }
+    }
+
+    container.addEventListener('error', handleError, true)
+    container.querySelectorAll('img').forEach((img) => {
+      if (img.complete && img.naturalWidth === 0) {
+        replaceBrokenFigure(img)
+      }
+    })
+
+    return () => {
+      container.removeEventListener('error', handleError, true)
+    }
+  }, [html])
 
   const hasWarning = issues.some((i) => i.level === 'warning')
 
@@ -102,7 +137,7 @@ export function PreviewPanel({ html, issues, previewWidth, onPreviewWidthChange 
               : { width: `${previewWidth}px`, maxWidth: '100%', paddingLeft: '0px', paddingRight: '0px' }
           }
         >
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <div ref={previewRef} dangerouslySetInnerHTML={{ __html: html }} />
         </div>
       </div>
     </section>
