@@ -98,7 +98,7 @@ export const knowledgeCardTheme: LayoutTheme = {
 
       return `
         <section style="margin:0 0 26px 0;max-width:100%;overflow:hidden;">
-          <section style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+          <section style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
             <p style="font-size:10px;color:${ctx.theme.textMuted};margin:0;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;">KNOWLEDGE MAP · ${headings.length} 张知识卡</p>
             ${tocDecor}
           </section>
@@ -113,7 +113,7 @@ export const knowledgeCardTheme: LayoutTheme = {
       const { colors, fontSize, motion, animated, headingNumbering } = ctx
       const num = String(index).padStart(2, '0')
       const marginTop = index === 1 ? '18px' : '28px'
-      const badge = `<section style="width:46px;flex-shrink:0;">${motion.renderSectionBadge(colors, animated, index)}</section>`
+      const badge = motion.renderSectionBadge(colors, animated, index)
       const rail = `<section style="margin-top:2px;">${motion.renderSectionRail(colors, animated, index)}</section>`
       const prefix =
         headingNumbering === 'numeric'
@@ -124,7 +124,7 @@ export const knowledgeCardTheme: LayoutTheme = {
         <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;">
           <section style="display:flex;align-items:center;gap:10px;">
             ${prefix}
-            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.38;flex:1;min-width:0;word-break:break-word;">${content}</h2>
+            <h2 style="margin:0;font-size:${fontSize + 2}px;font-weight:800;color:${colors.heading};line-height:1.38;min-width:0;word-break:break-word;">${content}</h2>
             ${badge}
           </section>
           ${rail}

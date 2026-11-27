@@ -7,7 +7,7 @@ export const baseSlots = {
     const { colors, fontSize, motion, animated, headingNumbering } = ctx
     const marginTop = index === 1 ? '18px' : '28px'
     const num = String(index).padStart(2, '0')
-    const badge = `<section style="width:46px;flex-shrink:0;">${motion.renderSectionBadge(colors, animated, index)}</section>`
+    const badge = motion.renderSectionBadge(colors, animated, index)
     const rail = `<section style="margin-top:2px;">${motion.renderSectionRail(colors, animated, index)}</section>`
     const prefix =
       headingNumbering === 'numeric'
@@ -17,7 +17,7 @@ export const baseSlots = {
       <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;box-sizing:border-box;">
         <section style="display:flex;align-items:center;gap:10px;">
           ${prefix}
-          <h2 style="margin:0;font-size:${fontSize + 2}px;line-height:1.4;font-weight:800;color:${colors.heading};flex:1;min-width:0;word-break:break-word;">
+          <h2 style="margin:0;font-size:${fontSize + 2}px;line-height:1.4;font-weight:800;color:${colors.heading};min-width:0;word-break:break-word;">
             ${content}
           </h2>
           ${badge}

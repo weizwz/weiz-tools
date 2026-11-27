@@ -176,8 +176,8 @@ export function sectionBadgeHtml(
     ? `<animate attributeName="opacity" values="0.92;0.48;0.92" dur="2.6s" repeatCount="indefinite"/>`
     : ''
   return `
-    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;width:100%;height:12px;">
+    <section style="display:flex;align-items:center;gap:8px;flex:1;min-width:48px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 12" width="100%" style="display:block;flex:1;min-width:0;width:100%;height:12px;">
         <rect x="0" y="4" width="18" height="4" fill="${accent}">${pulse}</rect>
         <line x1="24" y1="6" x2="178" y2="6" stroke="${primary}" stroke-width="1.2" opacity="0.85"/>
       </svg>
