@@ -6,7 +6,9 @@ export type ThemeId =
   | 'editorial-journal'
   | 'travel-postcard'
   | 'hacker-terminal'
-  | 'ink-landscape'
+  | 'ink-scroll'
+  | 'film-strip'
+  | 'game-clear'
 
 export type HeadingNumbering = 'numeric' | 'none'
 

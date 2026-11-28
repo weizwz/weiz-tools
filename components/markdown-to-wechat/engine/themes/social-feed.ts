@@ -1,3 +1,4 @@
+import { isPlaceholderImageSrc } from '../motions/helpers'
 import { DEFAULT_ARTICLE_META, escapeHtml, hexToRgba, resolveTagList } from '../tokens'
 import { LayoutTheme, RenderContext } from '../types'
 
@@ -8,41 +9,41 @@ export const socialFeedTheme: LayoutTheme = {
     id: 'default',
     name: '默认',
     colors: {
-      bg: '#ffffff',
+      bg: '#FFFFFF',
       heading: '#18181B',
-      strong: '#6366F1',
-      headingDecor: '#6366F1',
-      divider: '#C7D2FE',
-      listMarker: '#6366F1',
-      tableAccent: '#EEF2FF',
-      inlineCodeText: '#4F46E5',
-      inlineCodeBg: '#EEF2FF',
-      blockquoteAccent: '#6366F1'
+      strong: '#576B95',
+      headingDecor: '#576B95',
+      divider: '#E5E7EB',
+      listMarker: '#576B95',
+      tableAccent: '#F7F7F8',
+      inlineCodeText: '#3B5284',
+      inlineCodeBg: '#F0F3F9',
+      blockquoteAccent: '#576B95'
     }
   },
   text: '#27272A',
-  textMuted: '#71717A',
-  borderColor: '#E4E4E7',
+  textMuted: '#888888',
+  borderColor: '#EDEDED',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
-      const category = meta.category.trim() || 'THREAD'
+      const category = meta.category.trim() || 'MOMENTS'
       const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
       const avatarHtml = avatar
-        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};flex-shrink:0;" />`
-        : ''
+        ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:36px;height:36px;border-radius:6px;object-fit:cover;border:1px solid ${theme.borderColor};flex-shrink:0;" />`
+        : `<span style="width:36px;height:36px;border-radius:6px;background:${colors.headingDecor};color:#FFFFFF;font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">${escapeHtml(authorLabel.slice(0, 1))}</span>`
       const badges = resolveTagList(meta.tags)
         .map(
           (t) =>
-            `<span style="background:${colors.tableAccent};color:${colors.headingDecor};padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;">#${escapeHtml(t)}</span>`
+            `<span style="background:${colors.tableAccent};color:${colors.headingDecor};padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;">#${escapeHtml(t)}</span>`
         )
         .join('')
 
       const titleCore = `
-        <section style="text-align:center;">
-          <p style="font-size:10px;font-weight:700;letter-spacing:1.8px;color:${colors.headingDecor};margin:0 0 8px;text-transform:uppercase;">${escapeHtml(category)}</p>
-          <p style="font-size:${fontSize + 5}px;font-weight:800;color:${colors.heading};margin:0;line-height:1.42;">
+        <section style="text-align:left;">
+          <p style="font-size:10px;font-weight:700;letter-spacing:1.4px;color:${colors.headingDecor};margin:0 0 6px;text-transform:uppercase;">${escapeHtml(category)}</p>
+          <p style="font-size:${fontSize + 4}px;font-weight:800;color:${colors.heading};margin:0;line-height:1.45;">
             ${escapeHtml(title)}
           </p>
         </section>
@@ -50,16 +51,21 @@ export const socialFeedTheme: LayoutTheme = {
       const bannerFrame = ctx.motion.renderBannerFrame(titleCore, colors, ctx.animated)
 
       return `
-        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:16px;padding:14px;box-shadow:0 4px 18px -6px rgba(24,24,27,0.08);max-width:100%;overflow:hidden;box-sizing:border-box;">
-          ${bannerFrame}
-          <section style="margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:0 4px;">
-            <section style="display:flex;align-items:center;gap:8px;">
+        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:12px;padding:14px;box-shadow:0 2px 14px -6px rgba(0,0,0,0.08);max-width:100%;overflow:hidden;box-sizing:border-box;">
+          <section style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;">
+            <section style="display:flex;align-items:center;gap:10px;min-width:0;">
               ${avatarHtml}
-              <section>
-                <p style="margin:0;font-size:12px;font-weight:700;color:${colors.heading};line-height:1.2;">${escapeHtml(authorLabel)} · <span style="font-weight:500;color:${theme.textMuted};">${escapeHtml(dateStr)}</span></p>
+              <section style="min-width:0;">
+                <p style="margin:0;font-size:14px;font-weight:700;color:${colors.headingDecor};line-height:1.25;">${escapeHtml(authorLabel)}</p>
+                <p style="margin:2px 0 0;font-size:11px;color:${theme.textMuted};line-height:1.2;">${escapeHtml(dateStr)} · 发布动态</p>
               </section>
             </section>
+            <span style="font-size:12px;color:${theme.textMuted};letter-spacing:2px;flex-shrink:0;">•••</span>
+          </section>
+          ${bannerFrame}
+          <section style="margin-top:12px;padding-top:10px;border-top:1px solid ${theme.borderColor};display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
             <section style="display:flex;gap:5px;flex-wrap:wrap;">${badges}</section>
+            <span style="font-size:11px;color:${colors.headingDecor};font-weight:600;">♡ 赞 · 评论</span>
           </section>
         </section>
       `
@@ -73,10 +79,10 @@ export const socialFeedTheme: LayoutTheme = {
           const num = String(idx + 1).padStart(2, '0')
           const marker =
             headingNumbering === 'numeric'
-              ? `<span style="color:${colors.headingDecor};font-weight:800;margin-right:6px;">#${num}</span>`
-              : `<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${colors.headingDecor};margin-right:7px;vertical-align:middle;"></span>`
+              ? `<span style="color:${colors.headingDecor};font-weight:700;margin-right:6px;">${num}.</span>`
+              : `<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${colors.headingDecor};margin-right:7px;vertical-align:middle;"></span>`
           return `
-            <p style="margin:0 0 7px 0;font-size:13px;line-height:1.55;color:${theme.text};">
+            <p style="margin:0 0 6px 0;font-size:13px;line-height:1.55;color:${theme.text};">
               ${marker}<span>${escapeHtml(text)}</span>
             </p>
           `
@@ -86,9 +92,9 @@ export const socialFeedTheme: LayoutTheme = {
       const tocDecor = `<section style="width:70px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
-        <section style="margin:0 0 24px 0;padding:14px 16px;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:14px;">
-          <section style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;">
-            <p style="margin:0;font-size:10px;font-weight:800;letter-spacing:1.4px;color:${colors.headingDecor};">TOPICS · 动态导览</p>
+        <section style="margin:0 0 24px 0;padding:12px 14px;background:${colors.tableAccent};border-radius:8px;border:1px solid ${theme.borderColor};">
+          <section style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid ${theme.borderColor};">
+            <p style="margin:0;font-size:10px;font-weight:800;letter-spacing:1.2px;color:${colors.headingDecor};">COMMENTS · 置顶导览</p>
             ${tocDecor}
           </section>
           ${pills}
@@ -104,8 +110,8 @@ export const socialFeedTheme: LayoutTheme = {
       const rail = `<section style="margin-top:2px;">${motion.renderSectionRail(colors, animated, index)}</section>`
       const prefix =
         headingNumbering === 'numeric'
-          ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:${colors.headingDecor};color:#fff;font-size:11px;font-weight:800;flex-shrink:0;">${num}</span>`
-          : `<span style="width:10px;height:10px;border-radius:50%;background:${colors.headingDecor};flex-shrink:0;display:inline-block;"></span>`
+          ? `<span style="display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:12px;background:${colors.tableAccent};border:1px solid ${hexToRgba(colors.headingDecor, 0.3)};color:${colors.headingDecor};font-size:11px;font-weight:800;flex-shrink:0;">#${num}</span>`
+          : `<span style="width:8px;height:8px;border-radius:50%;background:${colors.headingDecor};flex-shrink:0;display:inline-block;"></span>`
 
       return `
         <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;">
@@ -123,10 +129,26 @@ export const socialFeedTheme: LayoutTheme = {
       const { theme, colors, fontSize, motion, animated } = ctx
       const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
-        <section style="margin:14px 0;padding:12px 16px;background:${colors.tableAccent};border:1px solid ${hexToRgba(colors.blockquoteAccent, 0.25)};border-radius:12px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.65;">
+        <section style="margin:14px 0;padding:12px 14px;background:${colors.tableAccent};border-radius:8px;border:1px solid ${theme.borderColor};color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.65;">
           <section style="display:flex;justify-content:flex-start;margin-bottom:6px;line-height:0;"><section style="width:28px;">${decor}</section></section>
           ${content}
         </section>
+      `
+    },
+
+    renderImage(href: string, text: string, ctx: RenderContext): string {
+      const { theme, colors, motion, animated } = ctx
+      const placeholderHtml = motion.renderImagePlaceholder(text, '16:9', colors, animated)
+      if (isPlaceholderImageSrc(href)) {
+        return placeholderHtml
+      }
+      return `
+        <figure data-placeholder="${escapeHtml(encodeURIComponent(placeholderHtml))}" style="margin:18px 0;text-align:center;">
+          <section style="background:${colors.tableAccent};border-radius:8px;padding:6px;border:1px solid ${theme.borderColor};">
+            <img src="${escapeHtml(href)}" alt="${escapeHtml(text)}" style="max-width:100%;height:auto;border-radius:6px;display:block;margin:0 auto;" />
+          </section>
+          ${text ? `<figcaption style="margin-top:8px;font-size:12px;color:${theme.textMuted};">${escapeHtml(text)}</figcaption>` : ''}
+        </figure>
       `
     }
   }

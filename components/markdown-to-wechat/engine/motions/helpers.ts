@@ -199,8 +199,8 @@ export function imagePlaceholderHtml(
   ratio: string,
   colors: PaletteColors
 ): string {
-  const { primary, accent, muted, ink } = resolveMotionColors(colors)
-  const borderCol = hexToRgba(muted, 0.75)
+  const { primary, accent, ink } = resolveMotionColors(colors)
+  const borderCol = hexToRgba(primary, 0.34)
   const bgTint = hexToRgba(primary, 0.03)
   const labelText = caption.trim() || `${presetName} · 图片待补充`
   return `

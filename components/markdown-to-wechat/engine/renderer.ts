@@ -48,10 +48,39 @@ function inlineHighlightHtml(html: string, colors: PaletteColors): string {
   })
 }
 
+function isDarkHex(hex: string): boolean {
+  const clean = hex.replace('#', '')
+  const normalized =
+    clean.length === 3
+      ? clean
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : clean
+  if (normalized.length !== 6) return false
+  const r = parseInt(normalized.slice(0, 2), 16)
+  const g = parseInt(normalized.slice(2, 4), 16)
+  const b = parseInt(normalized.slice(4, 6), 16)
+  if ([r, g, b].some(Number.isNaN)) return false
+  return (r * 299 + g * 587 + b * 114) / 1000 < 140
+}
+
 export function renderWechatArticle(markdown: string, options: RenderOptions): RenderResult {
-  const theme = getThemeById(options.themeId)
+  const rawTheme = getThemeById(options.themeId)
   const motion = getMotionById(options.motionId)
-  const colors = resolvePaletteColors(theme, options.paletteId, options.customColors)
+  const colors = resolvePaletteColors(rawTheme, options.paletteId, options.customColors)
+  const bgDark = isDarkHex(colors.bg)
+  const textDark = isDarkHex(rawTheme.text)
+  const theme =
+    bgDark === textDark
+      ? {
+          ...rawTheme,
+          text: bgDark ? '#E4E4E7' : '#27272A',
+          textMuted: bgDark ? '#A1A1AA' : '#6B7280',
+          borderColor: colors.divider,
+          codeBorder: colors.divider
+        }
+      : rawTheme
   const now = new Date()
   const { meta } = options
   const dateStr = meta.date.trim() || `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`

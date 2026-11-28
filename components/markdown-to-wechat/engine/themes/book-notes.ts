@@ -9,27 +9,27 @@ export const bookNotesTheme: LayoutTheme = {
     id: 'default',
     name: '默认',
     colors: {
-      bg: '#FBF9F5',
-      heading: '#292524',
+      bg: '#FBF8F1',
+      heading: '#2C221E',
       strong: '#B45309',
       headingDecor: '#B45309',
-      divider: '#D6D3CD',
+      divider: '#D6CFC2',
       listMarker: '#B45309',
-      tableAccent: '#F3EFE6',
+      tableAccent: '#F3EDE0',
       inlineCodeText: '#92400E',
-      inlineCodeBg: '#F3EFE6',
+      inlineCodeBg: '#F3EDE0',
       blockquoteAccent: '#B45309'
     }
   },
-  text: '#44403C',
-  textMuted: '#A8A29E',
-  borderColor: '#E7E2D8',
+  text: '#443B34',
+  textMuted: '#8C8278',
+  borderColor: '#E5DEC9',
   codeBorder: '#D6CFC2',
   slots: {
     renderBanner(title: string, ctx: RenderContext): string {
       const { colors, fontSize, author, theme, dateStr, meta } = ctx
       const authorLabel = author.trim() || DEFAULT_ARTICLE_META.author
-      const category = meta.category.trim() || 'BOOK NOTES'
+      const category = meta.category.trim() || 'NOTEBOOK'
       const avatar = meta.avatar.trim() || DEFAULT_ARTICLE_META.avatar
       const avatarHtml = avatar
         ? `<img src="${escapeHtml(avatar)}" alt="${escapeHtml(authorLabel)}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.45);flex-shrink:0;" />`
@@ -37,14 +37,21 @@ export const bookNotesTheme: LayoutTheme = {
       const badges = resolveTagList(meta.tags)
         .map(
           (t) =>
-            `<span style="background:rgba(255,255,255,0.14);color:#FBF9F5;padding:2px 7px;border-radius:3px;font-size:9px;font-weight:600;border:1px solid rgba(255,255,255,0.22);">${escapeHtml(t)}</span>`
+            `<span style="background:rgba(255,255,255,0.14);color:#FBF8F1;padding:2px 7px;border-radius:3px;font-size:9px;font-weight:600;border:1px solid rgba(255,255,255,0.22);">${escapeHtml(t)}</span>`
+        )
+        .join('')
+
+      const ringDots = Array.from({ length: 5 })
+        .map(
+          () =>
+            `<span style="width:7px;height:7px;border-radius:50%;background:${colors.bg};border:1.5px solid ${hexToRgba(colors.headingDecor, 0.55)};display:inline-block;"></span>`
         )
         .join('')
 
       const titleCore = `
         <section style="text-align:center;">
           <p style="font-size:10px;font-weight:700;letter-spacing:2.4px;color:${colors.headingDecor};margin:0 0 8px;text-transform:uppercase;">${escapeHtml(category)}</p>
-          <p style="font-size:${fontSize + 5}px;font-weight:800;color:${colors.heading};margin:0;line-height:1.42;font-family:'Songti SC','Noto Serif SC',Georgia,serif;">
+          <p style="font-size:${fontSize + 5}px;font-weight:800;color:${colors.heading};margin:0;line-height:1.45;font-family:'Songti SC','Noto Serif SC',Georgia,serif;">
             ${escapeHtml(title)}
           </p>
         </section>
@@ -52,9 +59,14 @@ export const bookNotesTheme: LayoutTheme = {
       const bannerFrame = ctx.motion.renderBannerFrame(titleCore, colors, ctx.animated)
 
       return `
-        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;max-width:100%;box-sizing:border-box;">
-          <section style="padding:14px 14px 10px;">
-            ${bannerFrame}
+        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:4px 8px 8px 4px;overflow:hidden;box-shadow:0 4px 16px -6px rgba(44,34,30,0.12);max-width:100%;box-sizing:border-box;">
+          <section style="display:flex;align-items:stretch;">
+            <section style="width:16px;flex-shrink:0;background:${colors.tableAccent};border-right:1px dashed ${hexToRgba(colors.headingDecor, 0.35)};display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;padding:12px 0;">
+              ${ringDots}
+            </section>
+            <section style="flex:1;min-width:0;padding:14px 14px 10px;">
+              ${bannerFrame}
+            </section>
           </section>
           <section style="background:${colors.heading};padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
             <section style="display:flex;align-items:center;gap:7px;">
@@ -76,9 +88,9 @@ export const bookNotesTheme: LayoutTheme = {
           const prefix =
             headingNumbering === 'numeric'
               ? `<span style="display:inline-block;width:24px;font-weight:700;color:${colors.headingDecor};font-family:Menlo,Monaco,Consolas,monospace;">${num}</span>`
-              : `<span style="display:inline-block;width:16px;color:${colors.headingDecor};font-size:10px;">◆</span>`
+              : `<span style="display:inline-block;width:16px;color:${colors.headingDecor};font-size:10px;">✦</span>`
           return `
-            <p style="margin:0 0 7px 0;font-size:13px;line-height:1.6;color:${theme.text};">
+            <p style="margin:0 0 7px 0;padding-bottom:5px;border-bottom:1px dashed ${hexToRgba(colors.divider, 0.7)};font-size:13px;line-height:1.6;color:${theme.text};">
               ${prefix}<span>${escapeHtml(text)}</span>
             </p>
           `
@@ -88,10 +100,10 @@ export const bookNotesTheme: LayoutTheme = {
       const tocDecor = `<section style="width:72px;flex-shrink:0;">${ctx.motion.renderTocDecor(colors, ctx.animated)}</section>`
 
       return `
-        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-radius:6px;overflow:hidden;">
+        <section style="margin:0 0 24px 0;background:${colors.bg};border:1px solid ${theme.borderColor};border-left:4px solid ${colors.headingDecor};border-radius:4px 8px 8px 4px;overflow:hidden;">
           <section style="padding:9px 16px;background:${colors.tableAccent};border-bottom:1px solid ${theme.borderColor};display:flex;align-items:center;justify-content:space-between;gap:10px;">
-            <p style="margin:0;font-size:10px;font-weight:800;letter-spacing:2px;color:${colors.heading};">READING NOTES · 书摘目录</p>
-            <span style="font-size:10px;color:${theme.textMuted};">${headings.length} 节</span>
+            <p style="margin:0;font-size:10px;font-weight:800;letter-spacing:2px;color:${colors.heading};">NOTEBOOK · 手记目录</p>
+            <span style="font-size:10px;color:${theme.textMuted};">${headings.length} 篇</span>
           </section>
           <section style="padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
             <section style="flex:1;min-width:0;">${items}</section>
@@ -109,8 +121,8 @@ export const bookNotesTheme: LayoutTheme = {
       const rail = `<section style="margin-top:2px;">${motion.renderSectionRail(colors, animated, index)}</section>`
       const prefix =
         headingNumbering === 'numeric'
-          ? `<section style="text-align:center;flex-shrink:0;padding-right:10px;border-right:1px solid ${colors.divider};"><p style="margin:0;font-size:20px;font-weight:800;color:${colors.headingDecor};line-height:1;font-family:Georgia,serif;">${num}</p></section>`
-          : `<span style="width:4px;height:18px;border-left:2px solid ${colors.headingDecor};border-right:1px solid ${hexToRgba(colors.headingDecor, 0.4)};flex-shrink:0;display:inline-block;"></span>`
+          ? `<span style="display:inline-flex;align-items:center;padding:2px 8px;background:${colors.tableAccent};border:1px solid ${hexToRgba(colors.headingDecor, 0.35)};border-left:3px solid ${colors.headingDecor};border-radius:3px;font-size:13px;font-weight:800;color:${colors.headingDecor};font-family:Georgia,serif;flex-shrink:0;">${num}</span>`
+          : `<span style="width:5px;height:18px;border-left:3px solid ${colors.headingDecor};border-right:1px solid ${hexToRgba(colors.headingDecor, 0.45)};flex-shrink:0;display:inline-block;"></span>`
 
       return `
         <section style="margin:${marginTop} 0 14px 0;max-width:100%;overflow:hidden;">
@@ -128,7 +140,7 @@ export const bookNotesTheme: LayoutTheme = {
       const { theme, colors, fontSize, motion, animated } = ctx
       const decor = motion.renderBlockquoteDecor(colors, animated)
       return `
-        <section style="margin:14px 0;padding:12px 16px;background:${colors.tableAccent};border:1px dashed ${hexToRgba(colors.blockquoteAccent, 0.35)};border-left:3px solid ${colors.blockquoteAccent};border-radius:4px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.68;">
+        <section style="margin:14px 0;padding:12px 16px;background:${colors.tableAccent};border:1px dashed ${hexToRgba(colors.blockquoteAccent, 0.4)};border-left:4px solid ${colors.blockquoteAccent};border-radius:4px;color:${theme.text};font-size:${Math.max(13, fontSize - 1)}px;line-height:1.68;">
           <section style="display:flex;justify-content:flex-start;margin-bottom:6px;line-height:0;"><section style="width:28px;">${decor}</section></section>
           ${content}
         </section>
@@ -143,10 +155,10 @@ export const bookNotesTheme: LayoutTheme = {
       }
       return `
         <figure data-placeholder="${escapeHtml(encodeURIComponent(placeholderHtml))}" style="margin:18px 0;text-align:center;">
-          <section style="background:#FFFFFF;border-radius:4px;padding:8px;border:1px solid ${theme.borderColor};">
+          <section style="background:#FFFFFF;border-radius:4px;padding:8px 8px 12px;border:1px solid ${theme.borderColor};box-shadow:0 3px 10px -4px rgba(44,34,30,0.1);">
             <img src="${escapeHtml(href)}" alt="${escapeHtml(text)}" style="max-width:100%;height:auto;border-radius:2px;display:block;margin:0 auto;" />
+            ${text ? `<p style="margin:8px 0 0;font-size:12px;color:${theme.textMuted};font-family:'Songti SC','Noto Serif SC',serif;">— ${escapeHtml(text)}</p>` : ''}
           </section>
-          ${text ? `<figcaption style="margin-top:8px;font-size:12px;color:${theme.textMuted};">— ${escapeHtml(text)}</figcaption>` : ''}
         </figure>
       `
     }
